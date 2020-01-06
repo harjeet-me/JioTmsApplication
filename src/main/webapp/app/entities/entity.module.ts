@@ -56,6 +56,10 @@ import { RouterModule } from '@angular/router';
       {
         path: 'location',
         loadChildren: () => import('./location/location.module').then(m => m.JioTmsApplicationLocationModule)
+      },
+      {
+        path: 'product-item',
+        loadChildren: () => import('./product-item/product-item.module').then(m => m.JioTmsApplicationProductItemModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

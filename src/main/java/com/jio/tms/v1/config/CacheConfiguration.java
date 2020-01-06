@@ -65,6 +65,7 @@ public class CacheConfiguration {
             createCache(cm, com.jio.tms.v1.domain.OwnerOperator.class.getName());
             createCache(cm, com.jio.tms.v1.domain.OwnerOperator.class.getName() + ".loadOrders");
             createCache(cm, com.jio.tms.v1.domain.Location.class.getName());
+            createCache(cm, com.jio.tms.v1.domain.ProductItem.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

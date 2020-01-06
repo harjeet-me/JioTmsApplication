@@ -20,6 +20,7 @@
         "driver": "Driver",
         "ownerOperator": "Owner Operator",
         "location": "Location",
+        "productItem": "Product Item",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
