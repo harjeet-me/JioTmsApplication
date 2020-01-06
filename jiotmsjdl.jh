@@ -108,6 +108,17 @@ entity InvoiceItem {
      
 	}
     
+    entity ProductItem {
+     itemName String,
+     description String,
+     qty Integer,
+     price Double,
+     discount Double,
+    
+     
+	}
+    
+    
   entity Accounts{
      
      balance Double,
