@@ -1,0 +1,9 @@
+{
+  "jioTmsApplicationApp": {
+    "TaxType": {
+      "null": "",
+      "GST": "GST",
+      "FEDRAL": "FEDRAL"
+    }
+  }
+}

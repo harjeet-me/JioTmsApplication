@@ -1,0 +1,9 @@
+{
+  "jioTmsApplicationApp": {
+    "ToggleStatus": {
+      "null": "",
+      "ACTIVE": "ACTIVE",
+      "INACTIVE": "INACTIVE"
+    }
+  }
+}
