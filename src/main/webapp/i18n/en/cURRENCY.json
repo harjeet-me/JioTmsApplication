@@ -1,0 +1,10 @@
+{
+  "jioTmsApplicationApp": {
+    "CURRENCY": {
+      "null": "",
+      "USD": "USD",
+      "CAD": "CAD",
+      "INR": "INR"
+    }
+  }
+}

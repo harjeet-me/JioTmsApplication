@@ -1,0 +1,11 @@
+{
+  "jioTmsApplicationApp": {
+    "TransactionType": {
+      "null": "",
+      "CREDIT": "CREDIT",
+      "PAYMENT": "PAYMENT",
+      "REFUND": "REFUND",
+      "ADJUSTMENT": "ADJUSTMENT"
+    }
+  }
+}
