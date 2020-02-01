@@ -40,6 +40,18 @@
             "fieldType": "LocalDate"
         },
         {
+            "fieldName": "refValue1",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "refValue2",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "refValue3",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "payRefNo",
             "fieldType": "String"
         },

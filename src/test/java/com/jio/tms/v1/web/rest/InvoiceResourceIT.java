@@ -71,6 +71,15 @@ public class InvoiceResourceIT {
     private static final LocalDate DEFAULT_INVOICE_PAID_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_INVOICE_PAID_DATE = LocalDate.now(ZoneId.systemDefault());
 
+    private static final String DEFAULT_REF_VALUE_1 = "AAAAAAAAAA";
+    private static final String UPDATED_REF_VALUE_1 = "BBBBBBBBBB";
+
+    private static final String DEFAULT_REF_VALUE_2 = "AAAAAAAAAA";
+    private static final String UPDATED_REF_VALUE_2 = "BBBBBBBBBB";
+
+    private static final String DEFAULT_REF_VALUE_3 = "AAAAAAAAAA";
+    private static final String UPDATED_REF_VALUE_3 = "BBBBBBBBBB";
+
     private static final String DEFAULT_PAY_REF_NO = "AAAAAAAAAA";
     private static final String UPDATED_PAY_REF_NO = "BBBBBBBBBB";
 
@@ -150,6 +159,9 @@ public class InvoiceResourceIT {
             .invoiceTotal(DEFAULT_INVOICE_TOTAL)
             .invoiceDate(DEFAULT_INVOICE_DATE)
             .invoicePaidDate(DEFAULT_INVOICE_PAID_DATE)
+            .refValue1(DEFAULT_REF_VALUE_1)
+            .refValue2(DEFAULT_REF_VALUE_2)
+            .refValue3(DEFAULT_REF_VALUE_3)
             .payRefNo(DEFAULT_PAY_REF_NO)
             .invoiceDueDate(DEFAULT_INVOICE_DUE_DATE)
             .status(DEFAULT_STATUS)
@@ -175,6 +187,9 @@ public class InvoiceResourceIT {
             .invoiceTotal(UPDATED_INVOICE_TOTAL)
             .invoiceDate(UPDATED_INVOICE_DATE)
             .invoicePaidDate(UPDATED_INVOICE_PAID_DATE)
+            .refValue1(UPDATED_REF_VALUE_1)
+            .refValue2(UPDATED_REF_VALUE_2)
+            .refValue3(UPDATED_REF_VALUE_3)
             .payRefNo(UPDATED_PAY_REF_NO)
             .invoiceDueDate(UPDATED_INVOICE_DUE_DATE)
             .status(UPDATED_STATUS)
@@ -213,6 +228,9 @@ public class InvoiceResourceIT {
         assertThat(testInvoice.getInvoiceTotal()).isEqualTo(DEFAULT_INVOICE_TOTAL);
         assertThat(testInvoice.getInvoiceDate()).isEqualTo(DEFAULT_INVOICE_DATE);
         assertThat(testInvoice.getInvoicePaidDate()).isEqualTo(DEFAULT_INVOICE_PAID_DATE);
+        assertThat(testInvoice.getRefValue1()).isEqualTo(DEFAULT_REF_VALUE_1);
+        assertThat(testInvoice.getRefValue2()).isEqualTo(DEFAULT_REF_VALUE_2);
+        assertThat(testInvoice.getRefValue3()).isEqualTo(DEFAULT_REF_VALUE_3);
         assertThat(testInvoice.getPayRefNo()).isEqualTo(DEFAULT_PAY_REF_NO);
         assertThat(testInvoice.getInvoiceDueDate()).isEqualTo(DEFAULT_INVOICE_DUE_DATE);
         assertThat(testInvoice.getStatus()).isEqualTo(DEFAULT_STATUS);
@@ -267,6 +285,9 @@ public class InvoiceResourceIT {
             .andExpect(jsonPath("$.[*].invoiceTotal").value(hasItem(DEFAULT_INVOICE_TOTAL.doubleValue())))
             .andExpect(jsonPath("$.[*].invoiceDate").value(hasItem(DEFAULT_INVOICE_DATE.toString())))
             .andExpect(jsonPath("$.[*].invoicePaidDate").value(hasItem(DEFAULT_INVOICE_PAID_DATE.toString())))
+            .andExpect(jsonPath("$.[*].refValue1").value(hasItem(DEFAULT_REF_VALUE_1)))
+            .andExpect(jsonPath("$.[*].refValue2").value(hasItem(DEFAULT_REF_VALUE_2)))
+            .andExpect(jsonPath("$.[*].refValue3").value(hasItem(DEFAULT_REF_VALUE_3)))
             .andExpect(jsonPath("$.[*].payRefNo").value(hasItem(DEFAULT_PAY_REF_NO)))
             .andExpect(jsonPath("$.[*].invoiceDueDate").value(hasItem(DEFAULT_INVOICE_DUE_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
@@ -295,6 +316,9 @@ public class InvoiceResourceIT {
             .andExpect(jsonPath("$.invoiceTotal").value(DEFAULT_INVOICE_TOTAL.doubleValue()))
             .andExpect(jsonPath("$.invoiceDate").value(DEFAULT_INVOICE_DATE.toString()))
             .andExpect(jsonPath("$.invoicePaidDate").value(DEFAULT_INVOICE_PAID_DATE.toString()))
+            .andExpect(jsonPath("$.refValue1").value(DEFAULT_REF_VALUE_1))
+            .andExpect(jsonPath("$.refValue2").value(DEFAULT_REF_VALUE_2))
+            .andExpect(jsonPath("$.refValue3").value(DEFAULT_REF_VALUE_3))
             .andExpect(jsonPath("$.payRefNo").value(DEFAULT_PAY_REF_NO))
             .andExpect(jsonPath("$.invoiceDueDate").value(DEFAULT_INVOICE_DUE_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
@@ -335,6 +359,9 @@ public class InvoiceResourceIT {
             .invoiceTotal(UPDATED_INVOICE_TOTAL)
             .invoiceDate(UPDATED_INVOICE_DATE)
             .invoicePaidDate(UPDATED_INVOICE_PAID_DATE)
+            .refValue1(UPDATED_REF_VALUE_1)
+            .refValue2(UPDATED_REF_VALUE_2)
+            .refValue3(UPDATED_REF_VALUE_3)
             .payRefNo(UPDATED_PAY_REF_NO)
             .invoiceDueDate(UPDATED_INVOICE_DUE_DATE)
             .status(UPDATED_STATUS)
@@ -360,6 +387,9 @@ public class InvoiceResourceIT {
         assertThat(testInvoice.getInvoiceTotal()).isEqualTo(UPDATED_INVOICE_TOTAL);
         assertThat(testInvoice.getInvoiceDate()).isEqualTo(UPDATED_INVOICE_DATE);
         assertThat(testInvoice.getInvoicePaidDate()).isEqualTo(UPDATED_INVOICE_PAID_DATE);
+        assertThat(testInvoice.getRefValue1()).isEqualTo(UPDATED_REF_VALUE_1);
+        assertThat(testInvoice.getRefValue2()).isEqualTo(UPDATED_REF_VALUE_2);
+        assertThat(testInvoice.getRefValue3()).isEqualTo(UPDATED_REF_VALUE_3);
         assertThat(testInvoice.getPayRefNo()).isEqualTo(UPDATED_PAY_REF_NO);
         assertThat(testInvoice.getInvoiceDueDate()).isEqualTo(UPDATED_INVOICE_DUE_DATE);
         assertThat(testInvoice.getStatus()).isEqualTo(UPDATED_STATUS);
@@ -434,6 +464,9 @@ public class InvoiceResourceIT {
             .andExpect(jsonPath("$.[*].invoiceTotal").value(hasItem(DEFAULT_INVOICE_TOTAL.doubleValue())))
             .andExpect(jsonPath("$.[*].invoiceDate").value(hasItem(DEFAULT_INVOICE_DATE.toString())))
             .andExpect(jsonPath("$.[*].invoicePaidDate").value(hasItem(DEFAULT_INVOICE_PAID_DATE.toString())))
+            .andExpect(jsonPath("$.[*].refValue1").value(hasItem(DEFAULT_REF_VALUE_1)))
+            .andExpect(jsonPath("$.[*].refValue2").value(hasItem(DEFAULT_REF_VALUE_2)))
+            .andExpect(jsonPath("$.[*].refValue3").value(hasItem(DEFAULT_REF_VALUE_3)))
             .andExpect(jsonPath("$.[*].payRefNo").value(hasItem(DEFAULT_PAY_REF_NO)))
             .andExpect(jsonPath("$.[*].invoiceDueDate").value(hasItem(DEFAULT_INVOICE_DUE_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))

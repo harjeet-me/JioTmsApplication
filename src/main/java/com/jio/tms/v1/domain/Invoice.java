@@ -62,6 +62,15 @@ public class Invoice implements Serializable {
     @Column(name = "invoice_paid_date")
     private LocalDate invoicePaidDate;
 
+    @Column(name = "ref_value_1")
+    private String refValue1;
+
+    @Column(name = "ref_value_2")
+    private String refValue2;
+
+    @Column(name = "ref_value_3")
+    private String refValue3;
+
     @Column(name = "pay_ref_no")
     private String payRefNo;
 
@@ -230,6 +239,45 @@ public class Invoice implements Serializable {
 
     public void setInvoicePaidDate(LocalDate invoicePaidDate) {
         this.invoicePaidDate = invoicePaidDate;
+    }
+
+    public String getRefValue1() {
+        return refValue1;
+    }
+
+    public Invoice refValue1(String refValue1) {
+        this.refValue1 = refValue1;
+        return this;
+    }
+
+    public void setRefValue1(String refValue1) {
+        this.refValue1 = refValue1;
+    }
+
+    public String getRefValue2() {
+        return refValue2;
+    }
+
+    public Invoice refValue2(String refValue2) {
+        this.refValue2 = refValue2;
+        return this;
+    }
+
+    public void setRefValue2(String refValue2) {
+        this.refValue2 = refValue2;
+    }
+
+    public String getRefValue3() {
+        return refValue3;
+    }
+
+    public Invoice refValue3(String refValue3) {
+        this.refValue3 = refValue3;
+        return this;
+    }
+
+    public void setRefValue3(String refValue3) {
+        this.refValue3 = refValue3;
     }
 
     public String getPayRefNo() {
@@ -430,6 +478,9 @@ public class Invoice implements Serializable {
             ", invoiceTotal=" + getInvoiceTotal() +
             ", invoiceDate='" + getInvoiceDate() + "'" +
             ", invoicePaidDate='" + getInvoicePaidDate() + "'" +
+            ", refValue1='" + getRefValue1() + "'" +
+            ", refValue2='" + getRefValue2() + "'" +
+            ", refValue3='" + getRefValue3() + "'" +
             ", payRefNo='" + getPayRefNo() + "'" +
             ", invoiceDueDate='" + getInvoiceDueDate() + "'" +
             ", status='" + getStatus() + "'" +
