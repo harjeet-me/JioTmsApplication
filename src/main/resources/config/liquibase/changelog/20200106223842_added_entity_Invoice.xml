@@ -64,6 +64,12 @@
             <column name="reference1_id" type="bigint">
                 <constraints unique="true" nullable="true" uniqueConstraintName="ux_invoice_reference1_id" />
             </column>
+            <column name="reference2_id" type="bigint">
+                <constraints unique="true" nullable="true" uniqueConstraintName="ux_invoice_reference2_id" />
+            </column>
+            <column name="reference3_id" type="bigint">
+                <constraints unique="true" nullable="true" uniqueConstraintName="ux_invoice_reference3_id" />
+            </column>
             <column name="customer_id" type="bigint">
                 <constraints nullable="true" />
             </column>

@@ -14,6 +14,18 @@
                                  referencedColumnNames="id"
                                  referencedTableName="reference"/>
 
+        <addForeignKeyConstraint baseColumnNames="reference2_id"
+                                 baseTableName="invoice"
+                                 constraintName="fk_invoice_reference2_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="reference"/>
+
+        <addForeignKeyConstraint baseColumnNames="reference3_id"
+                                 baseTableName="invoice"
+                                 constraintName="fk_invoice_reference3_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="reference"/>
+
         <addForeignKeyConstraint baseColumnNames="customer_id"
                                  baseTableName="invoice"
                                  constraintName="fk_invoice_customer_id"

@@ -125,6 +125,20 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.reference2" for="field_reference2">Reference 2</label>
+                    <select class="form-control" id="field_reference2" name="reference2" formControlName="reference2">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="referenceOption.id === editForm.get('reference2')!.value?.id ? editForm.get('reference2')!.value : referenceOption" *ngFor="let referenceOption of reference2s; trackBy: trackById">{{referenceOption.reference}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.reference3" for="field_reference3">Reference 3</label>
+                    <select class="form-control" id="field_reference3" name="reference3" formControlName="reference3">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="referenceOption.id === editForm.get('reference3')!.value?.id ? editForm.get('reference3')!.value : referenceOption" *ngFor="let referenceOption of reference3s; trackBy: trackById">{{referenceOption.reference}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.customer" for="field_customer">Customer</label>
                     <select class="form-control" id="field_customer" name="customer" formControlName="customer">
                         <option [ngValue]="null"></option>

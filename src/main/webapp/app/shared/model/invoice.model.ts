@@ -25,6 +25,8 @@ export interface IInvoice {
   invoicePdf?: any;
   remarks?: string;
   reference1?: IReference;
+  reference2?: IReference;
+  reference3?: IReference;
   invoiceItems?: IInvoiceItem[];
   customer?: ICustomer;
   trip?: ITrip;
@@ -49,6 +51,8 @@ export class Invoice implements IInvoice {
     public invoicePdf?: any,
     public remarks?: string,
     public reference1?: IReference,
+    public reference2?: IReference,
+    public reference3?: IReference,
     public invoiceItems?: IInvoiceItem[],
     public customer?: ICustomer,
     public trip?: ITrip
