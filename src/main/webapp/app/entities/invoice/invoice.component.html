@@ -48,6 +48,9 @@
             <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.status">Status</span></th>
             <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.invoicePdf">Invoice Pdf</span></th>
             <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.remarks">Remarks</span></th>
+            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.ref1">Ref 1</span></th>
+            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.ref2">Ref 2</span></th>
+            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.ref3">Ref 3</span></th>
             <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.customer">Customer</span></th>
             <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.trip">Trip</span></th>
             <th scope="col"></th>
@@ -73,6 +76,21 @@
                     <span *ngIf="invoice.invoicePdf">{{invoice.invoicePdfContentType}}, {{byteSize(invoice.invoicePdf)}}</span>
                 </td>
                 <td>{{invoice.remarks}}</td>
+                <td>
+                    <div *ngIf="invoice.ref1">
+                        <a [routerLink]="['/invoice-ref', invoice.ref1?.id, 'view' ]" >{{invoice.ref1?.refName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="invoice.ref2">
+                        <a [routerLink]="['/invoice-ref', invoice.ref2?.id, 'view' ]" >{{invoice.ref2?.refName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="invoice.ref3">
+                        <a [routerLink]="['/invoice-ref', invoice.ref3?.id, 'view' ]" >{{invoice.ref3?.refName}}</a>
+                    </div>
+                </td>
                 <td>
                     <div *ngIf="invoice.customer">
                         <a [routerLink]="['/customer', invoice.customer?.id, 'view' ]" >{{invoice.customer?.company}}</a>

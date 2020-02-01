@@ -11,12 +11,14 @@ import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } 
 import { IInvoice, Invoice } from 'app/shared/model/invoice.model';
 import { InvoiceService } from './invoice.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
+import { IInvoiceRef } from 'app/shared/model/invoice-ref.model';
+import { InvoiceRefService } from 'app/entities/invoice-ref/invoice-ref.service';
 import { ICustomer } from 'app/shared/model/customer.model';
 import { CustomerService } from 'app/entities/customer/customer.service';
 import { ITrip } from 'app/shared/model/trip.model';
 import { TripService } from 'app/entities/trip/trip.service';
 
-type SelectableEntity = ICustomer | ITrip;
+type SelectableEntity = IInvoiceRef | ICustomer | ITrip;
 
 @Component({
   selector: 'jhi-invoice-update',
@@ -24,6 +26,12 @@ type SelectableEntity = ICustomer | ITrip;
 })
 export class InvoiceUpdateComponent implements OnInit {
   isSaving = false;
+
+  ref1s: IInvoiceRef[] = [];
+
+  ref2s: IInvoiceRef[] = [];
+
+  ref3s: IInvoiceRef[] = [];
 
   customers: ICustomer[] = [];
 
@@ -49,6 +57,9 @@ export class InvoiceUpdateComponent implements OnInit {
     invoicePdf: [],
     invoicePdfContentType: [],
     remarks: [],
+    ref1: [],
+    ref2: [],
+    ref3: [],
     customer: [],
     trip: []
   });
@@ -57,6 +68,7 @@ export class InvoiceUpdateComponent implements OnInit {
     protected dataUtils: JhiDataUtils,
     protected eventManager: JhiEventManager,
     protected invoiceService: InvoiceService,
+    protected invoiceRefService: InvoiceRefService,
     protected customerService: CustomerService,
     protected tripService: TripService,
     protected activatedRoute: ActivatedRoute,
@@ -66,6 +78,78 @@ export class InvoiceUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ invoice }) => {
       this.updateForm(invoice);
+
+      this.invoiceRefService
+        .query({ filter: 'invoice-is-null' })
+        .pipe(
+          map((res: HttpResponse<IInvoiceRef[]>) => {
+            return res.body ? res.body : [];
+          })
+        )
+        .subscribe((resBody: IInvoiceRef[]) => {
+          if (!invoice.ref1 || !invoice.ref1.id) {
+            this.ref1s = resBody;
+          } else {
+            this.invoiceRefService
+              .find(invoice.ref1.id)
+              .pipe(
+                map((subRes: HttpResponse<IInvoiceRef>) => {
+                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
+                })
+              )
+              .subscribe((concatRes: IInvoiceRef[]) => {
+                this.ref1s = concatRes;
+              });
+          }
+        });
+
+      this.invoiceRefService
+        .query({ filter: 'invoice-is-null' })
+        .pipe(
+          map((res: HttpResponse<IInvoiceRef[]>) => {
+            return res.body ? res.body : [];
+          })
+        )
+        .subscribe((resBody: IInvoiceRef[]) => {
+          if (!invoice.ref2 || !invoice.ref2.id) {
+            this.ref2s = resBody;
+          } else {
+            this.invoiceRefService
+              .find(invoice.ref2.id)
+              .pipe(
+                map((subRes: HttpResponse<IInvoiceRef>) => {
+                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
+                })
+              )
+              .subscribe((concatRes: IInvoiceRef[]) => {
+                this.ref2s = concatRes;
+              });
+          }
+        });
+
+      this.invoiceRefService
+        .query({ filter: 'invoice-is-null' })
+        .pipe(
+          map((res: HttpResponse<IInvoiceRef[]>) => {
+            return res.body ? res.body : [];
+          })
+        )
+        .subscribe((resBody: IInvoiceRef[]) => {
+          if (!invoice.ref3 || !invoice.ref3.id) {
+            this.ref3s = resBody;
+          } else {
+            this.invoiceRefService
+              .find(invoice.ref3.id)
+              .pipe(
+                map((subRes: HttpResponse<IInvoiceRef>) => {
+                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
+                })
+              )
+              .subscribe((concatRes: IInvoiceRef[]) => {
+                this.ref3s = concatRes;
+              });
+          }
+        });
 
       this.customerService
         .query()
@@ -105,6 +189,9 @@ export class InvoiceUpdateComponent implements OnInit {
       invoicePdf: invoice.invoicePdf,
       invoicePdfContentType: invoice.invoicePdfContentType,
       remarks: invoice.remarks,
+      ref1: invoice.ref1,
+      ref2: invoice.ref2,
+      ref3: invoice.ref3,
       customer: invoice.customer,
       trip: invoice.trip
     });
@@ -159,6 +246,9 @@ export class InvoiceUpdateComponent implements OnInit {
       invoicePdfContentType: this.editForm.get(['invoicePdfContentType'])!.value,
       invoicePdf: this.editForm.get(['invoicePdf'])!.value,
       remarks: this.editForm.get(['remarks'])!.value,
+      ref1: this.editForm.get(['ref1'])!.value,
+      ref2: this.editForm.get(['ref2'])!.value,
+      ref3: this.editForm.get(['ref3'])!.value,
       customer: this.editForm.get(['customer'])!.value,
       trip: this.editForm.get(['trip'])!.value
     };

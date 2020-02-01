@@ -1,0 +1,20 @@
+{
+    "name": "InvoiceRef",
+    "fields": [
+        {
+            "fieldName": "refName",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200201074857",
+    "entityTableName": "invoice_ref",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { IInvoiceRef } from 'app/shared/model/invoice-ref.model';
 import { IInvoiceItem } from 'app/shared/model/invoice-item.model';
 import { ICustomer } from 'app/shared/model/customer.model';
 import { ITrip } from 'app/shared/model/trip.model';
@@ -23,6 +24,9 @@ export interface IInvoice {
   invoicePdfContentType?: string;
   invoicePdf?: any;
   remarks?: string;
+  ref1?: IInvoiceRef;
+  ref2?: IInvoiceRef;
+  ref3?: IInvoiceRef;
   invoiceItems?: IInvoiceItem[];
   customer?: ICustomer;
   trip?: ITrip;
@@ -46,6 +50,9 @@ export class Invoice implements IInvoice {
     public invoicePdfContentType?: string,
     public invoicePdf?: any,
     public remarks?: string,
+    public ref1?: IInvoiceRef,
+    public ref2?: IInvoiceRef,
+    public ref3?: IInvoiceRef,
     public invoiceItems?: IInvoiceItem[],
     public customer?: ICustomer,
     public trip?: ITrip
