@@ -101,6 +101,9 @@ entity Invoice {
 entity InvoiceRef {
      refName String    
 	}
+entity Reference {
+     reference String    
+	}
 
 
 entity InvoiceItem {
@@ -310,9 +313,9 @@ relationship OneToOne {
     Accounts {customer (company)} to  Customer{ accounts } 
     Trip {pickupLocation (address)}  to Location
     Trip {dropLocation (address)}  to Location
-    Invoice {ref1 (refName)}  to InvoiceRef
-    Invoice {ref2 (refName)}  to InvoiceRef
-    Invoice {ref3 (refName)}  to InvoiceRef
+    Invoice {reference1 (reference)}  to Reference
+    Invoice {reference1 (reference)}  to Reference
+    Invoice {reference1 (reference)}  to Reference
    
 }
 // defining multiple OneToMany relationships with comments

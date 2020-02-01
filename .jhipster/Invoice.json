@@ -65,26 +65,10 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
-            "otherEntityName": "invoiceRef",
+            "otherEntityName": "reference",
             "otherEntityRelationshipName": "invoice",
-            "relationshipName": "ref1",
-            "otherEntityField": "refName",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "invoiceRef",
-            "otherEntityRelationshipName": "invoice",
-            "relationshipName": "ref2",
-            "otherEntityField": "refName",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "invoiceRef",
-            "otherEntityRelationshipName": "invoice",
-            "relationshipName": "ref3",
-            "otherEntityField": "refName",
+            "relationshipName": "reference1",
+            "otherEntityField": "reference",
             "ownerSide": true
         },
         {

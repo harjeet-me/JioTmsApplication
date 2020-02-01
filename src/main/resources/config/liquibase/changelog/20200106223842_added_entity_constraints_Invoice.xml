@@ -8,23 +8,11 @@
     -->
     <changeSet id="20200106223842-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="ref1_id"
+        <addForeignKeyConstraint baseColumnNames="reference1_id"
                                  baseTableName="invoice"
-                                 constraintName="fk_invoice_ref1_id"
+                                 constraintName="fk_invoice_reference1_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="invoice_ref"/>
-
-        <addForeignKeyConstraint baseColumnNames="ref2_id"
-                                 baseTableName="invoice"
-                                 constraintName="fk_invoice_ref2_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="invoice_ref"/>
-
-        <addForeignKeyConstraint baseColumnNames="ref3_id"
-                                 baseTableName="invoice"
-                                 constraintName="fk_invoice_ref3_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="invoice_ref"/>
+                                 referencedTableName="reference"/>
 
         <addForeignKeyConstraint baseColumnNames="customer_id"
                                  baseTableName="invoice"

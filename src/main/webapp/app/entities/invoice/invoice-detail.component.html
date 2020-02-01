@@ -64,22 +64,10 @@
                 <dd>
                     <span>{{invoice.remarks}}</span>
                 </dd>
-                <dt><span jhiTranslate="jioTmsApplicationApp.invoice.ref1">Ref 1</span></dt>
+                <dt><span jhiTranslate="jioTmsApplicationApp.invoice.reference1">Reference 1</span></dt>
                 <dd>
-                    <div *ngIf="invoice.ref1">
-                        <a [routerLink]="['/invoice-ref', invoice.ref1?.id, 'view']">{{invoice.ref1?.refName}}</a>
-                    </div>
-                </dd>
-                <dt><span jhiTranslate="jioTmsApplicationApp.invoice.ref2">Ref 2</span></dt>
-                <dd>
-                    <div *ngIf="invoice.ref2">
-                        <a [routerLink]="['/invoice-ref', invoice.ref2?.id, 'view']">{{invoice.ref2?.refName}}</a>
-                    </div>
-                </dd>
-                <dt><span jhiTranslate="jioTmsApplicationApp.invoice.ref3">Ref 3</span></dt>
-                <dd>
-                    <div *ngIf="invoice.ref3">
-                        <a [routerLink]="['/invoice-ref', invoice.ref3?.id, 'view']">{{invoice.ref3?.refName}}</a>
+                    <div *ngIf="invoice.reference1">
+                        <a [routerLink]="['/reference', invoice.reference1?.id, 'view']">{{invoice.reference1?.reference}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.customer">Customer</span></dt>
