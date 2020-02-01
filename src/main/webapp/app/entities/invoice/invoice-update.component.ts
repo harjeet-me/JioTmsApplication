@@ -11,14 +11,14 @@ import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } 
 import { IInvoice, Invoice } from 'app/shared/model/invoice.model';
 import { InvoiceService } from './invoice.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
-import { IInvoiceRef } from 'app/shared/model/invoice-ref.model';
-import { InvoiceRefService } from 'app/entities/invoice-ref/invoice-ref.service';
+import { IReference } from 'app/shared/model/reference.model';
+import { ReferenceService } from 'app/entities/reference/reference.service';
 import { ICustomer } from 'app/shared/model/customer.model';
 import { CustomerService } from 'app/entities/customer/customer.service';
 import { ITrip } from 'app/shared/model/trip.model';
 import { TripService } from 'app/entities/trip/trip.service';
 
-type SelectableEntity = IInvoiceRef | ICustomer | ITrip;
+type SelectableEntity = IReference | ICustomer | ITrip;
 
 @Component({
   selector: 'jhi-invoice-update',
@@ -27,11 +27,7 @@ type SelectableEntity = IInvoiceRef | ICustomer | ITrip;
 export class InvoiceUpdateComponent implements OnInit {
   isSaving = false;
 
-  ref1s: IInvoiceRef[] = [];
-
-  ref2s: IInvoiceRef[] = [];
-
-  ref3s: IInvoiceRef[] = [];
+  reference1s: IReference[] = [];
 
   customers: ICustomer[] = [];
 
@@ -57,9 +53,7 @@ export class InvoiceUpdateComponent implements OnInit {
     invoicePdf: [],
     invoicePdfContentType: [],
     remarks: [],
-    ref1: [],
-    ref2: [],
-    ref3: [],
+    reference1: [],
     customer: [],
     trip: []
   });
@@ -68,7 +62,7 @@ export class InvoiceUpdateComponent implements OnInit {
     protected dataUtils: JhiDataUtils,
     protected eventManager: JhiEventManager,
     protected invoiceService: InvoiceService,
-    protected invoiceRefService: InvoiceRefService,
+    protected referenceService: ReferenceService,
     protected customerService: CustomerService,
     protected tripService: TripService,
     protected activatedRoute: ActivatedRoute,
@@ -79,74 +73,26 @@ export class InvoiceUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ invoice }) => {
       this.updateForm(invoice);
 
-      this.invoiceRefService
+      this.referenceService
         .query({ filter: 'invoice-is-null' })
         .pipe(
-          map((res: HttpResponse<IInvoiceRef[]>) => {
+          map((res: HttpResponse<IReference[]>) => {
             return res.body ? res.body : [];
           })
         )
-        .subscribe((resBody: IInvoiceRef[]) => {
-          if (!invoice.ref1 || !invoice.ref1.id) {
-            this.ref1s = resBody;
+        .subscribe((resBody: IReference[]) => {
+          if (!invoice.reference1 || !invoice.reference1.id) {
+            this.reference1s = resBody;
           } else {
-            this.invoiceRefService
-              .find(invoice.ref1.id)
+            this.referenceService
+              .find(invoice.reference1.id)
               .pipe(
-                map((subRes: HttpResponse<IInvoiceRef>) => {
+                map((subRes: HttpResponse<IReference>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
                 })
               )
-              .subscribe((concatRes: IInvoiceRef[]) => {
-                this.ref1s = concatRes;
-              });
-          }
-        });
-
-      this.invoiceRefService
-        .query({ filter: 'invoice-is-null' })
-        .pipe(
-          map((res: HttpResponse<IInvoiceRef[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IInvoiceRef[]) => {
-          if (!invoice.ref2 || !invoice.ref2.id) {
-            this.ref2s = resBody;
-          } else {
-            this.invoiceRefService
-              .find(invoice.ref2.id)
-              .pipe(
-                map((subRes: HttpResponse<IInvoiceRef>) => {
-                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
-                })
-              )
-              .subscribe((concatRes: IInvoiceRef[]) => {
-                this.ref2s = concatRes;
-              });
-          }
-        });
-
-      this.invoiceRefService
-        .query({ filter: 'invoice-is-null' })
-        .pipe(
-          map((res: HttpResponse<IInvoiceRef[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IInvoiceRef[]) => {
-          if (!invoice.ref3 || !invoice.ref3.id) {
-            this.ref3s = resBody;
-          } else {
-            this.invoiceRefService
-              .find(invoice.ref3.id)
-              .pipe(
-                map((subRes: HttpResponse<IInvoiceRef>) => {
-                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
-                })
-              )
-              .subscribe((concatRes: IInvoiceRef[]) => {
-                this.ref3s = concatRes;
+              .subscribe((concatRes: IReference[]) => {
+                this.reference1s = concatRes;
               });
           }
         });
@@ -189,9 +135,7 @@ export class InvoiceUpdateComponent implements OnInit {
       invoicePdf: invoice.invoicePdf,
       invoicePdfContentType: invoice.invoicePdfContentType,
       remarks: invoice.remarks,
-      ref1: invoice.ref1,
-      ref2: invoice.ref2,
-      ref3: invoice.ref3,
+      reference1: invoice.reference1,
       customer: invoice.customer,
       trip: invoice.trip
     });
@@ -246,9 +190,7 @@ export class InvoiceUpdateComponent implements OnInit {
       invoicePdfContentType: this.editForm.get(['invoicePdfContentType'])!.value,
       invoicePdf: this.editForm.get(['invoicePdf'])!.value,
       remarks: this.editForm.get(['remarks'])!.value,
-      ref1: this.editForm.get(['ref1'])!.value,
-      ref2: this.editForm.get(['ref2'])!.value,
-      ref3: this.editForm.get(['ref3'])!.value,
+      reference1: this.editForm.get(['reference1'])!.value,
       customer: this.editForm.get(['customer'])!.value,
       trip: this.editForm.get(['trip'])!.value
     };

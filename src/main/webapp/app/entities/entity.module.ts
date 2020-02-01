@@ -64,6 +64,10 @@ import { RouterModule } from '@angular/router';
       {
         path: 'invoice-ref',
         loadChildren: () => import('./invoice-ref/invoice-ref.module').then(m => m.JioTmsApplicationInvoiceRefModule)
+      },
+      {
+        path: 'reference',
+        loadChildren: () => import('./reference/reference.module').then(m => m.JioTmsApplicationReferenceModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

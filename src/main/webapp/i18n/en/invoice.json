@@ -31,9 +31,7 @@
       "status": "Status",
       "invoicePdf": "Invoice Pdf",
       "remarks": "Remarks",
-      "ref1": "Ref 1",
-      "ref2": "Ref 2",
-      "ref3": "Ref 3",
+      "reference1": "Reference 1",
       "invoiceItem": "Invoice Item",
       "customer": "Customer",
       "trip": "Trip"

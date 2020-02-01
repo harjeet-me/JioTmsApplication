@@ -22,6 +22,7 @@
         "location": "Location",
         "productItem": "Product Item",
         "invoiceRef": "Invoice Ref",
+        "reference": "Reference",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
