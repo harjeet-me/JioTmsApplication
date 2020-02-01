@@ -72,6 +72,22 @@
             "ownerSide": true
         },
         {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "reference",
+            "otherEntityRelationshipName": "invoice",
+            "relationshipName": "reference2",
+            "otherEntityField": "reference",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "reference",
+            "otherEntityRelationshipName": "invoice",
+            "relationshipName": "reference3",
+            "otherEntityField": "reference",
+            "ownerSide": true
+        },
+        {
             "relationshipType": "one-to-many",
             "otherEntityName": "invoiceItem",
             "otherEntityRelationshipName": "invoice",

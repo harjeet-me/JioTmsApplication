@@ -29,6 +29,10 @@ export class InvoiceUpdateComponent implements OnInit {
 
   reference1s: IReference[] = [];
 
+  reference2s: IReference[] = [];
+
+  reference3s: IReference[] = [];
+
   customers: ICustomer[] = [];
 
   trips: ITrip[] = [];
@@ -54,6 +58,8 @@ export class InvoiceUpdateComponent implements OnInit {
     invoicePdfContentType: [],
     remarks: [],
     reference1: [],
+    reference2: [],
+    reference3: [],
     customer: [],
     trip: []
   });
@@ -97,6 +103,54 @@ export class InvoiceUpdateComponent implements OnInit {
           }
         });
 
+      this.referenceService
+        .query({ filter: 'invoice-is-null' })
+        .pipe(
+          map((res: HttpResponse<IReference[]>) => {
+            return res.body ? res.body : [];
+          })
+        )
+        .subscribe((resBody: IReference[]) => {
+          if (!invoice.reference2 || !invoice.reference2.id) {
+            this.reference2s = resBody;
+          } else {
+            this.referenceService
+              .find(invoice.reference2.id)
+              .pipe(
+                map((subRes: HttpResponse<IReference>) => {
+                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
+                })
+              )
+              .subscribe((concatRes: IReference[]) => {
+                this.reference2s = concatRes;
+              });
+          }
+        });
+
+      this.referenceService
+        .query({ filter: 'invoice-is-null' })
+        .pipe(
+          map((res: HttpResponse<IReference[]>) => {
+            return res.body ? res.body : [];
+          })
+        )
+        .subscribe((resBody: IReference[]) => {
+          if (!invoice.reference3 || !invoice.reference3.id) {
+            this.reference3s = resBody;
+          } else {
+            this.referenceService
+              .find(invoice.reference3.id)
+              .pipe(
+                map((subRes: HttpResponse<IReference>) => {
+                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
+                })
+              )
+              .subscribe((concatRes: IReference[]) => {
+                this.reference3s = concatRes;
+              });
+          }
+        });
+
       this.customerService
         .query()
         .pipe(
@@ -136,6 +190,8 @@ export class InvoiceUpdateComponent implements OnInit {
       invoicePdfContentType: invoice.invoicePdfContentType,
       remarks: invoice.remarks,
       reference1: invoice.reference1,
+      reference2: invoice.reference2,
+      reference3: invoice.reference3,
       customer: invoice.customer,
       trip: invoice.trip
     });
@@ -191,6 +247,8 @@ export class InvoiceUpdateComponent implements OnInit {
       invoicePdf: this.editForm.get(['invoicePdf'])!.value,
       remarks: this.editForm.get(['remarks'])!.value,
       reference1: this.editForm.get(['reference1'])!.value,
+      reference2: this.editForm.get(['reference2'])!.value,
+      reference3: this.editForm.get(['reference3'])!.value,
       customer: this.editForm.get(['customer'])!.value,
       trip: this.editForm.get(['trip'])!.value
     };

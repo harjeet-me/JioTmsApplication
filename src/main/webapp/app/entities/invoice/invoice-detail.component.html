@@ -70,6 +70,18 @@
                         <a [routerLink]="['/reference', invoice.reference1?.id, 'view']">{{invoice.reference1?.reference}}</a>
                     </div>
                 </dd>
+                <dt><span jhiTranslate="jioTmsApplicationApp.invoice.reference2">Reference 2</span></dt>
+                <dd>
+                    <div *ngIf="invoice.reference2">
+                        <a [routerLink]="['/reference', invoice.reference2?.id, 'view']">{{invoice.reference2?.reference}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="jioTmsApplicationApp.invoice.reference3">Reference 3</span></dt>
+                <dd>
+                    <div *ngIf="invoice.reference3">
+                        <a [routerLink]="['/reference', invoice.reference3?.id, 'view']">{{invoice.reference3?.reference}}</a>
+                    </div>
+                </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.customer">Customer</span></dt>
                 <dd>
                     <div *ngIf="invoice.customer">

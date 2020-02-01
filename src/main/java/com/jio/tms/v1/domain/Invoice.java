@@ -86,6 +86,14 @@ public class Invoice implements Serializable {
     @JoinColumn(unique = true)
     private Reference reference1;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Reference reference2;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Reference reference3;
+
     @OneToMany(mappedBy = "invoice")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<InvoiceItem> invoiceItems = new HashSet<>();
@@ -313,6 +321,32 @@ public class Invoice implements Serializable {
 
     public void setReference1(Reference reference) {
         this.reference1 = reference;
+    }
+
+    public Reference getReference2() {
+        return reference2;
+    }
+
+    public Invoice reference2(Reference reference) {
+        this.reference2 = reference;
+        return this;
+    }
+
+    public void setReference2(Reference reference) {
+        this.reference2 = reference;
+    }
+
+    public Reference getReference3() {
+        return reference3;
+    }
+
+    public Invoice reference3(Reference reference) {
+        this.reference3 = reference;
+        return this;
+    }
+
+    public void setReference3(Reference reference) {
+        this.reference3 = reference;
     }
 
     public Set<InvoiceItem> getInvoiceItems() {
