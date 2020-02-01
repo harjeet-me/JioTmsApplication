@@ -43,6 +43,9 @@
             <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceTotal">Invoice Total</span></th>
             <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceDate">Invoice Date</span></th>
             <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.invoicePaidDate">Invoice Paid Date</span></th>
+            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.refValue1">Ref Value 1</span></th>
+            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.refValue2">Ref Value 2</span></th>
+            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.refValue3">Ref Value 3</span></th>
             <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.payRefNo">Pay Ref No</span></th>
             <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceDueDate">Invoice Due Date</span></th>
             <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.invoice.status">Status</span></th>
@@ -68,6 +71,9 @@
                 <td>{{invoice.invoiceTotal}}</td>
                 <td>{{invoice.invoiceDate | date:'mediumDate'}}</td>
                 <td>{{invoice.invoicePaidDate | date:'mediumDate'}}</td>
+                <td>{{invoice.refValue1}}</td>
+                <td>{{invoice.refValue2}}</td>
+                <td>{{invoice.refValue3}}</td>
                 <td>{{invoice.payRefNo}}</td>
                 <td>{{invoice.invoiceDueDate | date:'mediumDate'}}</td>
                 <td jhiTranslate="{{'jioTmsApplicationApp.InvoiceStatus.' + invoice.status}}">{{invoice.status}}</td>

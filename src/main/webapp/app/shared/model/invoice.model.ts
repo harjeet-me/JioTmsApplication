@@ -18,6 +18,9 @@ export interface IInvoice {
   invoiceTotal?: number;
   invoiceDate?: Moment;
   invoicePaidDate?: Moment;
+  refValue1?: string;
+  refValue2?: string;
+  refValue3?: string;
   payRefNo?: string;
   invoiceDueDate?: Moment;
   status?: InvoiceStatus;
@@ -44,6 +47,9 @@ export class Invoice implements IInvoice {
     public invoiceTotal?: number,
     public invoiceDate?: Moment,
     public invoicePaidDate?: Moment,
+    public refValue1?: string,
+    public refValue2?: string,
+    public refValue3?: string,
     public payRefNo?: string,
     public invoiceDueDate?: Moment,
     public status?: InvoiceStatus,
