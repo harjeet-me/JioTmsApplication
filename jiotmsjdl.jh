@@ -314,8 +314,8 @@ relationship OneToOne {
     Trip {pickupLocation (address)}  to Location
     Trip {dropLocation (address)}  to Location
     Invoice {reference1 (reference)}  to Reference
-    Invoice {reference1 (reference)}  to Reference
-    Invoice {reference1 (reference)}  to Reference
+    Invoice {reference2 (reference)}  to Reference
+    Invoice {reference3 (reference)}  to Reference
    
 }
 // defining multiple OneToMany relationships with comments
