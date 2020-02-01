@@ -118,6 +118,27 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.ref1" for="field_ref1">Ref 1</label>
+                    <select class="form-control" id="field_ref1" name="ref1" formControlName="ref1">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="invoiceRefOption.id === editForm.get('ref1')!.value?.id ? editForm.get('ref1')!.value : invoiceRefOption" *ngFor="let invoiceRefOption of ref1s; trackBy: trackById">{{invoiceRefOption.refName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.ref2" for="field_ref2">Ref 2</label>
+                    <select class="form-control" id="field_ref2" name="ref2" formControlName="ref2">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="invoiceRefOption.id === editForm.get('ref2')!.value?.id ? editForm.get('ref2')!.value : invoiceRefOption" *ngFor="let invoiceRefOption of ref2s; trackBy: trackById">{{invoiceRefOption.refName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.ref3" for="field_ref3">Ref 3</label>
+                    <select class="form-control" id="field_ref3" name="ref3" formControlName="ref3">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="invoiceRefOption.id === editForm.get('ref3')!.value?.id ? editForm.get('ref3')!.value : invoiceRefOption" *ngFor="let invoiceRefOption of ref3s; trackBy: trackById">{{invoiceRefOption.refName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.customer" for="field_customer">Customer</label>
                     <select class="form-control" id="field_customer" name="customer" formControlName="customer">
                         <option [ngValue]="null"></option>

@@ -61,6 +61,15 @@
             <column name="remarks" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="ref1_id" type="bigint">
+                <constraints unique="true" nullable="true" uniqueConstraintName="ux_invoice_ref1_id" />
+            </column>
+            <column name="ref2_id" type="bigint">
+                <constraints unique="true" nullable="true" uniqueConstraintName="ux_invoice_ref2_id" />
+            </column>
+            <column name="ref3_id" type="bigint">
+                <constraints unique="true" nullable="true" uniqueConstraintName="ux_invoice_ref3_id" />
+            </column>
             <column name="customer_id" type="bigint">
                 <constraints nullable="true" />
             </column>

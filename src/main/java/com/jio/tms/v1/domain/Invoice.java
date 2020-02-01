@@ -82,6 +82,18 @@ public class Invoice implements Serializable {
     @Column(name = "remarks")
     private String remarks;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private InvoiceRef ref1;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private InvoiceRef ref2;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private InvoiceRef ref3;
+
     @OneToMany(mappedBy = "invoice")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<InvoiceItem> invoiceItems = new HashSet<>();
@@ -296,6 +308,45 @@ public class Invoice implements Serializable {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public InvoiceRef getRef1() {
+        return ref1;
+    }
+
+    public Invoice ref1(InvoiceRef invoiceRef) {
+        this.ref1 = invoiceRef;
+        return this;
+    }
+
+    public void setRef1(InvoiceRef invoiceRef) {
+        this.ref1 = invoiceRef;
+    }
+
+    public InvoiceRef getRef2() {
+        return ref2;
+    }
+
+    public Invoice ref2(InvoiceRef invoiceRef) {
+        this.ref2 = invoiceRef;
+        return this;
+    }
+
+    public void setRef2(InvoiceRef invoiceRef) {
+        this.ref2 = invoiceRef;
+    }
+
+    public InvoiceRef getRef3() {
+        return ref3;
+    }
+
+    public Invoice ref3(InvoiceRef invoiceRef) {
+        this.ref3 = invoiceRef;
+        return this;
+    }
+
+    public void setRef3(InvoiceRef invoiceRef) {
+        this.ref3 = invoiceRef;
     }
 
     public Set<InvoiceItem> getInvoiceItems() {
