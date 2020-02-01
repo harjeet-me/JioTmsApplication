@@ -96,7 +96,12 @@ entity Invoice {
      invoicePdf Blob ,
      remarks String
 	
-}
+    }
+
+entity InvoiceRef {
+     refName String    
+	}
+
 
 entity InvoiceItem {
      itemName String,
@@ -305,7 +310,10 @@ relationship OneToOne {
     Accounts {customer (company)} to  Customer{ accounts } 
     Trip {pickupLocation (address)}  to Location
     Trip {dropLocation (address)}  to Location
-    
+    Invoice {ref1 (refName)}  to InvoiceRef
+    Invoice {ref2 (refName)}  to InvoiceRef
+    Invoice {ref3 (refName)}  to InvoiceRef
+   
 }
 // defining multiple OneToMany relationships with comments
 relationship OneToMany {
