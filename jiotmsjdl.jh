@@ -321,6 +321,18 @@ relationship OneToOne {
     Invoice {reference3 (reference)}  to Reference
    
 }
+entity Email {
+userto String,
+usercc String,
+userbcc String,
+message String
+
+}
+
+entity Files {
+content Blob
+
+}
 // defining multiple OneToMany relationships with comments
 relationship OneToMany {
    
@@ -334,6 +346,7 @@ relationship OneToMany {
     Invoice   to  InvoiceItem { invoice  }
     Customer  to TransactionsRecord {customer (company)}
     Accounts  to TransactionsRecord {account}
+    Email  to Files 
    
     
 }
