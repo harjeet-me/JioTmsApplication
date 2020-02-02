@@ -1,0 +1,39 @@
+{
+    "name": "Email",
+    "fields": [
+        {
+            "fieldName": "userto",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "usercc",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userbcc",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "message",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "files",
+            "otherEntityRelationshipName": "email",
+            "relationshipName": "files"
+        }
+    ],
+    "changelogDate": "20200202070556",
+    "entityTableName": "email",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

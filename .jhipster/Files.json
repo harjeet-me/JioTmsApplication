@@ -1,0 +1,29 @@
+{
+    "name": "Files",
+    "fields": [
+        {
+            "fieldName": "content",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "email",
+            "otherEntityRelationshipName": "files",
+            "relationshipName": "email",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200202070557",
+    "entityTableName": "files",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}
