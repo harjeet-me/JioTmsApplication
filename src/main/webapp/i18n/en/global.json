@@ -23,6 +23,8 @@
         "productItem": "Product Item",
         "invoiceRef": "Invoice Ref",
         "reference": "Reference",
+        "email": "Email",
+        "files": "Files",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

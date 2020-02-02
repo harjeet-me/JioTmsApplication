@@ -68,6 +68,14 @@ import { RouterModule } from '@angular/router';
       {
         path: 'reference',
         loadChildren: () => import('./reference/reference.module').then(m => m.JioTmsApplicationReferenceModule)
+      },
+      {
+        path: 'email',
+        loadChildren: () => import('./email/email.module').then(m => m.JioTmsApplicationEmailModule)
+      },
+      {
+        path: 'files',
+        loadChildren: () => import('./files/files.module').then(m => m.JioTmsApplicationFilesModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])
