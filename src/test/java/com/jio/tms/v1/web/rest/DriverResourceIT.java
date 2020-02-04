@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.Driver;
 import com.jio.tms.v1.repository.DriverRepository;
 import com.jio.tms.v1.repository.search.DriverSearchRepository;
 import com.jio.tms.v1.service.DriverService;
+import com.jio.tms.v1.service.dto.DriverDTO;
+import com.jio.tms.v1.service.mapper.DriverMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -92,6 +94,9 @@ public class DriverResourceIT {
 
     @Autowired
     private DriverRepository driverRepository;
+
+    @Autowired
+    private DriverMapper driverMapper;
 
     @Autowired
     private DriverService driverService;
@@ -201,9 +206,10 @@ public class DriverResourceIT {
         int databaseSizeBeforeCreate = driverRepository.findAll().size();
 
         // Create the Driver
+        DriverDTO driverDTO = driverMapper.toDto(driver);
         restDriverMockMvc.perform(post("/api/drivers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(driver)))
+            .content(TestUtil.convertObjectToJsonBytes(driverDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Driver in the database
@@ -239,11 +245,12 @@ public class DriverResourceIT {
 
         // Create the Driver with an existing ID
         driver.setId(1L);
+        DriverDTO driverDTO = driverMapper.toDto(driver);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restDriverMockMvc.perform(post("/api/drivers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(driver)))
+            .content(TestUtil.convertObjectToJsonBytes(driverDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Driver in the database
@@ -327,9 +334,7 @@ public class DriverResourceIT {
     @Transactional
     public void updateDriver() throws Exception {
         // Initialize the database
-        driverService.save(driver);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockDriverSearchRepository);
+        driverRepository.saveAndFlush(driver);
 
         int databaseSizeBeforeUpdate = driverRepository.findAll().size();
 
@@ -355,10 +360,11 @@ public class DriverResourceIT {
             .contractDoc(UPDATED_CONTRACT_DOC)
             .contractDocContentType(UPDATED_CONTRACT_DOC_CONTENT_TYPE)
             .status(UPDATED_STATUS);
+        DriverDTO driverDTO = driverMapper.toDto(updatedDriver);
 
         restDriverMockMvc.perform(put("/api/drivers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedDriver)))
+            .content(TestUtil.convertObjectToJsonBytes(driverDTO)))
             .andExpect(status().isOk());
 
         // Validate the Driver in the database
@@ -393,11 +399,12 @@ public class DriverResourceIT {
         int databaseSizeBeforeUpdate = driverRepository.findAll().size();
 
         // Create the Driver
+        DriverDTO driverDTO = driverMapper.toDto(driver);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restDriverMockMvc.perform(put("/api/drivers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(driver)))
+            .content(TestUtil.convertObjectToJsonBytes(driverDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Driver in the database
@@ -412,7 +419,7 @@ public class DriverResourceIT {
     @Transactional
     public void deleteDriver() throws Exception {
         // Initialize the database
-        driverService.save(driver);
+        driverRepository.saveAndFlush(driver);
 
         int databaseSizeBeforeDelete = driverRepository.findAll().size();
 
@@ -433,7 +440,7 @@ public class DriverResourceIT {
     @Transactional
     public void searchDriver() throws Exception {
         // Initialize the database
-        driverService.save(driver);
+        driverRepository.saveAndFlush(driver);
         when(mockDriverSearchRepository.search(queryStringQuery("id:" + driver.getId())))
             .thenReturn(Collections.singletonList(driver));
         // Search the driver

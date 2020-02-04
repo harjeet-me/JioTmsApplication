@@ -4,6 +4,8 @@ import com.jio.tms.v1.service.TripService;
 import com.jio.tms.v1.domain.Trip;
 import com.jio.tms.v1.repository.TripRepository;
 import com.jio.tms.v1.repository.search.TripSearchRepository;
+import com.jio.tms.v1.service.dto.TripDTO;
+import com.jio.tms.v1.service.mapper.TripMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,24 +29,29 @@ public class TripServiceImpl implements TripService {
 
     private final TripRepository tripRepository;
 
+    private final TripMapper tripMapper;
+
     private final TripSearchRepository tripSearchRepository;
 
-    public TripServiceImpl(TripRepository tripRepository, TripSearchRepository tripSearchRepository) {
+    public TripServiceImpl(TripRepository tripRepository, TripMapper tripMapper, TripSearchRepository tripSearchRepository) {
         this.tripRepository = tripRepository;
+        this.tripMapper = tripMapper;
         this.tripSearchRepository = tripSearchRepository;
     }
 
     /**
      * Save a trip.
      *
-     * @param trip the entity to save.
+     * @param tripDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public Trip save(Trip trip) {
-        log.debug("Request to save Trip : {}", trip);
-        Trip result = tripRepository.save(trip);
-        tripSearchRepository.save(result);
+    public TripDTO save(TripDTO tripDTO) {
+        log.debug("Request to save Trip : {}", tripDTO);
+        Trip trip = tripMapper.toEntity(tripDTO);
+        trip = tripRepository.save(trip);
+        TripDTO result = tripMapper.toDto(trip);
+        tripSearchRepository.save(trip);
         return result;
     }
 
@@ -56,9 +63,10 @@ public class TripServiceImpl implements TripService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<Trip> findAll(Pageable pageable) {
+    public Page<TripDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Trips");
-        return tripRepository.findAll(pageable);
+        return tripRepository.findAll(pageable)
+            .map(tripMapper::toDto);
     }
 
 
@@ -70,9 +78,10 @@ public class TripServiceImpl implements TripService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Trip> findOne(Long id) {
+    public Optional<TripDTO> findOne(Long id) {
         log.debug("Request to get Trip : {}", id);
-        return tripRepository.findById(id);
+        return tripRepository.findById(id)
+            .map(tripMapper::toDto);
     }
 
     /**
@@ -96,7 +105,9 @@ public class TripServiceImpl implements TripService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<Trip> search(String query, Pageable pageable) {
+    public Page<TripDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Trips for query {}", query);
-        return tripSearchRepository.search(queryStringQuery(query), pageable);    }
+        return tripSearchRepository.search(queryStringQuery(query), pageable)
+            .map(tripMapper::toDto);
+    }
 }

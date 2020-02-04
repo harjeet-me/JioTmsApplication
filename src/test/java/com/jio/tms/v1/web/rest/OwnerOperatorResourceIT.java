@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.OwnerOperator;
 import com.jio.tms.v1.repository.OwnerOperatorRepository;
 import com.jio.tms.v1.repository.search.OwnerOperatorSearchRepository;
 import com.jio.tms.v1.service.OwnerOperatorService;
+import com.jio.tms.v1.service.dto.OwnerOperatorDTO;
+import com.jio.tms.v1.service.mapper.OwnerOperatorMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -98,6 +100,9 @@ public class OwnerOperatorResourceIT {
 
     @Autowired
     private OwnerOperatorRepository ownerOperatorRepository;
+
+    @Autowired
+    private OwnerOperatorMapper ownerOperatorMapper;
 
     @Autowired
     private OwnerOperatorService ownerOperatorService;
@@ -209,9 +214,10 @@ public class OwnerOperatorResourceIT {
         int databaseSizeBeforeCreate = ownerOperatorRepository.findAll().size();
 
         // Create the OwnerOperator
+        OwnerOperatorDTO ownerOperatorDTO = ownerOperatorMapper.toDto(ownerOperator);
         restOwnerOperatorMockMvc.perform(post("/api/owner-operators")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ownerOperator)))
+            .content(TestUtil.convertObjectToJsonBytes(ownerOperatorDTO)))
             .andExpect(status().isCreated());
 
         // Validate the OwnerOperator in the database
@@ -248,11 +254,12 @@ public class OwnerOperatorResourceIT {
 
         // Create the OwnerOperator with an existing ID
         ownerOperator.setId(1L);
+        OwnerOperatorDTO ownerOperatorDTO = ownerOperatorMapper.toDto(ownerOperator);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOwnerOperatorMockMvc.perform(post("/api/owner-operators")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ownerOperator)))
+            .content(TestUtil.convertObjectToJsonBytes(ownerOperatorDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the OwnerOperator in the database
@@ -338,9 +345,7 @@ public class OwnerOperatorResourceIT {
     @Transactional
     public void updateOwnerOperator() throws Exception {
         // Initialize the database
-        ownerOperatorService.save(ownerOperator);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockOwnerOperatorSearchRepository);
+        ownerOperatorRepository.saveAndFlush(ownerOperator);
 
         int databaseSizeBeforeUpdate = ownerOperatorRepository.findAll().size();
 
@@ -367,10 +372,11 @@ public class OwnerOperatorResourceIT {
             .preffredCurrency(UPDATED_PREFFRED_CURRENCY)
             .contractDoc(UPDATED_CONTRACT_DOC)
             .contractDocContentType(UPDATED_CONTRACT_DOC_CONTENT_TYPE);
+        OwnerOperatorDTO ownerOperatorDTO = ownerOperatorMapper.toDto(updatedOwnerOperator);
 
         restOwnerOperatorMockMvc.perform(put("/api/owner-operators")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedOwnerOperator)))
+            .content(TestUtil.convertObjectToJsonBytes(ownerOperatorDTO)))
             .andExpect(status().isOk());
 
         // Validate the OwnerOperator in the database
@@ -406,11 +412,12 @@ public class OwnerOperatorResourceIT {
         int databaseSizeBeforeUpdate = ownerOperatorRepository.findAll().size();
 
         // Create the OwnerOperator
+        OwnerOperatorDTO ownerOperatorDTO = ownerOperatorMapper.toDto(ownerOperator);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restOwnerOperatorMockMvc.perform(put("/api/owner-operators")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ownerOperator)))
+            .content(TestUtil.convertObjectToJsonBytes(ownerOperatorDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the OwnerOperator in the database
@@ -425,7 +432,7 @@ public class OwnerOperatorResourceIT {
     @Transactional
     public void deleteOwnerOperator() throws Exception {
         // Initialize the database
-        ownerOperatorService.save(ownerOperator);
+        ownerOperatorRepository.saveAndFlush(ownerOperator);
 
         int databaseSizeBeforeDelete = ownerOperatorRepository.findAll().size();
 
@@ -446,7 +453,7 @@ public class OwnerOperatorResourceIT {
     @Transactional
     public void searchOwnerOperator() throws Exception {
         // Initialize the database
-        ownerOperatorService.save(ownerOperator);
+        ownerOperatorRepository.saveAndFlush(ownerOperator);
         when(mockOwnerOperatorSearchRepository.search(queryStringQuery("id:" + ownerOperator.getId())))
             .thenReturn(Collections.singletonList(ownerOperator));
         // Search the ownerOperator

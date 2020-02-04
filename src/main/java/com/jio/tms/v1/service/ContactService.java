@@ -1,29 +1,29 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.Contact;
+import com.jio.tms.v1.service.dto.ContactDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link Contact}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.Contact}.
  */
 public interface ContactService {
 
     /**
      * Save a contact.
      *
-     * @param contact the entity to save.
+     * @param contactDTO the entity to save.
      * @return the persisted entity.
      */
-    Contact save(Contact contact);
+    ContactDTO save(ContactDTO contactDTO);
 
     /**
      * Get all the contacts.
      *
      * @return the list of entities.
      */
-    List<Contact> findAll();
+    List<ContactDTO> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface ContactService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Contact> findOne(Long id);
+    Optional<ContactDTO> findOne(Long id);
 
     /**
      * Delete the "id" contact.
@@ -48,5 +48,5 @@ public interface ContactService {
      * 
      * @return the list of entities.
      */
-    List<Contact> search(String query);
+    List<ContactDTO> search(String query);
 }

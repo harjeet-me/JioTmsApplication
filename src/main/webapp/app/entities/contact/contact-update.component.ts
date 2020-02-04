@@ -29,7 +29,7 @@ export class ContactUpdateComponent implements OnInit {
     phoneNumber: [],
     remarks: [],
     preferredTime: [],
-    customer: []
+    customerId: []
   });
 
   constructor(
@@ -64,7 +64,7 @@ export class ContactUpdateComponent implements OnInit {
       phoneNumber: contact.phoneNumber,
       remarks: contact.remarks,
       preferredTime: contact.preferredTime,
-      customer: contact.customer
+      customerId: contact.customerId
     });
   }
 
@@ -93,7 +93,7 @@ export class ContactUpdateComponent implements OnInit {
       phoneNumber: this.editForm.get(['phoneNumber'])!.value,
       remarks: this.editForm.get(['remarks'])!.value,
       preferredTime: this.editForm.get(['preferredTime'])!.value,
-      customer: this.editForm.get(['customer'])!.value
+      customerId: this.editForm.get(['customerId'])!.value
     };
   }
 

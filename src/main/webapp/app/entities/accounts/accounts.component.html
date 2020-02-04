@@ -50,8 +50,8 @@
                 <td>{{accounts.over60}}</td>
                 <td>{{accounts.over90}}</td>
                 <td>
-                    <div *ngIf="accounts.customer">
-                        <a [routerLink]="['/customer', accounts.customer?.id, 'view' ]" >{{accounts.customer?.company}}</a>
+                    <div *ngIf="accounts.customerId">
+                        <a [routerLink]="['/customer', accounts.customerId , 'view' ]" >{{accounts.customerCompany}}</a>
                     </div>
                 </td>
                 <td class="text-right">

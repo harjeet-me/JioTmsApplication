@@ -28,7 +28,7 @@ export class InvoiceItemUpdateComponent implements OnInit {
     price: [],
     discount: [],
     total: [],
-    invoice: []
+    invoiceId: []
   });
 
   constructor(
@@ -62,7 +62,7 @@ export class InvoiceItemUpdateComponent implements OnInit {
       price: invoiceItem.price,
       discount: invoiceItem.discount,
       total: invoiceItem.total,
-      invoice: invoiceItem.invoice
+      invoiceId: invoiceItem.invoiceId
     });
   }
 
@@ -90,7 +90,7 @@ export class InvoiceItemUpdateComponent implements OnInit {
       price: this.editForm.get(['price'])!.value,
       discount: this.editForm.get(['discount'])!.value,
       total: this.editForm.get(['total'])!.value,
-      invoice: this.editForm.get(['invoice'])!.value
+      invoiceId: this.editForm.get(['invoiceId'])!.value
     };
   }
 

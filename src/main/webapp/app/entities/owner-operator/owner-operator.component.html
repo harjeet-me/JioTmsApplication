@@ -79,8 +79,8 @@
                     <span *ngIf="ownerOperator.contractDoc">{{ownerOperator.contractDocContentType}}, {{byteSize(ownerOperator.contractDoc)}}</span>
                 </td>
                 <td>
-                    <div *ngIf="ownerOperator.operInsurance">
-                        <a [routerLink]="['/insurance', ownerOperator.operInsurance?.id, 'view' ]" >{{ownerOperator.operInsurance?.id}}</a>
+                    <div *ngIf="ownerOperator.operInsuranceId">
+                        <a [routerLink]="['/insurance', ownerOperator.operInsuranceId , 'view' ]" >{{ownerOperator.operInsuranceId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

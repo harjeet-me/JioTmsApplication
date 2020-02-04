@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(EmailService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Email(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+      elemDefault = new Email(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', false, false, 'image/png', 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -59,7 +59,11 @@ describe('Service Tests', () => {
             userto: 'BBBBBB',
             usercc: 'BBBBBB',
             userbcc: 'BBBBBB',
-            message: 'BBBBBB'
+            subject: 'BBBBBB',
+            message: 'BBBBBB',
+            multipart: true,
+            htmlBody: true,
+            attachment: 'BBBBBB'
           },
           elemDefault
         );
@@ -80,7 +84,11 @@ describe('Service Tests', () => {
             userto: 'BBBBBB',
             usercc: 'BBBBBB',
             userbcc: 'BBBBBB',
-            message: 'BBBBBB'
+            subject: 'BBBBBB',
+            message: 'BBBBBB',
+            multipart: true,
+            htmlBody: true,
+            attachment: 'BBBBBB'
           },
           elemDefault
         );

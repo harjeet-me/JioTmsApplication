@@ -1,8 +1,8 @@
 package com.jio.tms.v1.web.rest;
 
-import com.jio.tms.v1.domain.ProductItem;
 import com.jio.tms.v1.service.ProductItemService;
 import com.jio.tms.v1.web.rest.errors.BadRequestAlertException;
+import com.jio.tms.v1.service.dto.ProductItemDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -44,17 +44,17 @@ public class ProductItemResource {
     /**
      * {@code POST  /product-items} : Create a new productItem.
      *
-     * @param productItem the productItem to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productItem, or with status {@code 400 (Bad Request)} if the productItem has already an ID.
+     * @param productItemDTO the productItemDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productItemDTO, or with status {@code 400 (Bad Request)} if the productItem has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/product-items")
-    public ResponseEntity<ProductItem> createProductItem(@RequestBody ProductItem productItem) throws URISyntaxException {
-        log.debug("REST request to save ProductItem : {}", productItem);
-        if (productItem.getId() != null) {
+    public ResponseEntity<ProductItemDTO> createProductItem(@RequestBody ProductItemDTO productItemDTO) throws URISyntaxException {
+        log.debug("REST request to save ProductItem : {}", productItemDTO);
+        if (productItemDTO.getId() != null) {
             throw new BadRequestAlertException("A new productItem cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ProductItem result = productItemService.save(productItem);
+        ProductItemDTO result = productItemService.save(productItemDTO);
         return ResponseEntity.created(new URI("/api/product-items/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -63,21 +63,21 @@ public class ProductItemResource {
     /**
      * {@code PUT  /product-items} : Updates an existing productItem.
      *
-     * @param productItem the productItem to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated productItem,
-     * or with status {@code 400 (Bad Request)} if the productItem is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the productItem couldn't be updated.
+     * @param productItemDTO the productItemDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated productItemDTO,
+     * or with status {@code 400 (Bad Request)} if the productItemDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the productItemDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/product-items")
-    public ResponseEntity<ProductItem> updateProductItem(@RequestBody ProductItem productItem) throws URISyntaxException {
-        log.debug("REST request to update ProductItem : {}", productItem);
-        if (productItem.getId() == null) {
+    public ResponseEntity<ProductItemDTO> updateProductItem(@RequestBody ProductItemDTO productItemDTO) throws URISyntaxException {
+        log.debug("REST request to update ProductItem : {}", productItemDTO);
+        if (productItemDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        ProductItem result = productItemService.save(productItem);
+        ProductItemDTO result = productItemService.save(productItemDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, productItem.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, productItemDTO.getId().toString()))
             .body(result);
     }
 
@@ -88,7 +88,7 @@ public class ProductItemResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of productItems in body.
      */
     @GetMapping("/product-items")
-    public List<ProductItem> getAllProductItems() {
+    public List<ProductItemDTO> getAllProductItems() {
         log.debug("REST request to get all ProductItems");
         return productItemService.findAll();
     }
@@ -96,20 +96,20 @@ public class ProductItemResource {
     /**
      * {@code GET  /product-items/:id} : get the "id" productItem.
      *
-     * @param id the id of the productItem to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the productItem, or with status {@code 404 (Not Found)}.
+     * @param id the id of the productItemDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the productItemDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/product-items/{id}")
-    public ResponseEntity<ProductItem> getProductItem(@PathVariable Long id) {
+    public ResponseEntity<ProductItemDTO> getProductItem(@PathVariable Long id) {
         log.debug("REST request to get ProductItem : {}", id);
-        Optional<ProductItem> productItem = productItemService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(productItem);
+        Optional<ProductItemDTO> productItemDTO = productItemService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(productItemDTO);
     }
 
     /**
      * {@code DELETE  /product-items/:id} : delete the "id" productItem.
      *
-     * @param id the id of the productItem to delete.
+     * @param id the id of the productItemDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/product-items/{id}")
@@ -127,7 +127,7 @@ public class ProductItemResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/product-items")
-    public List<ProductItem> searchProductItems(@RequestParam String query) {
+    public List<ProductItemDTO> searchProductItems(@RequestParam String query) {
         log.debug("REST request to search ProductItems for query {}", query);
         return productItemService.search(query);
     }

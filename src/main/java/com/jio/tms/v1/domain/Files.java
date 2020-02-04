@@ -1,5 +1,4 @@
 package com.jio.tms.v1.domain;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -30,10 +29,6 @@ public class Files implements Serializable {
 
     @Column(name = "content_content_type")
     private String contentContentType;
-
-    @ManyToOne
-    @JsonIgnoreProperties("files")
-    private Email email;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -68,19 +63,6 @@ public class Files implements Serializable {
 
     public void setContentContentType(String contentContentType) {
         this.contentContentType = contentContentType;
-    }
-
-    public Email getEmail() {
-        return email;
-    }
-
-    public Files email(Email email) {
-        this.email = email;
-        return this;
-    }
-
-    public void setEmail(Email email) {
-        this.email = email;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

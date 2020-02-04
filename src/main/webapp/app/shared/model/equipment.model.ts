@@ -1,5 +1,4 @@
 import { Moment } from 'moment';
-import { IInsurance } from 'app/shared/model/insurance.model';
 import { ITrip } from 'app/shared/model/trip.model';
 import { EquipmentEnum } from 'app/shared/model/enumerations/equipment-enum.model';
 import { ToggleStatus } from 'app/shared/model/enumerations/toggle-status.model';
@@ -19,7 +18,7 @@ export interface IEquipment {
   licensePlateNumber?: string;
   licensePlateExpiration?: Moment;
   inspectionStickerExpiration?: Moment;
-  insurance?: IInsurance;
+  insuranceId?: number;
   trips?: ITrip[];
 }
 
@@ -39,7 +38,7 @@ export class Equipment implements IEquipment {
     public licensePlateNumber?: string,
     public licensePlateExpiration?: Moment,
     public inspectionStickerExpiration?: Moment,
-    public insurance?: IInsurance,
+    public insuranceId?: number,
     public trips?: ITrip[]
   ) {}
 }

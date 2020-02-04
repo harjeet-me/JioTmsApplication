@@ -60,11 +60,11 @@ export class InvoiceUpdateComponent implements OnInit {
     invoicePdf: [],
     invoicePdfContentType: [],
     remarks: [],
-    reference1: [],
-    reference2: [],
-    reference3: [],
-    customer: [],
-    trip: []
+    reference1Id: [],
+    reference2Id: [],
+    reference3Id: [],
+    customerId: [],
+    tripId: []
   });
 
   constructor(
@@ -90,11 +90,11 @@ export class InvoiceUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: IReference[]) => {
-          if (!invoice.reference1 || !invoice.reference1.id) {
+          if (!invoice.reference1Id) {
             this.reference1s = resBody;
           } else {
             this.referenceService
-              .find(invoice.reference1.id)
+              .find(invoice.reference1Id)
               .pipe(
                 map((subRes: HttpResponse<IReference>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -114,11 +114,11 @@ export class InvoiceUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: IReference[]) => {
-          if (!invoice.reference2 || !invoice.reference2.id) {
+          if (!invoice.reference2Id) {
             this.reference2s = resBody;
           } else {
             this.referenceService
-              .find(invoice.reference2.id)
+              .find(invoice.reference2Id)
               .pipe(
                 map((subRes: HttpResponse<IReference>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -138,11 +138,11 @@ export class InvoiceUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: IReference[]) => {
-          if (!invoice.reference3 || !invoice.reference3.id) {
+          if (!invoice.reference3Id) {
             this.reference3s = resBody;
           } else {
             this.referenceService
-              .find(invoice.reference3.id)
+              .find(invoice.reference3Id)
               .pipe(
                 map((subRes: HttpResponse<IReference>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -195,11 +195,11 @@ export class InvoiceUpdateComponent implements OnInit {
       invoicePdf: invoice.invoicePdf,
       invoicePdfContentType: invoice.invoicePdfContentType,
       remarks: invoice.remarks,
-      reference1: invoice.reference1,
-      reference2: invoice.reference2,
-      reference3: invoice.reference3,
-      customer: invoice.customer,
-      trip: invoice.trip
+      reference1Id: invoice.reference1Id,
+      reference2Id: invoice.reference2Id,
+      reference3Id: invoice.reference3Id,
+      customerId: invoice.customerId,
+      tripId: invoice.tripId
     });
   }
 
@@ -255,11 +255,11 @@ export class InvoiceUpdateComponent implements OnInit {
       invoicePdfContentType: this.editForm.get(['invoicePdfContentType'])!.value,
       invoicePdf: this.editForm.get(['invoicePdf'])!.value,
       remarks: this.editForm.get(['remarks'])!.value,
-      reference1: this.editForm.get(['reference1'])!.value,
-      reference2: this.editForm.get(['reference2'])!.value,
-      reference3: this.editForm.get(['reference3'])!.value,
-      customer: this.editForm.get(['customer'])!.value,
-      trip: this.editForm.get(['trip'])!.value
+      reference1Id: this.editForm.get(['reference1Id'])!.value,
+      reference2Id: this.editForm.get(['reference2Id'])!.value,
+      reference3Id: this.editForm.get(['reference3Id'])!.value,
+      customerId: this.editForm.get(['customerId'])!.value,
+      tripId: this.editForm.get(['tripId'])!.value
     };
   }
 

@@ -134,7 +134,7 @@
     ],
     "changelogDate": "20200106223841",
     "entityTableName": "trip",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

@@ -1,8 +1,8 @@
 package com.jio.tms.v1.web.rest;
 
-import com.jio.tms.v1.domain.Driver;
 import com.jio.tms.v1.service.DriverService;
 import com.jio.tms.v1.web.rest.errors.BadRequestAlertException;
+import com.jio.tms.v1.service.dto.DriverDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -44,17 +44,17 @@ public class DriverResource {
     /**
      * {@code POST  /drivers} : Create a new driver.
      *
-     * @param driver the driver to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new driver, or with status {@code 400 (Bad Request)} if the driver has already an ID.
+     * @param driverDTO the driverDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new driverDTO, or with status {@code 400 (Bad Request)} if the driver has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/drivers")
-    public ResponseEntity<Driver> createDriver(@RequestBody Driver driver) throws URISyntaxException {
-        log.debug("REST request to save Driver : {}", driver);
-        if (driver.getId() != null) {
+    public ResponseEntity<DriverDTO> createDriver(@RequestBody DriverDTO driverDTO) throws URISyntaxException {
+        log.debug("REST request to save Driver : {}", driverDTO);
+        if (driverDTO.getId() != null) {
             throw new BadRequestAlertException("A new driver cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Driver result = driverService.save(driver);
+        DriverDTO result = driverService.save(driverDTO);
         return ResponseEntity.created(new URI("/api/drivers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -63,21 +63,21 @@ public class DriverResource {
     /**
      * {@code PUT  /drivers} : Updates an existing driver.
      *
-     * @param driver the driver to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated driver,
-     * or with status {@code 400 (Bad Request)} if the driver is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the driver couldn't be updated.
+     * @param driverDTO the driverDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated driverDTO,
+     * or with status {@code 400 (Bad Request)} if the driverDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the driverDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/drivers")
-    public ResponseEntity<Driver> updateDriver(@RequestBody Driver driver) throws URISyntaxException {
-        log.debug("REST request to update Driver : {}", driver);
-        if (driver.getId() == null) {
+    public ResponseEntity<DriverDTO> updateDriver(@RequestBody DriverDTO driverDTO) throws URISyntaxException {
+        log.debug("REST request to update Driver : {}", driverDTO);
+        if (driverDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Driver result = driverService.save(driver);
+        DriverDTO result = driverService.save(driverDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, driver.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, driverDTO.getId().toString()))
             .body(result);
     }
 
@@ -88,7 +88,7 @@ public class DriverResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of drivers in body.
      */
     @GetMapping("/drivers")
-    public List<Driver> getAllDrivers() {
+    public List<DriverDTO> getAllDrivers() {
         log.debug("REST request to get all Drivers");
         return driverService.findAll();
     }
@@ -96,20 +96,20 @@ public class DriverResource {
     /**
      * {@code GET  /drivers/:id} : get the "id" driver.
      *
-     * @param id the id of the driver to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the driver, or with status {@code 404 (Not Found)}.
+     * @param id the id of the driverDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the driverDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/drivers/{id}")
-    public ResponseEntity<Driver> getDriver(@PathVariable Long id) {
+    public ResponseEntity<DriverDTO> getDriver(@PathVariable Long id) {
         log.debug("REST request to get Driver : {}", id);
-        Optional<Driver> driver = driverService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(driver);
+        Optional<DriverDTO> driverDTO = driverService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(driverDTO);
     }
 
     /**
      * {@code DELETE  /drivers/:id} : delete the "id" driver.
      *
-     * @param id the id of the driver to delete.
+     * @param id the id of the driverDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/drivers/{id}")
@@ -127,7 +127,7 @@ public class DriverResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/drivers")
-    public List<Driver> searchDrivers(@RequestParam String query) {
+    public List<DriverDTO> searchDrivers(@RequestParam String query) {
         log.debug("REST request to search Drivers for query {}", query);
         return driverService.search(query);
     }

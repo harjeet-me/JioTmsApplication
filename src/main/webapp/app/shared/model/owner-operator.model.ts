@@ -1,4 +1,3 @@
-import { IInsurance } from 'app/shared/model/insurance.model';
 import { ITrip } from 'app/shared/model/trip.model';
 import { Designation } from 'app/shared/model/enumerations/designation.model';
 import { CountryEnum } from 'app/shared/model/enumerations/country-enum.model';
@@ -25,7 +24,7 @@ export interface IOwnerOperator {
   preffredCurrency?: CURRENCY;
   contractDocContentType?: string;
   contractDoc?: any;
-  operInsurance?: IInsurance;
+  operInsuranceId?: number;
   loadOrders?: ITrip[];
 }
 
@@ -50,7 +49,7 @@ export class OwnerOperator implements IOwnerOperator {
     public preffredCurrency?: CURRENCY,
     public contractDocContentType?: string,
     public contractDoc?: any,
-    public operInsurance?: IInsurance,
+    public operInsuranceId?: number,
     public loadOrders?: ITrip[]
   ) {}
 }

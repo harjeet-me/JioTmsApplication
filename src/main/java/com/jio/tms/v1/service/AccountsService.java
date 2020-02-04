@@ -1,29 +1,29 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.Accounts;
+import com.jio.tms.v1.service.dto.AccountsDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link Accounts}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.Accounts}.
  */
 public interface AccountsService {
 
     /**
      * Save a accounts.
      *
-     * @param accounts the entity to save.
+     * @param accountsDTO the entity to save.
      * @return the persisted entity.
      */
-    Accounts save(Accounts accounts);
+    AccountsDTO save(AccountsDTO accountsDTO);
 
     /**
      * Get all the accounts.
      *
      * @return the list of entities.
      */
-    List<Accounts> findAll();
+    List<AccountsDTO> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface AccountsService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Accounts> findOne(Long id);
+    Optional<AccountsDTO> findOne(Long id);
 
     /**
      * Delete the "id" accounts.
@@ -48,5 +48,5 @@ public interface AccountsService {
      * 
      * @return the list of entities.
      */
-    List<Accounts> search(String query);
+    List<AccountsDTO> search(String query);
 }

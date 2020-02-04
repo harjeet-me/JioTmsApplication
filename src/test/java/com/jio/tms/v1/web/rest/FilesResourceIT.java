@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.Files;
 import com.jio.tms.v1.repository.FilesRepository;
 import com.jio.tms.v1.repository.search.FilesSearchRepository;
 import com.jio.tms.v1.service.FilesService;
+import com.jio.tms.v1.service.dto.FilesDTO;
+import com.jio.tms.v1.service.mapper.FilesMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -46,6 +48,9 @@ public class FilesResourceIT {
 
     @Autowired
     private FilesRepository filesRepository;
+
+    @Autowired
+    private FilesMapper filesMapper;
 
     @Autowired
     private FilesService filesService;
@@ -125,9 +130,10 @@ public class FilesResourceIT {
         int databaseSizeBeforeCreate = filesRepository.findAll().size();
 
         // Create the Files
+        FilesDTO filesDTO = filesMapper.toDto(files);
         restFilesMockMvc.perform(post("/api/files")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(files)))
+            .content(TestUtil.convertObjectToJsonBytes(filesDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Files in the database
@@ -148,11 +154,12 @@ public class FilesResourceIT {
 
         // Create the Files with an existing ID
         files.setId(1L);
+        FilesDTO filesDTO = filesMapper.toDto(files);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restFilesMockMvc.perform(post("/api/files")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(files)))
+            .content(TestUtil.convertObjectToJsonBytes(filesDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Files in the database
@@ -206,9 +213,7 @@ public class FilesResourceIT {
     @Transactional
     public void updateFiles() throws Exception {
         // Initialize the database
-        filesService.save(files);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockFilesSearchRepository);
+        filesRepository.saveAndFlush(files);
 
         int databaseSizeBeforeUpdate = filesRepository.findAll().size();
 
@@ -219,10 +224,11 @@ public class FilesResourceIT {
         updatedFiles
             .content(UPDATED_CONTENT)
             .contentContentType(UPDATED_CONTENT_CONTENT_TYPE);
+        FilesDTO filesDTO = filesMapper.toDto(updatedFiles);
 
         restFilesMockMvc.perform(put("/api/files")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedFiles)))
+            .content(TestUtil.convertObjectToJsonBytes(filesDTO)))
             .andExpect(status().isOk());
 
         // Validate the Files in the database
@@ -242,11 +248,12 @@ public class FilesResourceIT {
         int databaseSizeBeforeUpdate = filesRepository.findAll().size();
 
         // Create the Files
+        FilesDTO filesDTO = filesMapper.toDto(files);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restFilesMockMvc.perform(put("/api/files")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(files)))
+            .content(TestUtil.convertObjectToJsonBytes(filesDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Files in the database
@@ -261,7 +268,7 @@ public class FilesResourceIT {
     @Transactional
     public void deleteFiles() throws Exception {
         // Initialize the database
-        filesService.save(files);
+        filesRepository.saveAndFlush(files);
 
         int databaseSizeBeforeDelete = filesRepository.findAll().size();
 
@@ -282,7 +289,7 @@ public class FilesResourceIT {
     @Transactional
     public void searchFiles() throws Exception {
         // Initialize the database
-        filesService.save(files);
+        filesRepository.saveAndFlush(files);
         when(mockFilesSearchRepository.search(queryStringQuery("id:" + files.getId())))
             .thenReturn(Collections.singletonList(files));
         // Search the files

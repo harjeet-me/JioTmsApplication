@@ -1,35 +1,35 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.Insurance;
+import com.jio.tms.v1.service.dto.InsuranceDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link Insurance}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.Insurance}.
  */
 public interface InsuranceService {
 
     /**
      * Save a insurance.
      *
-     * @param insurance the entity to save.
+     * @param insuranceDTO the entity to save.
      * @return the persisted entity.
      */
-    Insurance save(Insurance insurance);
+    InsuranceDTO save(InsuranceDTO insuranceDTO);
 
     /**
      * Get all the insurances.
      *
      * @return the list of entities.
      */
-    List<Insurance> findAll();
+    List<InsuranceDTO> findAll();
     /**
      * Get all the InsuranceDTO where OwnerOperator is {@code null}.
      *
      * @return the list of entities.
      */
-    List<Insurance> findAllWhereOwnerOperatorIsNull();
+    List<InsuranceDTO> findAllWhereOwnerOperatorIsNull();
 
 
     /**
@@ -38,7 +38,7 @@ public interface InsuranceService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Insurance> findOne(Long id);
+    Optional<InsuranceDTO> findOne(Long id);
 
     /**
      * Delete the "id" insurance.
@@ -54,5 +54,5 @@ public interface InsuranceService {
      * 
      * @return the list of entities.
      */
-    List<Insurance> search(String query);
+    List<InsuranceDTO> search(String query);
 }

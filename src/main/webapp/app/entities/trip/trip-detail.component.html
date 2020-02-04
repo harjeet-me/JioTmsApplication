@@ -84,38 +84,38 @@
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.pickupLocation">Pickup Location</span></dt>
                 <dd>
-                    <div *ngIf="trip.pickupLocation">
-                        <a [routerLink]="['/location', trip.pickupLocation?.id, 'view']">{{trip.pickupLocation?.address}}</a>
+                    <div *ngIf="trip.pickupLocationId">
+                        <a [routerLink]="['/location', trip.pickupLocationId, 'view']">{{trip.pickupLocationAddress}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.dropLocation">Drop Location</span></dt>
                 <dd>
-                    <div *ngIf="trip.dropLocation">
-                        <a [routerLink]="['/location', trip.dropLocation?.id, 'view']">{{trip.dropLocation?.address}}</a>
+                    <div *ngIf="trip.dropLocationId">
+                        <a [routerLink]="['/location', trip.dropLocationId, 'view']">{{trip.dropLocationAddress}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.customer">Customer</span></dt>
                 <dd>
-                    <div *ngIf="trip.customer">
-                        <a [routerLink]="['/customer', trip.customer?.id, 'view']">{{trip.customer?.email}}</a>
+                    <div *ngIf="trip.customerId">
+                        <a [routerLink]="['/customer', trip.customerId, 'view']">{{trip.customerEmail}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.driver">Driver</span></dt>
                 <dd>
-                    <div *ngIf="trip.driver">
-                        <a [routerLink]="['/driver', trip.driver?.id, 'view']">{{trip.driver?.id}}</a>
+                    <div *ngIf="trip.driverId">
+                        <a [routerLink]="['/driver', trip.driverId, 'view']">{{trip.driverId}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.equipment">Equipment</span></dt>
                 <dd>
-                    <div *ngIf="trip.equipment">
-                        <a [routerLink]="['/equipment', trip.equipment?.id, 'view']">{{trip.equipment?.id}}</a>
+                    <div *ngIf="trip.equipmentId">
+                        <a [routerLink]="['/equipment', trip.equipmentId, 'view']">{{trip.equipmentId}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.ownerOperator">Owner Operator</span></dt>
                 <dd>
-                    <div *ngIf="trip.ownerOperator">
-                        <a [routerLink]="['/owner-operator', trip.ownerOperator?.id, 'view']">{{trip.ownerOperator?.id}}</a>
+                    <div *ngIf="trip.ownerOperatorId">
+                        <a [routerLink]="['/owner-operator', trip.ownerOperatorId, 'view']">{{trip.ownerOperatorId}}</a>
                     </div>
                 </dd>
             </dl>

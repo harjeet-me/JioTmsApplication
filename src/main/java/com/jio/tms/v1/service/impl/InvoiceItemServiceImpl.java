@@ -4,12 +4,15 @@ import com.jio.tms.v1.service.InvoiceItemService;
 import com.jio.tms.v1.domain.InvoiceItem;
 import com.jio.tms.v1.repository.InvoiceItemRepository;
 import com.jio.tms.v1.repository.search.InvoiceItemSearchRepository;
+import com.jio.tms.v1.service.dto.InvoiceItemDTO;
+import com.jio.tms.v1.service.mapper.InvoiceItemMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,24 +31,29 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 
     private final InvoiceItemRepository invoiceItemRepository;
 
+    private final InvoiceItemMapper invoiceItemMapper;
+
     private final InvoiceItemSearchRepository invoiceItemSearchRepository;
 
-    public InvoiceItemServiceImpl(InvoiceItemRepository invoiceItemRepository, InvoiceItemSearchRepository invoiceItemSearchRepository) {
+    public InvoiceItemServiceImpl(InvoiceItemRepository invoiceItemRepository, InvoiceItemMapper invoiceItemMapper, InvoiceItemSearchRepository invoiceItemSearchRepository) {
         this.invoiceItemRepository = invoiceItemRepository;
+        this.invoiceItemMapper = invoiceItemMapper;
         this.invoiceItemSearchRepository = invoiceItemSearchRepository;
     }
 
     /**
      * Save a invoiceItem.
      *
-     * @param invoiceItem the entity to save.
+     * @param invoiceItemDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public InvoiceItem save(InvoiceItem invoiceItem) {
-        log.debug("Request to save InvoiceItem : {}", invoiceItem);
-        InvoiceItem result = invoiceItemRepository.save(invoiceItem);
-        invoiceItemSearchRepository.save(result);
+    public InvoiceItemDTO save(InvoiceItemDTO invoiceItemDTO) {
+        log.debug("Request to save InvoiceItem : {}", invoiceItemDTO);
+        InvoiceItem invoiceItem = invoiceItemMapper.toEntity(invoiceItemDTO);
+        invoiceItem = invoiceItemRepository.save(invoiceItem);
+        InvoiceItemDTO result = invoiceItemMapper.toDto(invoiceItem);
+        invoiceItemSearchRepository.save(invoiceItem);
         return result;
     }
 
@@ -56,9 +64,11 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<InvoiceItem> findAll() {
+    public List<InvoiceItemDTO> findAll() {
         log.debug("Request to get all InvoiceItems");
-        return invoiceItemRepository.findAll();
+        return invoiceItemRepository.findAll().stream()
+            .map(invoiceItemMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -70,9 +80,10 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<InvoiceItem> findOne(Long id) {
+    public Optional<InvoiceItemDTO> findOne(Long id) {
         log.debug("Request to get InvoiceItem : {}", id);
-        return invoiceItemRepository.findById(id);
+        return invoiceItemRepository.findById(id)
+            .map(invoiceItemMapper::toDto);
     }
 
     /**
@@ -95,10 +106,11 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<InvoiceItem> search(String query) {
+    public List<InvoiceItemDTO> search(String query) {
         log.debug("Request to search InvoiceItems for query {}", query);
         return StreamSupport
             .stream(invoiceItemSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(invoiceItemMapper::toDto)
             .collect(Collectors.toList());
     }
 }

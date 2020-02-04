@@ -1,10 +1,5 @@
 import { Moment } from 'moment';
-import { ILocation } from 'app/shared/model/location.model';
 import { IInvoice } from 'app/shared/model/invoice.model';
-import { ICustomer } from 'app/shared/model/customer.model';
-import { IDriver } from 'app/shared/model/driver.model';
-import { IEquipment } from 'app/shared/model/equipment.model';
-import { IOwnerOperator } from 'app/shared/model/owner-operator.model';
 import { StatusEnum } from 'app/shared/model/enumerations/status-enum.model';
 import { HAZMAT } from 'app/shared/model/enumerations/hazmat.model';
 import { COVEREDBY } from 'app/shared/model/enumerations/coveredby.model';
@@ -32,13 +27,16 @@ export interface ITrip {
   containerSize?: SizeEnum;
   numbersOfContainer?: number;
   comments?: string;
-  pickupLocation?: ILocation;
-  dropLocation?: ILocation;
+  pickupLocationAddress?: string;
+  pickupLocationId?: number;
+  dropLocationAddress?: string;
+  dropLocationId?: number;
   invoices?: IInvoice[];
-  customer?: ICustomer;
-  driver?: IDriver;
-  equipment?: IEquipment;
-  ownerOperator?: IOwnerOperator;
+  customerEmail?: string;
+  customerId?: number;
+  driverId?: number;
+  equipmentId?: number;
+  ownerOperatorId?: number;
 }
 
 export class Trip implements ITrip {
@@ -63,12 +61,15 @@ export class Trip implements ITrip {
     public containerSize?: SizeEnum,
     public numbersOfContainer?: number,
     public comments?: string,
-    public pickupLocation?: ILocation,
-    public dropLocation?: ILocation,
+    public pickupLocationAddress?: string,
+    public pickupLocationId?: number,
+    public dropLocationAddress?: string,
+    public dropLocationId?: number,
     public invoices?: IInvoice[],
-    public customer?: ICustomer,
-    public driver?: IDriver,
-    public equipment?: IEquipment,
-    public ownerOperator?: IOwnerOperator
+    public customerEmail?: string,
+    public customerId?: number,
+    public driverId?: number,
+    public equipmentId?: number,
+    public ownerOperatorId?: number
   ) {}
 }

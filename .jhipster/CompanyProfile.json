@@ -73,7 +73,7 @@
     "relationships": [],
     "changelogDate": "20200106223839",
     "entityTableName": "company_profile",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

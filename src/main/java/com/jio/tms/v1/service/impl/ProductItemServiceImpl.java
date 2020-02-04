@@ -4,12 +4,15 @@ import com.jio.tms.v1.service.ProductItemService;
 import com.jio.tms.v1.domain.ProductItem;
 import com.jio.tms.v1.repository.ProductItemRepository;
 import com.jio.tms.v1.repository.search.ProductItemSearchRepository;
+import com.jio.tms.v1.service.dto.ProductItemDTO;
+import com.jio.tms.v1.service.mapper.ProductItemMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,24 +31,29 @@ public class ProductItemServiceImpl implements ProductItemService {
 
     private final ProductItemRepository productItemRepository;
 
+    private final ProductItemMapper productItemMapper;
+
     private final ProductItemSearchRepository productItemSearchRepository;
 
-    public ProductItemServiceImpl(ProductItemRepository productItemRepository, ProductItemSearchRepository productItemSearchRepository) {
+    public ProductItemServiceImpl(ProductItemRepository productItemRepository, ProductItemMapper productItemMapper, ProductItemSearchRepository productItemSearchRepository) {
         this.productItemRepository = productItemRepository;
+        this.productItemMapper = productItemMapper;
         this.productItemSearchRepository = productItemSearchRepository;
     }
 
     /**
      * Save a productItem.
      *
-     * @param productItem the entity to save.
+     * @param productItemDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public ProductItem save(ProductItem productItem) {
-        log.debug("Request to save ProductItem : {}", productItem);
-        ProductItem result = productItemRepository.save(productItem);
-        productItemSearchRepository.save(result);
+    public ProductItemDTO save(ProductItemDTO productItemDTO) {
+        log.debug("Request to save ProductItem : {}", productItemDTO);
+        ProductItem productItem = productItemMapper.toEntity(productItemDTO);
+        productItem = productItemRepository.save(productItem);
+        ProductItemDTO result = productItemMapper.toDto(productItem);
+        productItemSearchRepository.save(productItem);
         return result;
     }
 
@@ -56,9 +64,11 @@ public class ProductItemServiceImpl implements ProductItemService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<ProductItem> findAll() {
+    public List<ProductItemDTO> findAll() {
         log.debug("Request to get all ProductItems");
-        return productItemRepository.findAll();
+        return productItemRepository.findAll().stream()
+            .map(productItemMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -70,9 +80,10 @@ public class ProductItemServiceImpl implements ProductItemService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<ProductItem> findOne(Long id) {
+    public Optional<ProductItemDTO> findOne(Long id) {
         log.debug("Request to get ProductItem : {}", id);
-        return productItemRepository.findById(id);
+        return productItemRepository.findById(id)
+            .map(productItemMapper::toDto);
     }
 
     /**
@@ -95,10 +106,11 @@ public class ProductItemServiceImpl implements ProductItemService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<ProductItem> search(String query) {
+    public List<ProductItemDTO> search(String query) {
         log.debug("Request to search ProductItems for query {}", query);
         return StreamSupport
             .stream(productItemSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(productItemMapper::toDto)
             .collect(Collectors.toList());
     }
 }

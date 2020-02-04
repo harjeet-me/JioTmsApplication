@@ -4,14 +4,11 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
 import { IFiles, Files } from 'app/shared/model/files.model';
 import { FilesService } from './files.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
-import { IEmail } from 'app/shared/model/email.model';
-import { EmailService } from 'app/entities/email/email.service';
 
 @Component({
   selector: 'jhi-files-update',
@@ -20,20 +17,16 @@ import { EmailService } from 'app/entities/email/email.service';
 export class FilesUpdateComponent implements OnInit {
   isSaving = false;
 
-  emails: IEmail[] = [];
-
   editForm = this.fb.group({
     id: [],
     content: [],
-    contentContentType: [],
-    email: []
+    contentContentType: []
   });
 
   constructor(
     protected dataUtils: JhiDataUtils,
     protected eventManager: JhiEventManager,
     protected filesService: FilesService,
-    protected emailService: EmailService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -41,15 +34,6 @@ export class FilesUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ files }) => {
       this.updateForm(files);
-
-      this.emailService
-        .query()
-        .pipe(
-          map((res: HttpResponse<IEmail[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IEmail[]) => (this.emails = resBody));
     });
   }
 
@@ -57,8 +41,7 @@ export class FilesUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: files.id,
       content: files.content,
-      contentContentType: files.contentContentType,
-      email: files.email
+      contentContentType: files.contentContentType
     });
   }
 
@@ -97,8 +80,7 @@ export class FilesUpdateComponent implements OnInit {
       ...new Files(),
       id: this.editForm.get(['id'])!.value,
       contentContentType: this.editForm.get(['contentContentType'])!.value,
-      content: this.editForm.get(['content'])!.value,
-      email: this.editForm.get(['email'])!.value
+      content: this.editForm.get(['content'])!.value
     };
   }
 
@@ -116,9 +98,5 @@ export class FilesUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
-  }
-
-  trackById(index: number, item: IEmail): any {
-    return item.id;
   }
 }

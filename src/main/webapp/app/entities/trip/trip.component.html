@@ -52,12 +52,12 @@
             <th scope="col"  jhiSortBy="containerSize"><span jhiTranslate="jioTmsApplicationApp.trip.containerSize">Container Size</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="numbersOfContainer"><span jhiTranslate="jioTmsApplicationApp.trip.numbersOfContainer">Numbers Of Container</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="comments"><span jhiTranslate="jioTmsApplicationApp.trip.comments">Comments</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="pickupLocation.address"><span jhiTranslate="jioTmsApplicationApp.trip.pickupLocation">Pickup Location</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="dropLocation.address"><span jhiTranslate="jioTmsApplicationApp.trip.dropLocation">Drop Location</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="customer.email"><span jhiTranslate="jioTmsApplicationApp.trip.customer">Customer</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="driver.id"><span jhiTranslate="jioTmsApplicationApp.trip.driver">Driver</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="equipment.id"><span jhiTranslate="jioTmsApplicationApp.trip.equipment">Equipment</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="ownerOperator.id"><span jhiTranslate="jioTmsApplicationApp.trip.ownerOperator">Owner Operator</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="pickupLocationAddress"><span jhiTranslate="jioTmsApplicationApp.trip.pickupLocation">Pickup Location</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="dropLocationAddress"><span jhiTranslate="jioTmsApplicationApp.trip.dropLocation">Drop Location</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="customerEmail"><span jhiTranslate="jioTmsApplicationApp.trip.customer">Customer</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="driverId"><span jhiTranslate="jioTmsApplicationApp.trip.driver">Driver</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="equipmentId"><span jhiTranslate="jioTmsApplicationApp.trip.equipment">Equipment</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="ownerOperatorId"><span jhiTranslate="jioTmsApplicationApp.trip.ownerOperator">Owner Operator</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -88,33 +88,33 @@
                 <td>{{trip.numbersOfContainer}}</td>
                 <td>{{trip.comments}}</td>
                 <td>
-                    <div *ngIf="trip.pickupLocation">
-                        <a [routerLink]="['/location', trip.pickupLocation?.id, 'view' ]" >{{trip.pickupLocation?.address}}</a>
+                    <div *ngIf="trip.pickupLocationId">
+                        <a [routerLink]="['/location', trip.pickupLocationId , 'view' ]" >{{trip.pickupLocationAddress}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="trip.dropLocation">
-                        <a [routerLink]="['/location', trip.dropLocation?.id, 'view' ]" >{{trip.dropLocation?.address}}</a>
+                    <div *ngIf="trip.dropLocationId">
+                        <a [routerLink]="['/location', trip.dropLocationId , 'view' ]" >{{trip.dropLocationAddress}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="trip.customer">
-                        <a [routerLink]="['/customer', trip.customer?.id, 'view' ]" >{{trip.customer?.email}}</a>
+                    <div *ngIf="trip.customerId">
+                        <a [routerLink]="['/customer', trip.customerId , 'view' ]" >{{trip.customerEmail}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="trip.driver">
-                        <a [routerLink]="['/driver', trip.driver?.id, 'view' ]" >{{trip.driver?.id}}</a>
+                    <div *ngIf="trip.driverId">
+                        <a [routerLink]="['/driver', trip.driverId , 'view' ]" >{{trip.driverId}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="trip.equipment">
-                        <a [routerLink]="['/equipment', trip.equipment?.id, 'view' ]" >{{trip.equipment?.id}}</a>
+                    <div *ngIf="trip.equipmentId">
+                        <a [routerLink]="['/equipment', trip.equipmentId , 'view' ]" >{{trip.equipmentId}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="trip.ownerOperator">
-                        <a [routerLink]="['/owner-operator', trip.ownerOperator?.id, 'view' ]" >{{trip.ownerOperator?.id}}</a>
+                    <div *ngIf="trip.ownerOperatorId">
+                        <a [routerLink]="['/owner-operator', trip.ownerOperatorId , 'view' ]" >{{trip.ownerOperatorId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

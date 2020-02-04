@@ -4,12 +4,15 @@ import com.jio.tms.v1.service.CompanyProfileService;
 import com.jio.tms.v1.domain.CompanyProfile;
 import com.jio.tms.v1.repository.CompanyProfileRepository;
 import com.jio.tms.v1.repository.search.CompanyProfileSearchRepository;
+import com.jio.tms.v1.service.dto.CompanyProfileDTO;
+import com.jio.tms.v1.service.mapper.CompanyProfileMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,24 +31,29 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
 
     private final CompanyProfileRepository companyProfileRepository;
 
+    private final CompanyProfileMapper companyProfileMapper;
+
     private final CompanyProfileSearchRepository companyProfileSearchRepository;
 
-    public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository, CompanyProfileSearchRepository companyProfileSearchRepository) {
+    public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository, CompanyProfileMapper companyProfileMapper, CompanyProfileSearchRepository companyProfileSearchRepository) {
         this.companyProfileRepository = companyProfileRepository;
+        this.companyProfileMapper = companyProfileMapper;
         this.companyProfileSearchRepository = companyProfileSearchRepository;
     }
 
     /**
      * Save a companyProfile.
      *
-     * @param companyProfile the entity to save.
+     * @param companyProfileDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public CompanyProfile save(CompanyProfile companyProfile) {
-        log.debug("Request to save CompanyProfile : {}", companyProfile);
-        CompanyProfile result = companyProfileRepository.save(companyProfile);
-        companyProfileSearchRepository.save(result);
+    public CompanyProfileDTO save(CompanyProfileDTO companyProfileDTO) {
+        log.debug("Request to save CompanyProfile : {}", companyProfileDTO);
+        CompanyProfile companyProfile = companyProfileMapper.toEntity(companyProfileDTO);
+        companyProfile = companyProfileRepository.save(companyProfile);
+        CompanyProfileDTO result = companyProfileMapper.toDto(companyProfile);
+        companyProfileSearchRepository.save(companyProfile);
         return result;
     }
 
@@ -56,9 +64,11 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<CompanyProfile> findAll() {
+    public List<CompanyProfileDTO> findAll() {
         log.debug("Request to get all CompanyProfiles");
-        return companyProfileRepository.findAll();
+        return companyProfileRepository.findAll().stream()
+            .map(companyProfileMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -70,9 +80,10 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<CompanyProfile> findOne(Long id) {
+    public Optional<CompanyProfileDTO> findOne(Long id) {
         log.debug("Request to get CompanyProfile : {}", id);
-        return companyProfileRepository.findById(id);
+        return companyProfileRepository.findById(id)
+            .map(companyProfileMapper::toDto);
     }
 
     /**
@@ -95,10 +106,11 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<CompanyProfile> search(String query) {
+    public List<CompanyProfileDTO> search(String query) {
         log.debug("Request to search CompanyProfiles for query {}", query);
         return StreamSupport
             .stream(companyProfileSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(companyProfileMapper::toDto)
             .collect(Collectors.toList());
     }
 }

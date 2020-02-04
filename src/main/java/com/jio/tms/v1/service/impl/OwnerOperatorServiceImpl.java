@@ -4,12 +4,15 @@ import com.jio.tms.v1.service.OwnerOperatorService;
 import com.jio.tms.v1.domain.OwnerOperator;
 import com.jio.tms.v1.repository.OwnerOperatorRepository;
 import com.jio.tms.v1.repository.search.OwnerOperatorSearchRepository;
+import com.jio.tms.v1.service.dto.OwnerOperatorDTO;
+import com.jio.tms.v1.service.mapper.OwnerOperatorMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,24 +31,29 @@ public class OwnerOperatorServiceImpl implements OwnerOperatorService {
 
     private final OwnerOperatorRepository ownerOperatorRepository;
 
+    private final OwnerOperatorMapper ownerOperatorMapper;
+
     private final OwnerOperatorSearchRepository ownerOperatorSearchRepository;
 
-    public OwnerOperatorServiceImpl(OwnerOperatorRepository ownerOperatorRepository, OwnerOperatorSearchRepository ownerOperatorSearchRepository) {
+    public OwnerOperatorServiceImpl(OwnerOperatorRepository ownerOperatorRepository, OwnerOperatorMapper ownerOperatorMapper, OwnerOperatorSearchRepository ownerOperatorSearchRepository) {
         this.ownerOperatorRepository = ownerOperatorRepository;
+        this.ownerOperatorMapper = ownerOperatorMapper;
         this.ownerOperatorSearchRepository = ownerOperatorSearchRepository;
     }
 
     /**
      * Save a ownerOperator.
      *
-     * @param ownerOperator the entity to save.
+     * @param ownerOperatorDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public OwnerOperator save(OwnerOperator ownerOperator) {
-        log.debug("Request to save OwnerOperator : {}", ownerOperator);
-        OwnerOperator result = ownerOperatorRepository.save(ownerOperator);
-        ownerOperatorSearchRepository.save(result);
+    public OwnerOperatorDTO save(OwnerOperatorDTO ownerOperatorDTO) {
+        log.debug("Request to save OwnerOperator : {}", ownerOperatorDTO);
+        OwnerOperator ownerOperator = ownerOperatorMapper.toEntity(ownerOperatorDTO);
+        ownerOperator = ownerOperatorRepository.save(ownerOperator);
+        OwnerOperatorDTO result = ownerOperatorMapper.toDto(ownerOperator);
+        ownerOperatorSearchRepository.save(ownerOperator);
         return result;
     }
 
@@ -56,9 +64,11 @@ public class OwnerOperatorServiceImpl implements OwnerOperatorService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<OwnerOperator> findAll() {
+    public List<OwnerOperatorDTO> findAll() {
         log.debug("Request to get all OwnerOperators");
-        return ownerOperatorRepository.findAll();
+        return ownerOperatorRepository.findAll().stream()
+            .map(ownerOperatorMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -70,9 +80,10 @@ public class OwnerOperatorServiceImpl implements OwnerOperatorService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<OwnerOperator> findOne(Long id) {
+    public Optional<OwnerOperatorDTO> findOne(Long id) {
         log.debug("Request to get OwnerOperator : {}", id);
-        return ownerOperatorRepository.findById(id);
+        return ownerOperatorRepository.findById(id)
+            .map(ownerOperatorMapper::toDto);
     }
 
     /**
@@ -95,10 +106,11 @@ public class OwnerOperatorServiceImpl implements OwnerOperatorService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<OwnerOperator> search(String query) {
+    public List<OwnerOperatorDTO> search(String query) {
         log.debug("Request to search OwnerOperators for query {}", query);
         return StreamSupport
             .stream(ownerOperatorSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(ownerOperatorMapper::toDto)
             .collect(Collectors.toList());
     }
 }

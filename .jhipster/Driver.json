@@ -72,7 +72,7 @@
     ],
     "changelogDate": "20200106223849",
     "entityTableName": "driver",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

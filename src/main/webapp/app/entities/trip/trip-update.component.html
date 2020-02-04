@@ -137,44 +137,44 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.trip.pickupLocation" for="field_pickupLocation">Pickup Location</label>
-                    <select class="form-control" id="field_pickupLocation" name="pickupLocation" formControlName="pickupLocation">
+                    <select class="form-control" id="field_pickupLocation" name="pickupLocation" formControlName="pickupLocationId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="locationOption.id === editForm.get('pickupLocation')!.value?.id ? editForm.get('pickupLocation')!.value : locationOption" *ngFor="let locationOption of pickuplocations; trackBy: trackById">{{locationOption.address}}</option>
+                        <option [ngValue]="locationOption.id" *ngFor="let locationOption of pickuplocations; trackBy: trackById">{{locationOption.address}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.trip.dropLocation" for="field_dropLocation">Drop Location</label>
-                    <select class="form-control" id="field_dropLocation" name="dropLocation" formControlName="dropLocation">
+                    <select class="form-control" id="field_dropLocation" name="dropLocation" formControlName="dropLocationId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="locationOption.id === editForm.get('dropLocation')!.value?.id ? editForm.get('dropLocation')!.value : locationOption" *ngFor="let locationOption of droplocations; trackBy: trackById">{{locationOption.address}}</option>
+                        <option [ngValue]="locationOption.id" *ngFor="let locationOption of droplocations; trackBy: trackById">{{locationOption.address}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.trip.customer" for="field_customer">Customer</label>
-                    <select class="form-control" id="field_customer" name="customer" formControlName="customer">
+                    <select class="form-control" id="field_customer" name="customer" formControlName="customerId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="customerOption.id === editForm.get('customer')!.value?.id ? editForm.get('customer')!.value : customerOption" *ngFor="let customerOption of customers; trackBy: trackById">{{customerOption.email}}</option>
+                        <option [ngValue]="customerOption.id" *ngFor="let customerOption of customers; trackBy: trackById">{{customerOption.email}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.trip.driver" for="field_driver">Driver</label>
-                    <select class="form-control" id="field_driver" name="driver" formControlName="driver">
+                    <select class="form-control" id="field_driver" name="driver" formControlName="driverId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="driverOption.id === editForm.get('driver')!.value?.id ? editForm.get('driver')!.value : driverOption" *ngFor="let driverOption of drivers; trackBy: trackById">{{driverOption.id}}</option>
+                        <option [ngValue]="driverOption.id" *ngFor="let driverOption of drivers; trackBy: trackById">{{driverOption.id}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.trip.equipment" for="field_equipment">Equipment</label>
-                    <select class="form-control" id="field_equipment" name="equipment" formControlName="equipment">
+                    <select class="form-control" id="field_equipment" name="equipment" formControlName="equipmentId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="equipmentOption.id === editForm.get('equipment')!.value?.id ? editForm.get('equipment')!.value : equipmentOption" *ngFor="let equipmentOption of equipment; trackBy: trackById">{{equipmentOption.id}}</option>
+                        <option [ngValue]="equipmentOption.id" *ngFor="let equipmentOption of equipment; trackBy: trackById">{{equipmentOption.id}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.trip.ownerOperator" for="field_ownerOperator">Owner Operator</label>
-                    <select class="form-control" id="field_ownerOperator" name="ownerOperator" formControlName="ownerOperator">
+                    <select class="form-control" id="field_ownerOperator" name="ownerOperator" formControlName="ownerOperatorId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="ownerOperatorOption.id === editForm.get('ownerOperator')!.value?.id ? editForm.get('ownerOperator')!.value : ownerOperatorOption" *ngFor="let ownerOperatorOption of owneroperators; trackBy: trackById">{{ownerOperatorOption.id}}</option>
+                        <option [ngValue]="ownerOperatorOption.id" *ngFor="let ownerOperatorOption of owneroperators; trackBy: trackById">{{ownerOperatorOption.id}}</option>
                     </select>
                 </div>
             </div>

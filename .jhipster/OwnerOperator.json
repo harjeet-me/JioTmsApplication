@@ -93,7 +93,7 @@
     ],
     "changelogDate": "20200106223850",
     "entityTableName": "owner_operator",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

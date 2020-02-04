@@ -1,0 +1,29 @@
+{
+    "name": "FileSystem",
+    "fields": [
+        {
+            "fieldName": "data",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "email",
+            "otherEntityRelationshipName": "fileSystem",
+            "relationshipName": "email",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200204075034",
+    "entityTableName": "file_system",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

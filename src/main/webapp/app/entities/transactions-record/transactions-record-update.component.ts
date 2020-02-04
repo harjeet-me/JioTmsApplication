@@ -46,8 +46,8 @@ export class TransactionsRecordUpdateComponent implements OnInit {
     txDocContentType: [],
     currency: [],
     remarks: [],
-    customer: [],
-    account: []
+    customerId: [],
+    accountId: []
   });
 
   constructor(
@@ -100,8 +100,8 @@ export class TransactionsRecordUpdateComponent implements OnInit {
       txDocContentType: transactionsRecord.txDocContentType,
       currency: transactionsRecord.currency,
       remarks: transactionsRecord.remarks,
-      customer: transactionsRecord.customer,
-      account: transactionsRecord.account
+      customerId: transactionsRecord.customerId,
+      accountId: transactionsRecord.accountId
     });
   }
 
@@ -152,8 +152,8 @@ export class TransactionsRecordUpdateComponent implements OnInit {
       txDoc: this.editForm.get(['txDoc'])!.value,
       currency: this.editForm.get(['currency'])!.value,
       remarks: this.editForm.get(['remarks'])!.value,
-      customer: this.editForm.get(['customer'])!.value,
-      account: this.editForm.get(['account'])!.value
+      customerId: this.editForm.get(['customerId'])!.value,
+      accountId: this.editForm.get(['accountId'])!.value
     };
   }
 

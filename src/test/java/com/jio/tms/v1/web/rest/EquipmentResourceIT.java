@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.Equipment;
 import com.jio.tms.v1.repository.EquipmentRepository;
 import com.jio.tms.v1.repository.search.EquipmentSearchRepository;
 import com.jio.tms.v1.service.EquipmentService;
+import com.jio.tms.v1.service.dto.EquipmentDTO;
+import com.jio.tms.v1.service.mapper.EquipmentMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -83,6 +85,9 @@ public class EquipmentResourceIT {
 
     @Autowired
     private EquipmentRepository equipmentRepository;
+
+    @Autowired
+    private EquipmentMapper equipmentMapper;
 
     @Autowired
     private EquipmentService equipmentService;
@@ -184,9 +189,10 @@ public class EquipmentResourceIT {
         int databaseSizeBeforeCreate = equipmentRepository.findAll().size();
 
         // Create the Equipment
+        EquipmentDTO equipmentDTO = equipmentMapper.toDto(equipment);
         restEquipmentMockMvc.perform(post("/api/equipment")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(equipment)))
+            .content(TestUtil.convertObjectToJsonBytes(equipmentDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Equipment in the database
@@ -218,11 +224,12 @@ public class EquipmentResourceIT {
 
         // Create the Equipment with an existing ID
         equipment.setId(1L);
+        EquipmentDTO equipmentDTO = equipmentMapper.toDto(equipment);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restEquipmentMockMvc.perform(post("/api/equipment")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(equipment)))
+            .content(TestUtil.convertObjectToJsonBytes(equipmentDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Equipment in the database
@@ -298,9 +305,7 @@ public class EquipmentResourceIT {
     @Transactional
     public void updateEquipment() throws Exception {
         // Initialize the database
-        equipmentService.save(equipment);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockEquipmentSearchRepository);
+        equipmentRepository.saveAndFlush(equipment);
 
         int databaseSizeBeforeUpdate = equipmentRepository.findAll().size();
 
@@ -322,10 +327,11 @@ public class EquipmentResourceIT {
             .licensePlateNumber(UPDATED_LICENSE_PLATE_NUMBER)
             .licensePlateExpiration(UPDATED_LICENSE_PLATE_EXPIRATION)
             .inspectionStickerExpiration(UPDATED_INSPECTION_STICKER_EXPIRATION);
+        EquipmentDTO equipmentDTO = equipmentMapper.toDto(updatedEquipment);
 
         restEquipmentMockMvc.perform(put("/api/equipment")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedEquipment)))
+            .content(TestUtil.convertObjectToJsonBytes(equipmentDTO)))
             .andExpect(status().isOk());
 
         // Validate the Equipment in the database
@@ -356,11 +362,12 @@ public class EquipmentResourceIT {
         int databaseSizeBeforeUpdate = equipmentRepository.findAll().size();
 
         // Create the Equipment
+        EquipmentDTO equipmentDTO = equipmentMapper.toDto(equipment);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restEquipmentMockMvc.perform(put("/api/equipment")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(equipment)))
+            .content(TestUtil.convertObjectToJsonBytes(equipmentDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Equipment in the database
@@ -375,7 +382,7 @@ public class EquipmentResourceIT {
     @Transactional
     public void deleteEquipment() throws Exception {
         // Initialize the database
-        equipmentService.save(equipment);
+        equipmentRepository.saveAndFlush(equipment);
 
         int databaseSizeBeforeDelete = equipmentRepository.findAll().size();
 
@@ -396,7 +403,7 @@ public class EquipmentResourceIT {
     @Transactional
     public void searchEquipment() throws Exception {
         // Initialize the database
-        equipmentService.save(equipment);
+        equipmentRepository.saveAndFlush(equipment);
         when(mockEquipmentSearchRepository.search(queryStringQuery("id:" + equipment.getId())))
             .thenReturn(Collections.singletonList(equipment));
         // Search the equipment

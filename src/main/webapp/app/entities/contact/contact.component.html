@@ -56,8 +56,8 @@
                 <td>{{contact.remarks}}</td>
                 <td>{{contact.preferredTime}}</td>
                 <td>
-                    <div *ngIf="contact.customer">
-                        <a [routerLink]="['/customer', contact.customer?.id, 'view' ]" >{{contact.customer?.company}}</a>
+                    <div *ngIf="contact.customerId">
+                        <a [routerLink]="['/customer', contact.customerId , 'view' ]" >{{contact.customerCompany}}</a>
                     </div>
                 </td>
                 <td class="text-right">

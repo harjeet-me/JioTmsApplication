@@ -1,29 +1,29 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.Files;
+import com.jio.tms.v1.service.dto.FilesDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link Files}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.Files}.
  */
 public interface FilesService {
 
     /**
      * Save a files.
      *
-     * @param files the entity to save.
+     * @param filesDTO the entity to save.
      * @return the persisted entity.
      */
-    Files save(Files files);
+    FilesDTO save(FilesDTO filesDTO);
 
     /**
      * Get all the files.
      *
      * @return the list of entities.
      */
-    List<Files> findAll();
+    List<FilesDTO> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface FilesService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Files> findOne(Long id);
+    Optional<FilesDTO> findOne(Long id);
 
     /**
      * Delete the "id" files.
@@ -48,5 +48,5 @@ public interface FilesService {
      * 
      * @return the list of entities.
      */
-    List<Files> search(String query);
+    List<FilesDTO> search(String query);
 }

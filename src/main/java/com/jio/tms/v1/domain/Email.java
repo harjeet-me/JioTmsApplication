@@ -34,12 +34,28 @@ public class Email implements Serializable {
     @Column(name = "userbcc")
     private String userbcc;
 
+    @Column(name = "subject")
+    private String subject;
+
     @Column(name = "message")
     private String message;
 
+    @Column(name = "multipart")
+    private Boolean multipart;
+
+    @Column(name = "html_body")
+    private Boolean htmlBody;
+
+    @Lob
+    @Column(name = "attachment")
+    private byte[] attachment;
+
+    @Column(name = "attachment_content_type")
+    private String attachmentContentType;
+
     @OneToMany(mappedBy = "email")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Files> files = new HashSet<>();
+    private Set<FileSystem> fileSystems = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -89,6 +105,19 @@ public class Email implements Serializable {
         this.userbcc = userbcc;
     }
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public Email subject(String subject) {
+        this.subject = subject;
+        return this;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -102,29 +131,81 @@ public class Email implements Serializable {
         this.message = message;
     }
 
-    public Set<Files> getFiles() {
-        return files;
+    public Boolean isMultipart() {
+        return multipart;
     }
 
-    public Email files(Set<Files> files) {
-        this.files = files;
+    public Email multipart(Boolean multipart) {
+        this.multipart = multipart;
         return this;
     }
 
-    public Email addFiles(Files files) {
-        this.files.add(files);
-        files.setEmail(this);
+    public void setMultipart(Boolean multipart) {
+        this.multipart = multipart;
+    }
+
+    public Boolean isHtmlBody() {
+        return htmlBody;
+    }
+
+    public Email htmlBody(Boolean htmlBody) {
+        this.htmlBody = htmlBody;
         return this;
     }
 
-    public Email removeFiles(Files files) {
-        this.files.remove(files);
-        files.setEmail(null);
+    public void setHtmlBody(Boolean htmlBody) {
+        this.htmlBody = htmlBody;
+    }
+
+    public byte[] getAttachment() {
+        return attachment;
+    }
+
+    public Email attachment(byte[] attachment) {
+        this.attachment = attachment;
         return this;
     }
 
-    public void setFiles(Set<Files> files) {
-        this.files = files;
+    public void setAttachment(byte[] attachment) {
+        this.attachment = attachment;
+    }
+
+    public String getAttachmentContentType() {
+        return attachmentContentType;
+    }
+
+    public Email attachmentContentType(String attachmentContentType) {
+        this.attachmentContentType = attachmentContentType;
+        return this;
+    }
+
+    public void setAttachmentContentType(String attachmentContentType) {
+        this.attachmentContentType = attachmentContentType;
+    }
+
+    public Set<FileSystem> getFileSystems() {
+        return fileSystems;
+    }
+
+    public Email fileSystems(Set<FileSystem> fileSystems) {
+        this.fileSystems = fileSystems;
+        return this;
+    }
+
+    public Email addFileSystem(FileSystem fileSystem) {
+        this.fileSystems.add(fileSystem);
+        fileSystem.setEmail(this);
+        return this;
+    }
+
+    public Email removeFileSystem(FileSystem fileSystem) {
+        this.fileSystems.remove(fileSystem);
+        fileSystem.setEmail(null);
+        return this;
+    }
+
+    public void setFileSystems(Set<FileSystem> fileSystems) {
+        this.fileSystems = fileSystems;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -151,7 +232,12 @@ public class Email implements Serializable {
             ", userto='" + getUserto() + "'" +
             ", usercc='" + getUsercc() + "'" +
             ", userbcc='" + getUserbcc() + "'" +
+            ", subject='" + getSubject() + "'" +
             ", message='" + getMessage() + "'" +
+            ", multipart='" + isMultipart() + "'" +
+            ", htmlBody='" + isHtmlBody() + "'" +
+            ", attachment='" + getAttachment() + "'" +
+            ", attachmentContentType='" + getAttachmentContentType() + "'" +
             "}";
     }
 }

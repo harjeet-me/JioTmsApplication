@@ -1,8 +1,8 @@
 package com.jio.tms.v1.web.rest;
 
-import com.jio.tms.v1.domain.Trip;
 import com.jio.tms.v1.service.TripService;
 import com.jio.tms.v1.web.rest.errors.BadRequestAlertException;
+import com.jio.tms.v1.service.dto.TripDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -50,17 +50,17 @@ public class TripResource {
     /**
      * {@code POST  /trips} : Create a new trip.
      *
-     * @param trip the trip to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new trip, or with status {@code 400 (Bad Request)} if the trip has already an ID.
+     * @param tripDTO the tripDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new tripDTO, or with status {@code 400 (Bad Request)} if the trip has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/trips")
-    public ResponseEntity<Trip> createTrip(@RequestBody Trip trip) throws URISyntaxException {
-        log.debug("REST request to save Trip : {}", trip);
-        if (trip.getId() != null) {
+    public ResponseEntity<TripDTO> createTrip(@RequestBody TripDTO tripDTO) throws URISyntaxException {
+        log.debug("REST request to save Trip : {}", tripDTO);
+        if (tripDTO.getId() != null) {
             throw new BadRequestAlertException("A new trip cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Trip result = tripService.save(trip);
+        TripDTO result = tripService.save(tripDTO);
         return ResponseEntity.created(new URI("/api/trips/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -69,21 +69,21 @@ public class TripResource {
     /**
      * {@code PUT  /trips} : Updates an existing trip.
      *
-     * @param trip the trip to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated trip,
-     * or with status {@code 400 (Bad Request)} if the trip is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the trip couldn't be updated.
+     * @param tripDTO the tripDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated tripDTO,
+     * or with status {@code 400 (Bad Request)} if the tripDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the tripDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/trips")
-    public ResponseEntity<Trip> updateTrip(@RequestBody Trip trip) throws URISyntaxException {
-        log.debug("REST request to update Trip : {}", trip);
-        if (trip.getId() == null) {
+    public ResponseEntity<TripDTO> updateTrip(@RequestBody TripDTO tripDTO) throws URISyntaxException {
+        log.debug("REST request to update Trip : {}", tripDTO);
+        if (tripDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Trip result = tripService.save(trip);
+        TripDTO result = tripService.save(tripDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, trip.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, tripDTO.getId().toString()))
             .body(result);
     }
 
@@ -96,9 +96,9 @@ public class TripResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of trips in body.
      */
     @GetMapping("/trips")
-    public ResponseEntity<List<Trip>> getAllTrips(Pageable pageable) {
+    public ResponseEntity<List<TripDTO>> getAllTrips(Pageable pageable) {
         log.debug("REST request to get a page of Trips");
-        Page<Trip> page = tripService.findAll(pageable);
+        Page<TripDTO> page = tripService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -106,20 +106,20 @@ public class TripResource {
     /**
      * {@code GET  /trips/:id} : get the "id" trip.
      *
-     * @param id the id of the trip to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the trip, or with status {@code 404 (Not Found)}.
+     * @param id the id of the tripDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tripDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/trips/{id}")
-    public ResponseEntity<Trip> getTrip(@PathVariable Long id) {
+    public ResponseEntity<TripDTO> getTrip(@PathVariable Long id) {
         log.debug("REST request to get Trip : {}", id);
-        Optional<Trip> trip = tripService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(trip);
+        Optional<TripDTO> tripDTO = tripService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(tripDTO);
     }
 
     /**
      * {@code DELETE  /trips/:id} : delete the "id" trip.
      *
-     * @param id the id of the trip to delete.
+     * @param id the id of the tripDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/trips/{id}")
@@ -138,9 +138,9 @@ public class TripResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/trips")
-    public ResponseEntity<List<Trip>> searchTrips(@RequestParam String query, Pageable pageable) {
+    public ResponseEntity<List<TripDTO>> searchTrips(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Trips for query {}", query);
-        Page<Trip> page = tripService.search(query, pageable);
+        Page<TripDTO> page = tripService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

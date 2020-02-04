@@ -32,12 +32,16 @@
     <div class="table-responsive" *ngIf="emails?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr>
-            <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.email.userto">Userto</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.email.usercc">Usercc</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.email.userbcc">Userbcc</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.email.message">Message</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="userto"><span jhiTranslate="jioTmsApplicationApp.email.userto">Userto</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="usercc"><span jhiTranslate="jioTmsApplicationApp.email.usercc">Usercc</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="userbcc"><span jhiTranslate="jioTmsApplicationApp.email.userbcc">Userbcc</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="subject"><span jhiTranslate="jioTmsApplicationApp.email.subject">Subject</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="message"><span jhiTranslate="jioTmsApplicationApp.email.message">Message</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="multipart"><span jhiTranslate="jioTmsApplicationApp.email.multipart">Multipart</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="htmlBody"><span jhiTranslate="jioTmsApplicationApp.email.htmlBody">Html Body</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="attachment"><span jhiTranslate="jioTmsApplicationApp.email.attachment">Attachment</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -47,7 +51,14 @@
                 <td>{{email.userto}}</td>
                 <td>{{email.usercc}}</td>
                 <td>{{email.userbcc}}</td>
+                <td>{{email.subject}}</td>
                 <td>{{email.message}}</td>
+                <td>{{email.multipart}}</td>
+                <td>{{email.htmlBody}}</td>
+                <td>
+                    <a *ngIf="email.attachment" (click)="openFile(email.attachmentContentType, email.attachment)" jhiTranslate="entity.action.open">open</a>
+                    <span *ngIf="email.attachment">{{email.attachmentContentType}}, {{byteSize(email.attachment)}}</span>
+                </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
@@ -72,5 +83,13 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div *ngIf="emails?.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
     </div>
 </div>

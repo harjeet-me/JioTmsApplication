@@ -4,9 +4,11 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
 import { IEmail, Email } from 'app/shared/model/email.model';
 import { EmailService } from './email.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
 
 @Component({
   selector: 'jhi-email-update',
@@ -20,10 +22,21 @@ export class EmailUpdateComponent implements OnInit {
     userto: [],
     usercc: [],
     userbcc: [],
-    message: []
+    subject: [],
+    message: [],
+    multipart: [],
+    htmlBody: [],
+    attachment: [],
+    attachmentContentType: []
   });
 
-  constructor(protected emailService: EmailService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected dataUtils: JhiDataUtils,
+    protected eventManager: JhiEventManager,
+    protected emailService: EmailService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ email }) => {
@@ -37,7 +50,28 @@ export class EmailUpdateComponent implements OnInit {
       userto: email.userto,
       usercc: email.usercc,
       userbcc: email.userbcc,
-      message: email.message
+      subject: email.subject,
+      message: email.message,
+      multipart: email.multipart,
+      htmlBody: email.htmlBody,
+      attachment: email.attachment,
+      attachmentContentType: email.attachmentContentType
+    });
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(contentType: string, base64String: string): void {
+    this.dataUtils.openFile(contentType, base64String);
+  }
+
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
+      this.eventManager.broadcast(
+        new JhiEventWithContent<AlertError>('jioTmsApplicationApp.error', { ...err, key: 'error.file.' + err.key })
+      );
     });
   }
 
@@ -62,7 +96,12 @@ export class EmailUpdateComponent implements OnInit {
       userto: this.editForm.get(['userto'])!.value,
       usercc: this.editForm.get(['usercc'])!.value,
       userbcc: this.editForm.get(['userbcc'])!.value,
-      message: this.editForm.get(['message'])!.value
+      subject: this.editForm.get(['subject'])!.value,
+      message: this.editForm.get(['message'])!.value,
+      multipart: this.editForm.get(['multipart'])!.value,
+      htmlBody: this.editForm.get(['htmlBody'])!.value,
+      attachmentContentType: this.editForm.get(['attachmentContentType'])!.value,
+      attachment: this.editForm.get(['attachment'])!.value
     };
   }
 

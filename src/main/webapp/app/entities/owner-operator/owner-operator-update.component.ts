@@ -42,7 +42,7 @@ export class OwnerOperatorUpdateComponent implements OnInit {
     preffredCurrency: [],
     contractDoc: [],
     contractDocContentType: [],
-    operInsurance: []
+    operInsuranceId: []
   });
 
   constructor(
@@ -66,11 +66,11 @@ export class OwnerOperatorUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: IInsurance[]) => {
-          if (!ownerOperator.operInsurance || !ownerOperator.operInsurance.id) {
+          if (!ownerOperator.operInsuranceId) {
             this.operinsurances = resBody;
           } else {
             this.insuranceService
-              .find(ownerOperator.operInsurance.id)
+              .find(ownerOperator.operInsuranceId)
               .pipe(
                 map((subRes: HttpResponse<IInsurance>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -105,7 +105,7 @@ export class OwnerOperatorUpdateComponent implements OnInit {
       preffredCurrency: ownerOperator.preffredCurrency,
       contractDoc: ownerOperator.contractDoc,
       contractDocContentType: ownerOperator.contractDocContentType,
-      operInsurance: ownerOperator.operInsurance
+      operInsuranceId: ownerOperator.operInsuranceId
     });
   }
 
@@ -161,7 +161,7 @@ export class OwnerOperatorUpdateComponent implements OnInit {
       preffredCurrency: this.editForm.get(['preffredCurrency'])!.value,
       contractDocContentType: this.editForm.get(['contractDocContentType'])!.value,
       contractDoc: this.editForm.get(['contractDoc'])!.value,
-      operInsurance: this.editForm.get(['operInsurance'])!.value
+      operInsuranceId: this.editForm.get(['operInsuranceId'])!.value
     };
   }
 

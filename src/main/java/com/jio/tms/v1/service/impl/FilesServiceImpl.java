@@ -4,12 +4,15 @@ import com.jio.tms.v1.service.FilesService;
 import com.jio.tms.v1.domain.Files;
 import com.jio.tms.v1.repository.FilesRepository;
 import com.jio.tms.v1.repository.search.FilesSearchRepository;
+import com.jio.tms.v1.service.dto.FilesDTO;
+import com.jio.tms.v1.service.mapper.FilesMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,24 +31,29 @@ public class FilesServiceImpl implements FilesService {
 
     private final FilesRepository filesRepository;
 
+    private final FilesMapper filesMapper;
+
     private final FilesSearchRepository filesSearchRepository;
 
-    public FilesServiceImpl(FilesRepository filesRepository, FilesSearchRepository filesSearchRepository) {
+    public FilesServiceImpl(FilesRepository filesRepository, FilesMapper filesMapper, FilesSearchRepository filesSearchRepository) {
         this.filesRepository = filesRepository;
+        this.filesMapper = filesMapper;
         this.filesSearchRepository = filesSearchRepository;
     }
 
     /**
      * Save a files.
      *
-     * @param files the entity to save.
+     * @param filesDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public Files save(Files files) {
-        log.debug("Request to save Files : {}", files);
-        Files result = filesRepository.save(files);
-        filesSearchRepository.save(result);
+    public FilesDTO save(FilesDTO filesDTO) {
+        log.debug("Request to save Files : {}", filesDTO);
+        Files files = filesMapper.toEntity(filesDTO);
+        files = filesRepository.save(files);
+        FilesDTO result = filesMapper.toDto(files);
+        filesSearchRepository.save(files);
         return result;
     }
 
@@ -56,9 +64,11 @@ public class FilesServiceImpl implements FilesService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Files> findAll() {
+    public List<FilesDTO> findAll() {
         log.debug("Request to get all Files");
-        return filesRepository.findAll();
+        return filesRepository.findAll().stream()
+            .map(filesMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -70,9 +80,10 @@ public class FilesServiceImpl implements FilesService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Files> findOne(Long id) {
+    public Optional<FilesDTO> findOne(Long id) {
         log.debug("Request to get Files : {}", id);
-        return filesRepository.findById(id);
+        return filesRepository.findById(id)
+            .map(filesMapper::toDto);
     }
 
     /**
@@ -95,10 +106,11 @@ public class FilesServiceImpl implements FilesService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Files> search(String query) {
+    public List<FilesDTO> search(String query) {
         log.debug("Request to search Files for query {}", query);
         return StreamSupport
             .stream(filesSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(filesMapper::toDto)
             .collect(Collectors.toList());
     }
 }

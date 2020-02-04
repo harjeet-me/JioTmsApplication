@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IInvoice } from 'app/shared/model/invoice.model';
+
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { InvoiceService } from './invoice.service';
 import { InvoiceDeleteDialogComponent } from './invoice-delete-dialog.component';
 
@@ -17,13 +19,20 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   invoices?: IInvoice[];
   eventSubscriber?: Subscription;
   currentSearch: string;
+  totalItems = 0;
+  itemsPerPage = ITEMS_PER_PAGE;
+  page!: number;
+  predicate!: string;
+  ascending!: boolean;
+  ngbPaginationPage = 1;
 
   constructor(
     protected invoiceService: InvoiceService,
+    protected activatedRoute: ActivatedRoute,
     protected dataUtils: JhiDataUtils,
+    protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal,
-    protected activatedRoute: ActivatedRoute
+    protected modalService: NgbModal
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -31,28 +40,47 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         : '';
   }
 
-  loadAll(): void {
+  loadPage(page?: number): void {
+    const pageToLoad: number = page ? page : this.page;
     if (this.currentSearch) {
       this.invoiceService
         .search({
-          query: this.currentSearch
+          page: pageToLoad - 1,
+          query: this.currentSearch,
+          size: this.itemsPerPage,
+          sort: this.sort()
         })
-        .subscribe((res: HttpResponse<IInvoice[]>) => (this.invoices = res.body ? res.body : []));
+        .subscribe(
+          (res: HttpResponse<IInvoice[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+          () => this.onError()
+        );
       return;
     }
-    this.invoiceService.query().subscribe((res: HttpResponse<IInvoice[]>) => {
-      this.invoices = res.body ? res.body : [];
-      this.currentSearch = '';
-    });
+    this.invoiceService
+      .query({
+        page: pageToLoad - 1,
+        size: this.itemsPerPage,
+        sort: this.sort()
+      })
+      .subscribe(
+        (res: HttpResponse<IInvoice[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        () => this.onError()
+      );
   }
 
   search(query: string): void {
     this.currentSearch = query;
-    this.loadAll();
+    this.loadPage(1);
   }
 
   ngOnInit(): void {
-    this.loadAll();
+    this.activatedRoute.data.subscribe(data => {
+      this.page = data.pagingParams.page;
+      this.ascending = data.pagingParams.ascending;
+      this.predicate = data.pagingParams.predicate;
+      this.ngbPaginationPage = data.pagingParams.page;
+      this.loadPage();
+    });
     this.registerChangeInInvoices();
   }
 
@@ -76,11 +104,38 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   registerChangeInInvoices(): void {
-    this.eventSubscriber = this.eventManager.subscribe('invoiceListModification', () => this.loadAll());
+    this.eventSubscriber = this.eventManager.subscribe('invoiceListModification', () => this.loadPage());
   }
 
   delete(invoice: IInvoice): void {
     const modalRef = this.modalService.open(InvoiceDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.invoice = invoice;
+  }
+
+  sort(): string[] {
+    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
+    if (this.predicate !== 'id') {
+      result.push('id');
+    }
+    return result;
+  }
+
+  protected onSuccess(data: IInvoice[] | null, headers: HttpHeaders, page: number): void {
+    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.page = page;
+    this.ngbPaginationPage = this.page;
+    this.router.navigate(['/invoice'], {
+      queryParams: {
+        page: this.page,
+        size: this.itemsPerPage,
+        search: this.currentSearch,
+        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
+      }
+    });
+    this.invoices = data ? data : [];
+  }
+
+  protected onError(): void {
+    this.ngbPaginationPage = this.page;
   }
 }

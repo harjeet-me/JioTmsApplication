@@ -1,11 +1,11 @@
-id;userto;usercc;userbcc;message
-1;innovate Path;Data;withdrawal;Libyan Arab Jamahiriya Handmade Concrete Fish
-2;Utah card;transform;quantify Licensed;Borders Auto Loan Account Frozen
-3;Awesome deposit fuchsia;Sports Nebraska user-centric;Keyboard Generic Plains;back up alarm
-4;Shoes Rubber Configuration;Checking Account monitor Incredible Granite Chair;virtual vertical;Product Haven THX
-5;client-server Money Market Account;alarm digital;Utah;Director synthesize
-6;end-to-end;Shirt connecting Integration;Personal Loan Account transmitting;Portugal distributed
-7;parsing;card groupware;Delaware JBOD Forward;Hill enhance
-8;instruction set;Maine Ball Producer;Ergonomic Planner;portal array solid state
-9;invoice Innovative;Tasty Steel Chicken connect Associate;national;Poland Tactics
-10;US Dollar;markets;yellow;frame
+id;userto;usercc;userbcc;subject;message;multipart;html_body;attachment;attachment_content_type
+1;innovate Path;Data;withdrawal;Libyan Arab Jamahiriya Handmade Concrete Fish;Utah card;false;false;../fake-data/blob/hipster.png;image/png
+2;Rhode Island;Licensed Analyst;Auto Loan Account Frozen;Awesome deposit fuchsia;Sports Nebraska user-centric;true;false;../fake-data/blob/hipster.png;image/png
+3;Generic;Investment Account back up;invoice Shoes Rubber;programming Checking Account monitor;sexy;false;true;../fake-data/blob/hipster.png;image/png
+4;virtual Shoes;hierarchy solution payment;Soap;Credit Card Account;digital Generic;true;false;../fake-data/blob/hipster.png;image/png
+5;dynamic Cameroon end-to-end;Shirt connecting Integration;Personal Loan Account transmitting;Portugal distributed;parsing;false;true;../fake-data/blob/hipster.png;image/png
+6;groupware;Delaware JBOD Forward;Hill enhance;instruction set;Maine Ball Producer;true;false;../fake-data/blob/hipster.png;image/png
+7;Planner;portal array solid state;invoice Innovative;Tasty Steel Chicken connect Associate;national;false;true;../fake-data/blob/hipster.png;image/png
+8;Tactics Chicken overriding;Gorgeous Concrete Computer Incredible Plastic Chair;Auto Loan Account;zero tolerance Health;Assistant;true;false;../fake-data/blob/hipster.png;image/png
+9;deposit Arkansas Guatemala;Connecticut Iraqi Dinar 1080p;Delaware lavender 5th generation;Frozen;Investment Account Implementation Buckinghamshire;false;true;../fake-data/blob/hipster.png;image/png
+10;transmitting Web utilisation;deposit Forward overriding;SCSI;calculate bandwidth-monitored copying;integrate;true;true;../fake-data/blob/hipster.png;image/png

@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.CompanyProfile;
 import com.jio.tms.v1.repository.CompanyProfileRepository;
 import com.jio.tms.v1.repository.search.CompanyProfileSearchRepository;
 import com.jio.tms.v1.service.CompanyProfileService;
+import com.jio.tms.v1.service.dto.CompanyProfileDTO;
+import com.jio.tms.v1.service.mapper.CompanyProfileMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -94,6 +96,9 @@ public class CompanyProfileResourceIT {
 
     @Autowired
     private CompanyProfileRepository companyProfileRepository;
+
+    @Autowired
+    private CompanyProfileMapper companyProfileMapper;
 
     @Autowired
     private CompanyProfileService companyProfileService;
@@ -203,9 +208,10 @@ public class CompanyProfileResourceIT {
         int databaseSizeBeforeCreate = companyProfileRepository.findAll().size();
 
         // Create the CompanyProfile
+        CompanyProfileDTO companyProfileDTO = companyProfileMapper.toDto(companyProfile);
         restCompanyProfileMockMvc.perform(post("/api/company-profiles")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(companyProfile)))
+            .content(TestUtil.convertObjectToJsonBytes(companyProfileDTO)))
             .andExpect(status().isCreated());
 
         // Validate the CompanyProfile in the database
@@ -241,11 +247,12 @@ public class CompanyProfileResourceIT {
 
         // Create the CompanyProfile with an existing ID
         companyProfile.setId(1L);
+        CompanyProfileDTO companyProfileDTO = companyProfileMapper.toDto(companyProfile);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCompanyProfileMockMvc.perform(post("/api/company-profiles")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(companyProfile)))
+            .content(TestUtil.convertObjectToJsonBytes(companyProfileDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the CompanyProfile in the database
@@ -329,9 +336,7 @@ public class CompanyProfileResourceIT {
     @Transactional
     public void updateCompanyProfile() throws Exception {
         // Initialize the database
-        companyProfileService.save(companyProfile);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockCompanyProfileSearchRepository);
+        companyProfileRepository.saveAndFlush(companyProfile);
 
         int databaseSizeBeforeUpdate = companyProfileRepository.findAll().size();
 
@@ -357,10 +362,11 @@ public class CompanyProfileResourceIT {
             .companyLogoContentType(UPDATED_COMPANY_LOGO_CONTENT_TYPE)
             .profileStatus(UPDATED_PROFILE_STATUS)
             .preffredCurrency(UPDATED_PREFFRED_CURRENCY);
+        CompanyProfileDTO companyProfileDTO = companyProfileMapper.toDto(updatedCompanyProfile);
 
         restCompanyProfileMockMvc.perform(put("/api/company-profiles")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedCompanyProfile)))
+            .content(TestUtil.convertObjectToJsonBytes(companyProfileDTO)))
             .andExpect(status().isOk());
 
         // Validate the CompanyProfile in the database
@@ -395,11 +401,12 @@ public class CompanyProfileResourceIT {
         int databaseSizeBeforeUpdate = companyProfileRepository.findAll().size();
 
         // Create the CompanyProfile
+        CompanyProfileDTO companyProfileDTO = companyProfileMapper.toDto(companyProfile);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCompanyProfileMockMvc.perform(put("/api/company-profiles")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(companyProfile)))
+            .content(TestUtil.convertObjectToJsonBytes(companyProfileDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the CompanyProfile in the database
@@ -414,7 +421,7 @@ public class CompanyProfileResourceIT {
     @Transactional
     public void deleteCompanyProfile() throws Exception {
         // Initialize the database
-        companyProfileService.save(companyProfile);
+        companyProfileRepository.saveAndFlush(companyProfile);
 
         int databaseSizeBeforeDelete = companyProfileRepository.findAll().size();
 
@@ -435,7 +442,7 @@ public class CompanyProfileResourceIT {
     @Transactional
     public void searchCompanyProfile() throws Exception {
         // Initialize the database
-        companyProfileService.save(companyProfile);
+        companyProfileRepository.saveAndFlush(companyProfile);
         when(mockCompanyProfileSearchRepository.search(queryStringQuery("id:" + companyProfile.getId())))
             .thenReturn(Collections.singletonList(companyProfile));
         // Search the companyProfile

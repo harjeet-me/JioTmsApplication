@@ -1,4 +1,3 @@
-import { ICustomer } from 'app/shared/model/customer.model';
 import { ITransactionsRecord } from 'app/shared/model/transactions-record.model';
 
 export interface IAccounts {
@@ -7,7 +6,8 @@ export interface IAccounts {
   over30?: number;
   over60?: number;
   over90?: number;
-  customer?: ICustomer;
+  customerCompany?: string;
+  customerId?: number;
   transactionsRecords?: ITransactionsRecord[];
 }
 
@@ -18,7 +18,8 @@ export class Accounts implements IAccounts {
     public over30?: number,
     public over60?: number,
     public over90?: number,
-    public customer?: ICustomer,
+    public customerCompany?: string,
+    public customerId?: number,
     public transactionsRecords?: ITransactionsRecord[]
   ) {}
 }

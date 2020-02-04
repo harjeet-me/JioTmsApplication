@@ -1,5 +1,4 @@
 import { Moment } from 'moment';
-import { IOwnerOperator } from 'app/shared/model/owner-operator.model';
 
 export interface IInsurance {
   id?: number;
@@ -9,7 +8,7 @@ export interface IInsurance {
   policyDocumentContentType?: string;
   policyDocument?: any;
   coverageStatement?: string;
-  ownerOperator?: IOwnerOperator;
+  ownerOperatorId?: number;
 }
 
 export class Insurance implements IInsurance {
@@ -21,6 +20,6 @@ export class Insurance implements IInsurance {
     public policyDocumentContentType?: string,
     public policyDocument?: any,
     public coverageStatement?: string,
-    public ownerOperator?: IOwnerOperator
+    public ownerOperatorId?: number
   ) {}
 }

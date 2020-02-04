@@ -35,7 +35,6 @@
             <tr>
             <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
             <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.files.content">Content</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.files.email">Email</span></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -45,11 +44,6 @@
                 <td>
                     <a *ngIf="files.content" (click)="openFile(files.contentContentType, files.content)" jhiTranslate="entity.action.open">open</a>
                     <span *ngIf="files.content">{{files.contentContentType}}, {{byteSize(files.content)}}</span>
-                </td>
-                <td>
-                    <div *ngIf="files.email">
-                        <a [routerLink]="['/email', files.email?.id, 'view' ]" >{{files.email?.id}}</a>
-                    </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group">

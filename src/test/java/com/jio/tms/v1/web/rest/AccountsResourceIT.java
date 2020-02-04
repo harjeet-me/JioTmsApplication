@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.Accounts;
 import com.jio.tms.v1.repository.AccountsRepository;
 import com.jio.tms.v1.repository.search.AccountsSearchRepository;
 import com.jio.tms.v1.service.AccountsService;
+import com.jio.tms.v1.service.dto.AccountsDTO;
+import com.jio.tms.v1.service.mapper.AccountsMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +54,9 @@ public class AccountsResourceIT {
 
     @Autowired
     private AccountsRepository accountsRepository;
+
+    @Autowired
+    private AccountsMapper accountsMapper;
 
     @Autowired
     private AccountsService accountsService;
@@ -135,9 +140,10 @@ public class AccountsResourceIT {
         int databaseSizeBeforeCreate = accountsRepository.findAll().size();
 
         // Create the Accounts
+        AccountsDTO accountsDTO = accountsMapper.toDto(accounts);
         restAccountsMockMvc.perform(post("/api/accounts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(accounts)))
+            .content(TestUtil.convertObjectToJsonBytes(accountsDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Accounts in the database
@@ -160,11 +166,12 @@ public class AccountsResourceIT {
 
         // Create the Accounts with an existing ID
         accounts.setId(1L);
+        AccountsDTO accountsDTO = accountsMapper.toDto(accounts);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAccountsMockMvc.perform(post("/api/accounts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(accounts)))
+            .content(TestUtil.convertObjectToJsonBytes(accountsDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Accounts in the database
@@ -222,9 +229,7 @@ public class AccountsResourceIT {
     @Transactional
     public void updateAccounts() throws Exception {
         // Initialize the database
-        accountsService.save(accounts);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockAccountsSearchRepository);
+        accountsRepository.saveAndFlush(accounts);
 
         int databaseSizeBeforeUpdate = accountsRepository.findAll().size();
 
@@ -237,10 +242,11 @@ public class AccountsResourceIT {
             .over30(UPDATED_OVER_30)
             .over60(UPDATED_OVER_60)
             .over90(UPDATED_OVER_90);
+        AccountsDTO accountsDTO = accountsMapper.toDto(updatedAccounts);
 
         restAccountsMockMvc.perform(put("/api/accounts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedAccounts)))
+            .content(TestUtil.convertObjectToJsonBytes(accountsDTO)))
             .andExpect(status().isOk());
 
         // Validate the Accounts in the database
@@ -262,11 +268,12 @@ public class AccountsResourceIT {
         int databaseSizeBeforeUpdate = accountsRepository.findAll().size();
 
         // Create the Accounts
+        AccountsDTO accountsDTO = accountsMapper.toDto(accounts);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAccountsMockMvc.perform(put("/api/accounts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(accounts)))
+            .content(TestUtil.convertObjectToJsonBytes(accountsDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Accounts in the database
@@ -281,7 +288,7 @@ public class AccountsResourceIT {
     @Transactional
     public void deleteAccounts() throws Exception {
         // Initialize the database
-        accountsService.save(accounts);
+        accountsRepository.saveAndFlush(accounts);
 
         int databaseSizeBeforeDelete = accountsRepository.findAll().size();
 
@@ -302,7 +309,7 @@ public class AccountsResourceIT {
     @Transactional
     public void searchAccounts() throws Exception {
         // Initialize the database
-        accountsService.save(accounts);
+        accountsRepository.saveAndFlush(accounts);
         when(mockAccountsSearchRepository.search(queryStringQuery("id:" + accounts.getId())))
             .thenReturn(Collections.singletonList(accounts));
         // Search the accounts

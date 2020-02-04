@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.InvoiceItem;
 import com.jio.tms.v1.repository.InvoiceItemRepository;
 import com.jio.tms.v1.repository.search.InvoiceItemSearchRepository;
 import com.jio.tms.v1.service.InvoiceItemService;
+import com.jio.tms.v1.service.dto.InvoiceItemDTO;
+import com.jio.tms.v1.service.mapper.InvoiceItemMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -58,6 +60,9 @@ public class InvoiceItemResourceIT {
 
     @Autowired
     private InvoiceItemRepository invoiceItemRepository;
+
+    @Autowired
+    private InvoiceItemMapper invoiceItemMapper;
 
     @Autowired
     private InvoiceItemService invoiceItemService;
@@ -145,9 +150,10 @@ public class InvoiceItemResourceIT {
         int databaseSizeBeforeCreate = invoiceItemRepository.findAll().size();
 
         // Create the InvoiceItem
+        InvoiceItemDTO invoiceItemDTO = invoiceItemMapper.toDto(invoiceItem);
         restInvoiceItemMockMvc.perform(post("/api/invoice-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(invoiceItem)))
+            .content(TestUtil.convertObjectToJsonBytes(invoiceItemDTO)))
             .andExpect(status().isCreated());
 
         // Validate the InvoiceItem in the database
@@ -172,11 +178,12 @@ public class InvoiceItemResourceIT {
 
         // Create the InvoiceItem with an existing ID
         invoiceItem.setId(1L);
+        InvoiceItemDTO invoiceItemDTO = invoiceItemMapper.toDto(invoiceItem);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restInvoiceItemMockMvc.perform(post("/api/invoice-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(invoiceItem)))
+            .content(TestUtil.convertObjectToJsonBytes(invoiceItemDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the InvoiceItem in the database
@@ -238,9 +245,7 @@ public class InvoiceItemResourceIT {
     @Transactional
     public void updateInvoiceItem() throws Exception {
         // Initialize the database
-        invoiceItemService.save(invoiceItem);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockInvoiceItemSearchRepository);
+        invoiceItemRepository.saveAndFlush(invoiceItem);
 
         int databaseSizeBeforeUpdate = invoiceItemRepository.findAll().size();
 
@@ -255,10 +260,11 @@ public class InvoiceItemResourceIT {
             .price(UPDATED_PRICE)
             .discount(UPDATED_DISCOUNT)
             .total(UPDATED_TOTAL);
+        InvoiceItemDTO invoiceItemDTO = invoiceItemMapper.toDto(updatedInvoiceItem);
 
         restInvoiceItemMockMvc.perform(put("/api/invoice-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedInvoiceItem)))
+            .content(TestUtil.convertObjectToJsonBytes(invoiceItemDTO)))
             .andExpect(status().isOk());
 
         // Validate the InvoiceItem in the database
@@ -282,11 +288,12 @@ public class InvoiceItemResourceIT {
         int databaseSizeBeforeUpdate = invoiceItemRepository.findAll().size();
 
         // Create the InvoiceItem
+        InvoiceItemDTO invoiceItemDTO = invoiceItemMapper.toDto(invoiceItem);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restInvoiceItemMockMvc.perform(put("/api/invoice-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(invoiceItem)))
+            .content(TestUtil.convertObjectToJsonBytes(invoiceItemDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the InvoiceItem in the database
@@ -301,7 +308,7 @@ public class InvoiceItemResourceIT {
     @Transactional
     public void deleteInvoiceItem() throws Exception {
         // Initialize the database
-        invoiceItemService.save(invoiceItem);
+        invoiceItemRepository.saveAndFlush(invoiceItem);
 
         int databaseSizeBeforeDelete = invoiceItemRepository.findAll().size();
 
@@ -322,7 +329,7 @@ public class InvoiceItemResourceIT {
     @Transactional
     public void searchInvoiceItem() throws Exception {
         // Initialize the database
-        invoiceItemService.save(invoiceItem);
+        invoiceItemRepository.saveAndFlush(invoiceItem);
         when(mockInvoiceItemSearchRepository.search(queryStringQuery("id:" + invoiceItem.getId())))
             .thenReturn(Collections.singletonList(invoiceItem));
         // Search the invoiceItem

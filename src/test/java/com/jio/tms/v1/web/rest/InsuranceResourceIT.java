@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.Insurance;
 import com.jio.tms.v1.repository.InsuranceRepository;
 import com.jio.tms.v1.repository.search.InsuranceSearchRepository;
 import com.jio.tms.v1.service.InsuranceService;
+import com.jio.tms.v1.service.dto.InsuranceDTO;
+import com.jio.tms.v1.service.mapper.InsuranceMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -60,6 +62,9 @@ public class InsuranceResourceIT {
 
     @Autowired
     private InsuranceRepository insuranceRepository;
+
+    @Autowired
+    private InsuranceMapper insuranceMapper;
 
     @Autowired
     private InsuranceService insuranceService;
@@ -147,9 +152,10 @@ public class InsuranceResourceIT {
         int databaseSizeBeforeCreate = insuranceRepository.findAll().size();
 
         // Create the Insurance
+        InsuranceDTO insuranceDTO = insuranceMapper.toDto(insurance);
         restInsuranceMockMvc.perform(post("/api/insurances")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(insurance)))
+            .content(TestUtil.convertObjectToJsonBytes(insuranceDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Insurance in the database
@@ -174,11 +180,12 @@ public class InsuranceResourceIT {
 
         // Create the Insurance with an existing ID
         insurance.setId(1L);
+        InsuranceDTO insuranceDTO = insuranceMapper.toDto(insurance);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restInsuranceMockMvc.perform(post("/api/insurances")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(insurance)))
+            .content(TestUtil.convertObjectToJsonBytes(insuranceDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Insurance in the database
@@ -240,9 +247,7 @@ public class InsuranceResourceIT {
     @Transactional
     public void updateInsurance() throws Exception {
         // Initialize the database
-        insuranceService.save(insurance);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockInsuranceSearchRepository);
+        insuranceRepository.saveAndFlush(insurance);
 
         int databaseSizeBeforeUpdate = insuranceRepository.findAll().size();
 
@@ -257,10 +262,11 @@ public class InsuranceResourceIT {
             .policyDocument(UPDATED_POLICY_DOCUMENT)
             .policyDocumentContentType(UPDATED_POLICY_DOCUMENT_CONTENT_TYPE)
             .coverageStatement(UPDATED_COVERAGE_STATEMENT);
+        InsuranceDTO insuranceDTO = insuranceMapper.toDto(updatedInsurance);
 
         restInsuranceMockMvc.perform(put("/api/insurances")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedInsurance)))
+            .content(TestUtil.convertObjectToJsonBytes(insuranceDTO)))
             .andExpect(status().isOk());
 
         // Validate the Insurance in the database
@@ -284,11 +290,12 @@ public class InsuranceResourceIT {
         int databaseSizeBeforeUpdate = insuranceRepository.findAll().size();
 
         // Create the Insurance
+        InsuranceDTO insuranceDTO = insuranceMapper.toDto(insurance);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restInsuranceMockMvc.perform(put("/api/insurances")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(insurance)))
+            .content(TestUtil.convertObjectToJsonBytes(insuranceDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Insurance in the database
@@ -303,7 +310,7 @@ public class InsuranceResourceIT {
     @Transactional
     public void deleteInsurance() throws Exception {
         // Initialize the database
-        insuranceService.save(insurance);
+        insuranceRepository.saveAndFlush(insurance);
 
         int databaseSizeBeforeDelete = insuranceRepository.findAll().size();
 
@@ -324,7 +331,7 @@ public class InsuranceResourceIT {
     @Transactional
     public void searchInsurance() throws Exception {
         // Initialize the database
-        insuranceService.save(insurance);
+        insuranceRepository.saveAndFlush(insurance);
         when(mockInsuranceSearchRepository.search(queryStringQuery("id:" + insurance.getId())))
             .thenReturn(Collections.singletonList(insurance));
         // Search the insurance

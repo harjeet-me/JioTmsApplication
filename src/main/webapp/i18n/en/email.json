@@ -20,8 +20,12 @@
       "userto": "Userto",
       "usercc": "Usercc",
       "userbcc": "Userbcc",
+      "subject": "Subject",
       "message": "Message",
-      "files": "Files"
+      "multipart": "Multipart",
+      "htmlBody": "Html Body",
+      "attachment": "Attachment",
+      "fileSystem": "File System"
     }
   }
 }

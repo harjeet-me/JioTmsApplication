@@ -1,29 +1,29 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.Equipment;
+import com.jio.tms.v1.service.dto.EquipmentDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link Equipment}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.Equipment}.
  */
 public interface EquipmentService {
 
     /**
      * Save a equipment.
      *
-     * @param equipment the entity to save.
+     * @param equipmentDTO the entity to save.
      * @return the persisted entity.
      */
-    Equipment save(Equipment equipment);
+    EquipmentDTO save(EquipmentDTO equipmentDTO);
 
     /**
      * Get all the equipment.
      *
      * @return the list of entities.
      */
-    List<Equipment> findAll();
+    List<EquipmentDTO> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface EquipmentService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Equipment> findOne(Long id);
+    Optional<EquipmentDTO> findOne(Long id);
 
     /**
      * Delete the "id" equipment.
@@ -48,5 +48,5 @@ public interface EquipmentService {
      * 
      * @return the list of entities.
      */
-    List<Equipment> search(String query);
+    List<EquipmentDTO> search(String query);
 }

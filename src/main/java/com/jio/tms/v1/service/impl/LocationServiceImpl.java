@@ -4,12 +4,15 @@ import com.jio.tms.v1.service.LocationService;
 import com.jio.tms.v1.domain.Location;
 import com.jio.tms.v1.repository.LocationRepository;
 import com.jio.tms.v1.repository.search.LocationSearchRepository;
+import com.jio.tms.v1.service.dto.LocationDTO;
+import com.jio.tms.v1.service.mapper.LocationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,24 +31,29 @@ public class LocationServiceImpl implements LocationService {
 
     private final LocationRepository locationRepository;
 
+    private final LocationMapper locationMapper;
+
     private final LocationSearchRepository locationSearchRepository;
 
-    public LocationServiceImpl(LocationRepository locationRepository, LocationSearchRepository locationSearchRepository) {
+    public LocationServiceImpl(LocationRepository locationRepository, LocationMapper locationMapper, LocationSearchRepository locationSearchRepository) {
         this.locationRepository = locationRepository;
+        this.locationMapper = locationMapper;
         this.locationSearchRepository = locationSearchRepository;
     }
 
     /**
      * Save a location.
      *
-     * @param location the entity to save.
+     * @param locationDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public Location save(Location location) {
-        log.debug("Request to save Location : {}", location);
-        Location result = locationRepository.save(location);
-        locationSearchRepository.save(result);
+    public LocationDTO save(LocationDTO locationDTO) {
+        log.debug("Request to save Location : {}", locationDTO);
+        Location location = locationMapper.toEntity(locationDTO);
+        location = locationRepository.save(location);
+        LocationDTO result = locationMapper.toDto(location);
+        locationSearchRepository.save(location);
         return result;
     }
 
@@ -56,9 +64,11 @@ public class LocationServiceImpl implements LocationService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Location> findAll() {
+    public List<LocationDTO> findAll() {
         log.debug("Request to get all Locations");
-        return locationRepository.findAll();
+        return locationRepository.findAll().stream()
+            .map(locationMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -70,9 +80,10 @@ public class LocationServiceImpl implements LocationService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Location> findOne(Long id) {
+    public Optional<LocationDTO> findOne(Long id) {
         log.debug("Request to get Location : {}", id);
-        return locationRepository.findById(id);
+        return locationRepository.findById(id)
+            .map(locationMapper::toDto);
     }
 
     /**
@@ -95,10 +106,11 @@ public class LocationServiceImpl implements LocationService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Location> search(String query) {
+    public List<LocationDTO> search(String query) {
         log.debug("Request to search Locations for query {}", query);
         return StreamSupport
             .stream(locationSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(locationMapper::toDto)
             .collect(Collectors.toList());
     }
 }

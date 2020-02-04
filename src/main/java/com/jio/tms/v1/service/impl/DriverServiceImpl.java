@@ -4,12 +4,15 @@ import com.jio.tms.v1.service.DriverService;
 import com.jio.tms.v1.domain.Driver;
 import com.jio.tms.v1.repository.DriverRepository;
 import com.jio.tms.v1.repository.search.DriverSearchRepository;
+import com.jio.tms.v1.service.dto.DriverDTO;
+import com.jio.tms.v1.service.mapper.DriverMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,24 +31,29 @@ public class DriverServiceImpl implements DriverService {
 
     private final DriverRepository driverRepository;
 
+    private final DriverMapper driverMapper;
+
     private final DriverSearchRepository driverSearchRepository;
 
-    public DriverServiceImpl(DriverRepository driverRepository, DriverSearchRepository driverSearchRepository) {
+    public DriverServiceImpl(DriverRepository driverRepository, DriverMapper driverMapper, DriverSearchRepository driverSearchRepository) {
         this.driverRepository = driverRepository;
+        this.driverMapper = driverMapper;
         this.driverSearchRepository = driverSearchRepository;
     }
 
     /**
      * Save a driver.
      *
-     * @param driver the entity to save.
+     * @param driverDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public Driver save(Driver driver) {
-        log.debug("Request to save Driver : {}", driver);
-        Driver result = driverRepository.save(driver);
-        driverSearchRepository.save(result);
+    public DriverDTO save(DriverDTO driverDTO) {
+        log.debug("Request to save Driver : {}", driverDTO);
+        Driver driver = driverMapper.toEntity(driverDTO);
+        driver = driverRepository.save(driver);
+        DriverDTO result = driverMapper.toDto(driver);
+        driverSearchRepository.save(driver);
         return result;
     }
 
@@ -56,9 +64,11 @@ public class DriverServiceImpl implements DriverService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Driver> findAll() {
+    public List<DriverDTO> findAll() {
         log.debug("Request to get all Drivers");
-        return driverRepository.findAll();
+        return driverRepository.findAll().stream()
+            .map(driverMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -70,9 +80,10 @@ public class DriverServiceImpl implements DriverService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Driver> findOne(Long id) {
+    public Optional<DriverDTO> findOne(Long id) {
         log.debug("Request to get Driver : {}", id);
-        return driverRepository.findById(id);
+        return driverRepository.findById(id)
+            .map(driverMapper::toDto);
     }
 
     /**
@@ -95,10 +106,11 @@ public class DriverServiceImpl implements DriverService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Driver> search(String query) {
+    public List<DriverDTO> search(String query) {
         log.debug("Request to search Drivers for query {}", query);
         return StreamSupport
             .stream(driverSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(driverMapper::toDto)
             .collect(Collectors.toList());
     }
 }

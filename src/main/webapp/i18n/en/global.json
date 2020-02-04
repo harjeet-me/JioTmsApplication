@@ -25,6 +25,7 @@
         "reference": "Reference",
         "email": "Email",
         "files": "Files",
+        "fileSystem": "File System",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

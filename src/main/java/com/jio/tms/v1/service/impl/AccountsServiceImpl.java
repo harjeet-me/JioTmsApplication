@@ -4,12 +4,15 @@ import com.jio.tms.v1.service.AccountsService;
 import com.jio.tms.v1.domain.Accounts;
 import com.jio.tms.v1.repository.AccountsRepository;
 import com.jio.tms.v1.repository.search.AccountsSearchRepository;
+import com.jio.tms.v1.service.dto.AccountsDTO;
+import com.jio.tms.v1.service.mapper.AccountsMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,24 +31,29 @@ public class AccountsServiceImpl implements AccountsService {
 
     private final AccountsRepository accountsRepository;
 
+    private final AccountsMapper accountsMapper;
+
     private final AccountsSearchRepository accountsSearchRepository;
 
-    public AccountsServiceImpl(AccountsRepository accountsRepository, AccountsSearchRepository accountsSearchRepository) {
+    public AccountsServiceImpl(AccountsRepository accountsRepository, AccountsMapper accountsMapper, AccountsSearchRepository accountsSearchRepository) {
         this.accountsRepository = accountsRepository;
+        this.accountsMapper = accountsMapper;
         this.accountsSearchRepository = accountsSearchRepository;
     }
 
     /**
      * Save a accounts.
      *
-     * @param accounts the entity to save.
+     * @param accountsDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public Accounts save(Accounts accounts) {
-        log.debug("Request to save Accounts : {}", accounts);
-        Accounts result = accountsRepository.save(accounts);
-        accountsSearchRepository.save(result);
+    public AccountsDTO save(AccountsDTO accountsDTO) {
+        log.debug("Request to save Accounts : {}", accountsDTO);
+        Accounts accounts = accountsMapper.toEntity(accountsDTO);
+        accounts = accountsRepository.save(accounts);
+        AccountsDTO result = accountsMapper.toDto(accounts);
+        accountsSearchRepository.save(accounts);
         return result;
     }
 
@@ -56,9 +64,11 @@ public class AccountsServiceImpl implements AccountsService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Accounts> findAll() {
+    public List<AccountsDTO> findAll() {
         log.debug("Request to get all Accounts");
-        return accountsRepository.findAll();
+        return accountsRepository.findAll().stream()
+            .map(accountsMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -70,9 +80,10 @@ public class AccountsServiceImpl implements AccountsService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Accounts> findOne(Long id) {
+    public Optional<AccountsDTO> findOne(Long id) {
         log.debug("Request to get Accounts : {}", id);
-        return accountsRepository.findById(id);
+        return accountsRepository.findById(id)
+            .map(accountsMapper::toDto);
     }
 
     /**
@@ -95,10 +106,11 @@ public class AccountsServiceImpl implements AccountsService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Accounts> search(String query) {
+    public List<AccountsDTO> search(String query) {
         log.debug("Request to search Accounts for query {}", query);
         return StreamSupport
             .stream(accountsSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(accountsMapper::toDto)
             .collect(Collectors.toList());
     }
 }

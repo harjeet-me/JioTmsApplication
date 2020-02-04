@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.ProductItem;
 import com.jio.tms.v1.repository.ProductItemRepository;
 import com.jio.tms.v1.repository.search.ProductItemSearchRepository;
 import com.jio.tms.v1.service.ProductItemService;
+import com.jio.tms.v1.service.dto.ProductItemDTO;
+import com.jio.tms.v1.service.mapper.ProductItemMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -55,6 +57,9 @@ public class ProductItemResourceIT {
 
     @Autowired
     private ProductItemRepository productItemRepository;
+
+    @Autowired
+    private ProductItemMapper productItemMapper;
 
     @Autowired
     private ProductItemService productItemService;
@@ -140,9 +145,10 @@ public class ProductItemResourceIT {
         int databaseSizeBeforeCreate = productItemRepository.findAll().size();
 
         // Create the ProductItem
+        ProductItemDTO productItemDTO = productItemMapper.toDto(productItem);
         restProductItemMockMvc.perform(post("/api/product-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(productItem)))
+            .content(TestUtil.convertObjectToJsonBytes(productItemDTO)))
             .andExpect(status().isCreated());
 
         // Validate the ProductItem in the database
@@ -166,11 +172,12 @@ public class ProductItemResourceIT {
 
         // Create the ProductItem with an existing ID
         productItem.setId(1L);
+        ProductItemDTO productItemDTO = productItemMapper.toDto(productItem);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProductItemMockMvc.perform(post("/api/product-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(productItem)))
+            .content(TestUtil.convertObjectToJsonBytes(productItemDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the ProductItem in the database
@@ -230,9 +237,7 @@ public class ProductItemResourceIT {
     @Transactional
     public void updateProductItem() throws Exception {
         // Initialize the database
-        productItemService.save(productItem);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockProductItemSearchRepository);
+        productItemRepository.saveAndFlush(productItem);
 
         int databaseSizeBeforeUpdate = productItemRepository.findAll().size();
 
@@ -246,10 +251,11 @@ public class ProductItemResourceIT {
             .qty(UPDATED_QTY)
             .price(UPDATED_PRICE)
             .discount(UPDATED_DISCOUNT);
+        ProductItemDTO productItemDTO = productItemMapper.toDto(updatedProductItem);
 
         restProductItemMockMvc.perform(put("/api/product-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedProductItem)))
+            .content(TestUtil.convertObjectToJsonBytes(productItemDTO)))
             .andExpect(status().isOk());
 
         // Validate the ProductItem in the database
@@ -272,11 +278,12 @@ public class ProductItemResourceIT {
         int databaseSizeBeforeUpdate = productItemRepository.findAll().size();
 
         // Create the ProductItem
+        ProductItemDTO productItemDTO = productItemMapper.toDto(productItem);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProductItemMockMvc.perform(put("/api/product-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(productItem)))
+            .content(TestUtil.convertObjectToJsonBytes(productItemDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the ProductItem in the database
@@ -291,7 +298,7 @@ public class ProductItemResourceIT {
     @Transactional
     public void deleteProductItem() throws Exception {
         // Initialize the database
-        productItemService.save(productItem);
+        productItemRepository.saveAndFlush(productItem);
 
         int databaseSizeBeforeDelete = productItemRepository.findAll().size();
 
@@ -312,7 +319,7 @@ public class ProductItemResourceIT {
     @Transactional
     public void searchProductItem() throws Exception {
         // Initialize the database
-        productItemService.save(productItem);
+        productItemRepository.saveAndFlush(productItem);
         when(mockProductItemSearchRepository.search(queryStringQuery("id:" + productItem.getId())))
             .thenReturn(Collections.singletonList(productItem));
         // Search the productItem

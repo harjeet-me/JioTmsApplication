@@ -134,37 +134,37 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.reference1" for="field_reference1">Reference 1</label>
-                    <select class="form-control" id="field_reference1" name="reference1" formControlName="reference1">
+                    <select class="form-control" id="field_reference1" name="reference1" formControlName="reference1Id">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="referenceOption.id === editForm.get('reference1')!.value?.id ? editForm.get('reference1')!.value : referenceOption" *ngFor="let referenceOption of reference1s; trackBy: trackById">{{referenceOption.reference}}</option>
+                        <option [ngValue]="referenceOption.id" *ngFor="let referenceOption of reference1s; trackBy: trackById">{{referenceOption.reference}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.reference2" for="field_reference2">Reference 2</label>
-                    <select class="form-control" id="field_reference2" name="reference2" formControlName="reference2">
+                    <select class="form-control" id="field_reference2" name="reference2" formControlName="reference2Id">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="referenceOption.id === editForm.get('reference2')!.value?.id ? editForm.get('reference2')!.value : referenceOption" *ngFor="let referenceOption of reference2s; trackBy: trackById">{{referenceOption.reference}}</option>
+                        <option [ngValue]="referenceOption.id" *ngFor="let referenceOption of reference2s; trackBy: trackById">{{referenceOption.reference}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.reference3" for="field_reference3">Reference 3</label>
-                    <select class="form-control" id="field_reference3" name="reference3" formControlName="reference3">
+                    <select class="form-control" id="field_reference3" name="reference3" formControlName="reference3Id">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="referenceOption.id === editForm.get('reference3')!.value?.id ? editForm.get('reference3')!.value : referenceOption" *ngFor="let referenceOption of reference3s; trackBy: trackById">{{referenceOption.reference}}</option>
+                        <option [ngValue]="referenceOption.id" *ngFor="let referenceOption of reference3s; trackBy: trackById">{{referenceOption.reference}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.customer" for="field_customer">Customer</label>
-                    <select class="form-control" id="field_customer" name="customer" formControlName="customer">
+                    <select class="form-control" id="field_customer" name="customer" formControlName="customerId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="customerOption.id === editForm.get('customer')!.value?.id ? editForm.get('customer')!.value : customerOption" *ngFor="let customerOption of customers; trackBy: trackById">{{customerOption.company}}</option>
+                        <option [ngValue]="customerOption.id" *ngFor="let customerOption of customers; trackBy: trackById">{{customerOption.company}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.trip" for="field_trip">Trip</label>
-                    <select class="form-control" id="field_trip" name="trip" formControlName="trip">
+                    <select class="form-control" id="field_trip" name="trip" formControlName="tripId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="tripOption.id === editForm.get('trip')!.value?.id ? editForm.get('trip')!.value : tripOption" *ngFor="let tripOption of trips; trackBy: trackById">{{tripOption.id}}</option>
+                        <option [ngValue]="tripOption.id" *ngFor="let tripOption of trips; trackBy: trackById">{{tripOption.id}}</option>
                     </select>
                 </div>
             </div>
