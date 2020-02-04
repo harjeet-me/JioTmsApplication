@@ -7,18 +7,10 @@
             "fieldTypeBlobContent": "any"
         }
     ],
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "email",
-            "otherEntityRelationshipName": "files",
-            "relationshipName": "email",
-            "otherEntityField": "id"
-        }
-    ],
+    "relationships": [],
     "changelogDate": "20200202070557",
     "entityTableName": "files",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

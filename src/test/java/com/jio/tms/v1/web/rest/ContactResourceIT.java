@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.Contact;
 import com.jio.tms.v1.repository.ContactRepository;
 import com.jio.tms.v1.repository.search.ContactSearchRepository;
 import com.jio.tms.v1.service.ContactService;
+import com.jio.tms.v1.service.dto.ContactDTO;
+import com.jio.tms.v1.service.mapper.ContactMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -62,6 +64,9 @@ public class ContactResourceIT {
 
     @Autowired
     private ContactRepository contactRepository;
+
+    @Autowired
+    private ContactMapper contactMapper;
 
     @Autowired
     private ContactService contactService;
@@ -151,9 +156,10 @@ public class ContactResourceIT {
         int databaseSizeBeforeCreate = contactRepository.findAll().size();
 
         // Create the Contact
+        ContactDTO contactDTO = contactMapper.toDto(contact);
         restContactMockMvc.perform(post("/api/contacts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(contact)))
+            .content(TestUtil.convertObjectToJsonBytes(contactDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Contact in the database
@@ -179,11 +185,12 @@ public class ContactResourceIT {
 
         // Create the Contact with an existing ID
         contact.setId(1L);
+        ContactDTO contactDTO = contactMapper.toDto(contact);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restContactMockMvc.perform(post("/api/contacts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(contact)))
+            .content(TestUtil.convertObjectToJsonBytes(contactDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Contact in the database
@@ -247,9 +254,7 @@ public class ContactResourceIT {
     @Transactional
     public void updateContact() throws Exception {
         // Initialize the database
-        contactService.save(contact);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockContactSearchRepository);
+        contactRepository.saveAndFlush(contact);
 
         int databaseSizeBeforeUpdate = contactRepository.findAll().size();
 
@@ -265,10 +270,11 @@ public class ContactResourceIT {
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .remarks(UPDATED_REMARKS)
             .preferredTime(UPDATED_PREFERRED_TIME);
+        ContactDTO contactDTO = contactMapper.toDto(updatedContact);
 
         restContactMockMvc.perform(put("/api/contacts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedContact)))
+            .content(TestUtil.convertObjectToJsonBytes(contactDTO)))
             .andExpect(status().isOk());
 
         // Validate the Contact in the database
@@ -293,11 +299,12 @@ public class ContactResourceIT {
         int databaseSizeBeforeUpdate = contactRepository.findAll().size();
 
         // Create the Contact
+        ContactDTO contactDTO = contactMapper.toDto(contact);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restContactMockMvc.perform(put("/api/contacts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(contact)))
+            .content(TestUtil.convertObjectToJsonBytes(contactDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Contact in the database
@@ -312,7 +319,7 @@ public class ContactResourceIT {
     @Transactional
     public void deleteContact() throws Exception {
         // Initialize the database
-        contactService.save(contact);
+        contactRepository.saveAndFlush(contact);
 
         int databaseSizeBeforeDelete = contactRepository.findAll().size();
 
@@ -333,7 +340,7 @@ public class ContactResourceIT {
     @Transactional
     public void searchContact() throws Exception {
         // Initialize the database
-        contactService.save(contact);
+        contactRepository.saveAndFlush(contact);
         when(mockContactSearchRepository.search(queryStringQuery("id:" + contact.getId())))
             .thenReturn(Collections.singletonList(contact));
         // Search the contact

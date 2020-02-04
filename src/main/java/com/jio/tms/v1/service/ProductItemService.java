@@ -1,29 +1,29 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.ProductItem;
+import com.jio.tms.v1.service.dto.ProductItemDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link ProductItem}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.ProductItem}.
  */
 public interface ProductItemService {
 
     /**
      * Save a productItem.
      *
-     * @param productItem the entity to save.
+     * @param productItemDTO the entity to save.
      * @return the persisted entity.
      */
-    ProductItem save(ProductItem productItem);
+    ProductItemDTO save(ProductItemDTO productItemDTO);
 
     /**
      * Get all the productItems.
      *
      * @return the list of entities.
      */
-    List<ProductItem> findAll();
+    List<ProductItemDTO> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface ProductItemService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<ProductItem> findOne(Long id);
+    Optional<ProductItemDTO> findOne(Long id);
 
     /**
      * Delete the "id" productItem.
@@ -48,5 +48,5 @@ public interface ProductItemService {
      * 
      * @return the list of entities.
      */
-    List<ProductItem> search(String query);
+    List<ProductItemDTO> search(String query);
 }

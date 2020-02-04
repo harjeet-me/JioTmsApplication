@@ -67,12 +67,12 @@ export class TripUpdateComponent implements OnInit {
     containerSize: [],
     numbersOfContainer: [],
     comments: [],
-    pickupLocation: [],
-    dropLocation: [],
-    customer: [],
-    driver: [],
-    equipment: [],
-    ownerOperator: []
+    pickupLocationId: [],
+    dropLocationId: [],
+    customerId: [],
+    driverId: [],
+    equipmentId: [],
+    ownerOperatorId: []
   });
 
   constructor(
@@ -101,11 +101,11 @@ export class TripUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: ILocation[]) => {
-          if (!trip.pickupLocation || !trip.pickupLocation.id) {
+          if (!trip.pickupLocationId) {
             this.pickuplocations = resBody;
           } else {
             this.locationService
-              .find(trip.pickupLocation.id)
+              .find(trip.pickupLocationId)
               .pipe(
                 map((subRes: HttpResponse<ILocation>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -125,11 +125,11 @@ export class TripUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: ILocation[]) => {
-          if (!trip.dropLocation || !trip.dropLocation.id) {
+          if (!trip.dropLocationId) {
             this.droplocations = resBody;
           } else {
             this.locationService
-              .find(trip.dropLocation.id)
+              .find(trip.dropLocationId)
               .pipe(
                 map((subRes: HttpResponse<ILocation>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -201,12 +201,12 @@ export class TripUpdateComponent implements OnInit {
       containerSize: trip.containerSize,
       numbersOfContainer: trip.numbersOfContainer,
       comments: trip.comments,
-      pickupLocation: trip.pickupLocation,
-      dropLocation: trip.dropLocation,
-      customer: trip.customer,
-      driver: trip.driver,
-      equipment: trip.equipment,
-      ownerOperator: trip.ownerOperator
+      pickupLocationId: trip.pickupLocationId,
+      dropLocationId: trip.dropLocationId,
+      customerId: trip.customerId,
+      driverId: trip.driverId,
+      equipmentId: trip.equipmentId,
+      ownerOperatorId: trip.ownerOperatorId
     });
   }
 
@@ -276,12 +276,12 @@ export class TripUpdateComponent implements OnInit {
       containerSize: this.editForm.get(['containerSize'])!.value,
       numbersOfContainer: this.editForm.get(['numbersOfContainer'])!.value,
       comments: this.editForm.get(['comments'])!.value,
-      pickupLocation: this.editForm.get(['pickupLocation'])!.value,
-      dropLocation: this.editForm.get(['dropLocation'])!.value,
-      customer: this.editForm.get(['customer'])!.value,
-      driver: this.editForm.get(['driver'])!.value,
-      equipment: this.editForm.get(['equipment'])!.value,
-      ownerOperator: this.editForm.get(['ownerOperator'])!.value
+      pickupLocationId: this.editForm.get(['pickupLocationId'])!.value,
+      dropLocationId: this.editForm.get(['dropLocationId'])!.value,
+      customerId: this.editForm.get(['customerId'])!.value,
+      driverId: this.editForm.get(['driverId'])!.value,
+      equipmentId: this.editForm.get(['equipmentId'])!.value,
+      ownerOperatorId: this.editForm.get(['ownerOperatorId'])!.value
     };
   }
 

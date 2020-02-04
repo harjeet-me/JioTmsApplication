@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.Invoice;
 import com.jio.tms.v1.repository.InvoiceRepository;
 import com.jio.tms.v1.repository.search.InvoiceSearchRepository;
 import com.jio.tms.v1.service.InvoiceService;
+import com.jio.tms.v1.service.dto.InvoiceDTO;
+import com.jio.tms.v1.service.mapper.InvoiceMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -99,6 +103,9 @@ public class InvoiceResourceIT {
 
     @Autowired
     private InvoiceRepository invoiceRepository;
+
+    @Autowired
+    private InvoiceMapper invoiceMapper;
 
     @Autowired
     private InvoiceService invoiceService;
@@ -210,9 +217,10 @@ public class InvoiceResourceIT {
         int databaseSizeBeforeCreate = invoiceRepository.findAll().size();
 
         // Create the Invoice
+        InvoiceDTO invoiceDTO = invoiceMapper.toDto(invoice);
         restInvoiceMockMvc.perform(post("/api/invoices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(invoice)))
+            .content(TestUtil.convertObjectToJsonBytes(invoiceDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Invoice in the database
@@ -249,11 +257,12 @@ public class InvoiceResourceIT {
 
         // Create the Invoice with an existing ID
         invoice.setId(1L);
+        InvoiceDTO invoiceDTO = invoiceMapper.toDto(invoice);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restInvoiceMockMvc.perform(post("/api/invoices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(invoice)))
+            .content(TestUtil.convertObjectToJsonBytes(invoiceDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Invoice in the database
@@ -339,9 +348,7 @@ public class InvoiceResourceIT {
     @Transactional
     public void updateInvoice() throws Exception {
         // Initialize the database
-        invoiceService.save(invoice);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockInvoiceSearchRepository);
+        invoiceRepository.saveAndFlush(invoice);
 
         int databaseSizeBeforeUpdate = invoiceRepository.findAll().size();
 
@@ -368,10 +375,11 @@ public class InvoiceResourceIT {
             .invoicePdf(UPDATED_INVOICE_PDF)
             .invoicePdfContentType(UPDATED_INVOICE_PDF_CONTENT_TYPE)
             .remarks(UPDATED_REMARKS);
+        InvoiceDTO invoiceDTO = invoiceMapper.toDto(updatedInvoice);
 
         restInvoiceMockMvc.perform(put("/api/invoices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedInvoice)))
+            .content(TestUtil.convertObjectToJsonBytes(invoiceDTO)))
             .andExpect(status().isOk());
 
         // Validate the Invoice in the database
@@ -407,11 +415,12 @@ public class InvoiceResourceIT {
         int databaseSizeBeforeUpdate = invoiceRepository.findAll().size();
 
         // Create the Invoice
+        InvoiceDTO invoiceDTO = invoiceMapper.toDto(invoice);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restInvoiceMockMvc.perform(put("/api/invoices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(invoice)))
+            .content(TestUtil.convertObjectToJsonBytes(invoiceDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Invoice in the database
@@ -426,7 +435,7 @@ public class InvoiceResourceIT {
     @Transactional
     public void deleteInvoice() throws Exception {
         // Initialize the database
-        invoiceService.save(invoice);
+        invoiceRepository.saveAndFlush(invoice);
 
         int databaseSizeBeforeDelete = invoiceRepository.findAll().size();
 
@@ -447,9 +456,9 @@ public class InvoiceResourceIT {
     @Transactional
     public void searchInvoice() throws Exception {
         // Initialize the database
-        invoiceService.save(invoice);
-        when(mockInvoiceSearchRepository.search(queryStringQuery("id:" + invoice.getId())))
-            .thenReturn(Collections.singletonList(invoice));
+        invoiceRepository.saveAndFlush(invoice);
+        when(mockInvoiceSearchRepository.search(queryStringQuery("id:" + invoice.getId()), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(invoice), PageRequest.of(0, 1), 1));
         // Search the invoice
         restInvoiceMockMvc.perform(get("/api/_search/invoices?query=id:" + invoice.getId()))
             .andExpect(status().isOk())

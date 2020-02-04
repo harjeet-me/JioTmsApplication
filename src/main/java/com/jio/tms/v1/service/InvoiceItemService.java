@@ -1,29 +1,29 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.InvoiceItem;
+import com.jio.tms.v1.service.dto.InvoiceItemDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link InvoiceItem}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.InvoiceItem}.
  */
 public interface InvoiceItemService {
 
     /**
      * Save a invoiceItem.
      *
-     * @param invoiceItem the entity to save.
+     * @param invoiceItemDTO the entity to save.
      * @return the persisted entity.
      */
-    InvoiceItem save(InvoiceItem invoiceItem);
+    InvoiceItemDTO save(InvoiceItemDTO invoiceItemDTO);
 
     /**
      * Get all the invoiceItems.
      *
      * @return the list of entities.
      */
-    List<InvoiceItem> findAll();
+    List<InvoiceItemDTO> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface InvoiceItemService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<InvoiceItem> findOne(Long id);
+    Optional<InvoiceItemDTO> findOne(Long id);
 
     /**
      * Delete the "id" invoiceItem.
@@ -48,5 +48,5 @@ public interface InvoiceItemService {
      * 
      * @return the list of entities.
      */
-    List<InvoiceItem> search(String query);
+    List<InvoiceItemDTO> search(String query);
 }

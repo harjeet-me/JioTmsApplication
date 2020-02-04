@@ -54,8 +54,8 @@
                 <td>{{invoiceItem.discount}}</td>
                 <td>{{invoiceItem.total}}</td>
                 <td>
-                    <div *ngIf="invoiceItem.invoice">
-                        <a [routerLink]="['/invoice', invoiceItem.invoice?.id, 'view' ]" >{{invoiceItem.invoice?.id}}</a>
+                    <div *ngIf="invoiceItem.invoiceId">
+                        <a [routerLink]="['/invoice', invoiceItem.invoiceId , 'view' ]" >{{invoiceItem.invoiceId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

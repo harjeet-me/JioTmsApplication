@@ -9,7 +9,7 @@
     "relationships": [],
     "changelogDate": "20200201074857",
     "entityTableName": "invoice_ref",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

@@ -4,16 +4,17 @@ import com.jio.tms.v1.service.InvoiceService;
 import com.jio.tms.v1.domain.Invoice;
 import com.jio.tms.v1.repository.InvoiceRepository;
 import com.jio.tms.v1.repository.search.InvoiceSearchRepository;
+import com.jio.tms.v1.service.dto.InvoiceDTO;
+import com.jio.tms.v1.service.mapper.InvoiceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -28,37 +29,44 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
 
+    private final InvoiceMapper invoiceMapper;
+
     private final InvoiceSearchRepository invoiceSearchRepository;
 
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, InvoiceSearchRepository invoiceSearchRepository) {
+    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, InvoiceMapper invoiceMapper, InvoiceSearchRepository invoiceSearchRepository) {
         this.invoiceRepository = invoiceRepository;
+        this.invoiceMapper = invoiceMapper;
         this.invoiceSearchRepository = invoiceSearchRepository;
     }
 
     /**
      * Save a invoice.
      *
-     * @param invoice the entity to save.
+     * @param invoiceDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public Invoice save(Invoice invoice) {
-        log.debug("Request to save Invoice : {}", invoice);
-        Invoice result = invoiceRepository.save(invoice);
-        invoiceSearchRepository.save(result);
+    public InvoiceDTO save(InvoiceDTO invoiceDTO) {
+        log.debug("Request to save Invoice : {}", invoiceDTO);
+        Invoice invoice = invoiceMapper.toEntity(invoiceDTO);
+        invoice = invoiceRepository.save(invoice);
+        InvoiceDTO result = invoiceMapper.toDto(invoice);
+        invoiceSearchRepository.save(invoice);
         return result;
     }
 
     /**
      * Get all the invoices.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Invoice> findAll() {
+    public Page<InvoiceDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Invoices");
-        return invoiceRepository.findAll();
+        return invoiceRepository.findAll(pageable)
+            .map(invoiceMapper::toDto);
     }
 
 
@@ -70,9 +78,10 @@ public class InvoiceServiceImpl implements InvoiceService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Invoice> findOne(Long id) {
+    public Optional<InvoiceDTO> findOne(Long id) {
         log.debug("Request to get Invoice : {}", id);
-        return invoiceRepository.findById(id);
+        return invoiceRepository.findById(id)
+            .map(invoiceMapper::toDto);
     }
 
     /**
@@ -91,14 +100,14 @@ public class InvoiceServiceImpl implements InvoiceService {
      * Search for the invoice corresponding to the query.
      *
      * @param query the query of the search.
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Invoice> search(String query) {
-        log.debug("Request to search Invoices for query {}", query);
-        return StreamSupport
-            .stream(invoiceSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public Page<InvoiceDTO> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of Invoices for query {}", query);
+        return invoiceSearchRepository.search(queryStringQuery(query), pageable)
+            .map(invoiceMapper::toDto);
     }
 }

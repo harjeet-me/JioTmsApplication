@@ -1,6 +1,6 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.Trip;
+import com.jio.tms.v1.service.dto.TripDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,17 +8,17 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link Trip}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.Trip}.
  */
 public interface TripService {
 
     /**
      * Save a trip.
      *
-     * @param trip the entity to save.
+     * @param tripDTO the entity to save.
      * @return the persisted entity.
      */
-    Trip save(Trip trip);
+    TripDTO save(TripDTO tripDTO);
 
     /**
      * Get all the trips.
@@ -26,7 +26,7 @@ public interface TripService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<Trip> findAll(Pageable pageable);
+    Page<TripDTO> findAll(Pageable pageable);
 
 
     /**
@@ -35,7 +35,7 @@ public interface TripService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Trip> findOne(Long id);
+    Optional<TripDTO> findOne(Long id);
 
     /**
      * Delete the "id" trip.
@@ -52,5 +52,5 @@ public interface TripService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<Trip> search(String query, Pageable pageable);
+    Page<TripDTO> search(String query, Pageable pageable);
 }

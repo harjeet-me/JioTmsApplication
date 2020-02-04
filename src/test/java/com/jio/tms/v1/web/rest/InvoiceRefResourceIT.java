@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.InvoiceRef;
 import com.jio.tms.v1.repository.InvoiceRefRepository;
 import com.jio.tms.v1.repository.search.InvoiceRefSearchRepository;
 import com.jio.tms.v1.service.InvoiceRefService;
+import com.jio.tms.v1.service.dto.InvoiceRefDTO;
+import com.jio.tms.v1.service.mapper.InvoiceRefMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +45,9 @@ public class InvoiceRefResourceIT {
 
     @Autowired
     private InvoiceRefRepository invoiceRefRepository;
+
+    @Autowired
+    private InvoiceRefMapper invoiceRefMapper;
 
     @Autowired
     private InvoiceRefService invoiceRefService;
@@ -120,9 +125,10 @@ public class InvoiceRefResourceIT {
         int databaseSizeBeforeCreate = invoiceRefRepository.findAll().size();
 
         // Create the InvoiceRef
+        InvoiceRefDTO invoiceRefDTO = invoiceRefMapper.toDto(invoiceRef);
         restInvoiceRefMockMvc.perform(post("/api/invoice-refs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(invoiceRef)))
+            .content(TestUtil.convertObjectToJsonBytes(invoiceRefDTO)))
             .andExpect(status().isCreated());
 
         // Validate the InvoiceRef in the database
@@ -142,11 +148,12 @@ public class InvoiceRefResourceIT {
 
         // Create the InvoiceRef with an existing ID
         invoiceRef.setId(1L);
+        InvoiceRefDTO invoiceRefDTO = invoiceRefMapper.toDto(invoiceRef);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restInvoiceRefMockMvc.perform(post("/api/invoice-refs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(invoiceRef)))
+            .content(TestUtil.convertObjectToJsonBytes(invoiceRefDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the InvoiceRef in the database
@@ -198,9 +205,7 @@ public class InvoiceRefResourceIT {
     @Transactional
     public void updateInvoiceRef() throws Exception {
         // Initialize the database
-        invoiceRefService.save(invoiceRef);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockInvoiceRefSearchRepository);
+        invoiceRefRepository.saveAndFlush(invoiceRef);
 
         int databaseSizeBeforeUpdate = invoiceRefRepository.findAll().size();
 
@@ -210,10 +215,11 @@ public class InvoiceRefResourceIT {
         em.detach(updatedInvoiceRef);
         updatedInvoiceRef
             .refName(UPDATED_REF_NAME);
+        InvoiceRefDTO invoiceRefDTO = invoiceRefMapper.toDto(updatedInvoiceRef);
 
         restInvoiceRefMockMvc.perform(put("/api/invoice-refs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedInvoiceRef)))
+            .content(TestUtil.convertObjectToJsonBytes(invoiceRefDTO)))
             .andExpect(status().isOk());
 
         // Validate the InvoiceRef in the database
@@ -232,11 +238,12 @@ public class InvoiceRefResourceIT {
         int databaseSizeBeforeUpdate = invoiceRefRepository.findAll().size();
 
         // Create the InvoiceRef
+        InvoiceRefDTO invoiceRefDTO = invoiceRefMapper.toDto(invoiceRef);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restInvoiceRefMockMvc.perform(put("/api/invoice-refs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(invoiceRef)))
+            .content(TestUtil.convertObjectToJsonBytes(invoiceRefDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the InvoiceRef in the database
@@ -251,7 +258,7 @@ public class InvoiceRefResourceIT {
     @Transactional
     public void deleteInvoiceRef() throws Exception {
         // Initialize the database
-        invoiceRefService.save(invoiceRef);
+        invoiceRefRepository.saveAndFlush(invoiceRef);
 
         int databaseSizeBeforeDelete = invoiceRefRepository.findAll().size();
 
@@ -272,7 +279,7 @@ public class InvoiceRefResourceIT {
     @Transactional
     public void searchInvoiceRef() throws Exception {
         // Initialize the database
-        invoiceRefService.save(invoiceRef);
+        invoiceRefRepository.saveAndFlush(invoiceRef);
         when(mockInvoiceRefSearchRepository.search(queryStringQuery("id:" + invoiceRef.getId())))
             .thenReturn(Collections.singletonList(invoiceRef));
         // Search the invoiceRef

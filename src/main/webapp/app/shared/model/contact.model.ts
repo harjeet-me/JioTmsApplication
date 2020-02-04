@@ -1,4 +1,3 @@
-import { ICustomer } from 'app/shared/model/customer.model';
 import { Designation } from 'app/shared/model/enumerations/designation.model';
 
 export interface IContact {
@@ -10,7 +9,8 @@ export interface IContact {
   phoneNumber?: number;
   remarks?: string;
   preferredTime?: string;
-  customer?: ICustomer;
+  customerCompany?: string;
+  customerId?: number;
 }
 
 export class Contact implements IContact {
@@ -23,6 +23,7 @@ export class Contact implements IContact {
     public phoneNumber?: number,
     public remarks?: string,
     public preferredTime?: string,
-    public customer?: ICustomer
+    public customerCompany?: string,
+    public customerId?: number
   ) {}
 }

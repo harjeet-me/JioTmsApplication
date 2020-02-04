@@ -35,8 +35,8 @@
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.contact.customer">Customer</span></dt>
                 <dd>
-                    <div *ngIf="contact.customer">
-                        <a [routerLink]="['/customer', contact.customer?.id, 'view']">{{contact.customer?.company}}</a>
+                    <div *ngIf="contact.customerId">
+                        <a [routerLink]="['/customer', contact.customerId, 'view']">{{contact.customerCompany}}</a>
                     </div>
                 </dd>
             </dl>

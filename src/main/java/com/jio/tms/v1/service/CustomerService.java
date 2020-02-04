@@ -1,35 +1,39 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.Customer;
+import com.jio.tms.v1.service.dto.CustomerDTO;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link Customer}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.Customer}.
  */
 public interface CustomerService {
 
     /**
      * Save a customer.
      *
-     * @param customer the entity to save.
+     * @param customerDTO the entity to save.
      * @return the persisted entity.
      */
-    Customer save(Customer customer);
+    CustomerDTO save(CustomerDTO customerDTO);
 
     /**
      * Get all the customers.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    List<Customer> findAll();
+    Page<CustomerDTO> findAll(Pageable pageable);
     /**
      * Get all the CustomerDTO where Accounts is {@code null}.
      *
      * @return the list of entities.
      */
-    List<Customer> findAllWhereAccountsIsNull();
+    List<CustomerDTO> findAllWhereAccountsIsNull();
 
 
     /**
@@ -38,7 +42,7 @@ public interface CustomerService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Customer> findOne(Long id);
+    Optional<CustomerDTO> findOne(Long id);
 
     /**
      * Delete the "id" customer.
@@ -52,7 +56,8 @@ public interface CustomerService {
      *
      * @param query the query of the search.
      * 
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    List<Customer> search(String query);
+    Page<CustomerDTO> search(String query, Pageable pageable);
 }

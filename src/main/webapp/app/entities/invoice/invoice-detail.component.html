@@ -78,32 +78,32 @@
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.reference1">Reference 1</span></dt>
                 <dd>
-                    <div *ngIf="invoice.reference1">
-                        <a [routerLink]="['/reference', invoice.reference1?.id, 'view']">{{invoice.reference1?.reference}}</a>
+                    <div *ngIf="invoice.reference1Id">
+                        <a [routerLink]="['/reference', invoice.reference1Id, 'view']">{{invoice.reference1Reference}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.reference2">Reference 2</span></dt>
                 <dd>
-                    <div *ngIf="invoice.reference2">
-                        <a [routerLink]="['/reference', invoice.reference2?.id, 'view']">{{invoice.reference2?.reference}}</a>
+                    <div *ngIf="invoice.reference2Id">
+                        <a [routerLink]="['/reference', invoice.reference2Id, 'view']">{{invoice.reference2Reference}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.reference3">Reference 3</span></dt>
                 <dd>
-                    <div *ngIf="invoice.reference3">
-                        <a [routerLink]="['/reference', invoice.reference3?.id, 'view']">{{invoice.reference3?.reference}}</a>
+                    <div *ngIf="invoice.reference3Id">
+                        <a [routerLink]="['/reference', invoice.reference3Id, 'view']">{{invoice.reference3Reference}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.customer">Customer</span></dt>
                 <dd>
-                    <div *ngIf="invoice.customer">
-                        <a [routerLink]="['/customer', invoice.customer?.id, 'view']">{{invoice.customer?.company}}</a>
+                    <div *ngIf="invoice.customerId">
+                        <a [routerLink]="['/customer', invoice.customerId, 'view']">{{invoice.customerCompany}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.trip">Trip</span></dt>
                 <dd>
-                    <div *ngIf="invoice.trip">
-                        <a [routerLink]="['/trip', invoice.trip?.id, 'view']">{{invoice.trip?.id}}</a>
+                    <div *ngIf="invoice.tripId">
+                        <a [routerLink]="['/trip', invoice.tripId, 'view']">{{invoice.tripId}}</a>
                     </div>
                 </dd>
             </dl>

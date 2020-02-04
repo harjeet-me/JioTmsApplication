@@ -1,8 +1,8 @@
 package com.jio.tms.v1.web.rest;
 
-import com.jio.tms.v1.domain.CompanyProfile;
 import com.jio.tms.v1.service.CompanyProfileService;
 import com.jio.tms.v1.web.rest.errors.BadRequestAlertException;
+import com.jio.tms.v1.service.dto.CompanyProfileDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -44,17 +44,17 @@ public class CompanyProfileResource {
     /**
      * {@code POST  /company-profiles} : Create a new companyProfile.
      *
-     * @param companyProfile the companyProfile to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new companyProfile, or with status {@code 400 (Bad Request)} if the companyProfile has already an ID.
+     * @param companyProfileDTO the companyProfileDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new companyProfileDTO, or with status {@code 400 (Bad Request)} if the companyProfile has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/company-profiles")
-    public ResponseEntity<CompanyProfile> createCompanyProfile(@RequestBody CompanyProfile companyProfile) throws URISyntaxException {
-        log.debug("REST request to save CompanyProfile : {}", companyProfile);
-        if (companyProfile.getId() != null) {
+    public ResponseEntity<CompanyProfileDTO> createCompanyProfile(@RequestBody CompanyProfileDTO companyProfileDTO) throws URISyntaxException {
+        log.debug("REST request to save CompanyProfile : {}", companyProfileDTO);
+        if (companyProfileDTO.getId() != null) {
             throw new BadRequestAlertException("A new companyProfile cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        CompanyProfile result = companyProfileService.save(companyProfile);
+        CompanyProfileDTO result = companyProfileService.save(companyProfileDTO);
         return ResponseEntity.created(new URI("/api/company-profiles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -63,21 +63,21 @@ public class CompanyProfileResource {
     /**
      * {@code PUT  /company-profiles} : Updates an existing companyProfile.
      *
-     * @param companyProfile the companyProfile to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated companyProfile,
-     * or with status {@code 400 (Bad Request)} if the companyProfile is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the companyProfile couldn't be updated.
+     * @param companyProfileDTO the companyProfileDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated companyProfileDTO,
+     * or with status {@code 400 (Bad Request)} if the companyProfileDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the companyProfileDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/company-profiles")
-    public ResponseEntity<CompanyProfile> updateCompanyProfile(@RequestBody CompanyProfile companyProfile) throws URISyntaxException {
-        log.debug("REST request to update CompanyProfile : {}", companyProfile);
-        if (companyProfile.getId() == null) {
+    public ResponseEntity<CompanyProfileDTO> updateCompanyProfile(@RequestBody CompanyProfileDTO companyProfileDTO) throws URISyntaxException {
+        log.debug("REST request to update CompanyProfile : {}", companyProfileDTO);
+        if (companyProfileDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        CompanyProfile result = companyProfileService.save(companyProfile);
+        CompanyProfileDTO result = companyProfileService.save(companyProfileDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, companyProfile.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, companyProfileDTO.getId().toString()))
             .body(result);
     }
 
@@ -88,7 +88,7 @@ public class CompanyProfileResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of companyProfiles in body.
      */
     @GetMapping("/company-profiles")
-    public List<CompanyProfile> getAllCompanyProfiles() {
+    public List<CompanyProfileDTO> getAllCompanyProfiles() {
         log.debug("REST request to get all CompanyProfiles");
         return companyProfileService.findAll();
     }
@@ -96,20 +96,20 @@ public class CompanyProfileResource {
     /**
      * {@code GET  /company-profiles/:id} : get the "id" companyProfile.
      *
-     * @param id the id of the companyProfile to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the companyProfile, or with status {@code 404 (Not Found)}.
+     * @param id the id of the companyProfileDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the companyProfileDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/company-profiles/{id}")
-    public ResponseEntity<CompanyProfile> getCompanyProfile(@PathVariable Long id) {
+    public ResponseEntity<CompanyProfileDTO> getCompanyProfile(@PathVariable Long id) {
         log.debug("REST request to get CompanyProfile : {}", id);
-        Optional<CompanyProfile> companyProfile = companyProfileService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(companyProfile);
+        Optional<CompanyProfileDTO> companyProfileDTO = companyProfileService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(companyProfileDTO);
     }
 
     /**
      * {@code DELETE  /company-profiles/:id} : delete the "id" companyProfile.
      *
-     * @param id the id of the companyProfile to delete.
+     * @param id the id of the companyProfileDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/company-profiles/{id}")
@@ -127,7 +127,7 @@ public class CompanyProfileResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/company-profiles")
-    public List<CompanyProfile> searchCompanyProfiles(@RequestParam String query) {
+    public List<CompanyProfileDTO> searchCompanyProfiles(@RequestParam String query) {
         log.debug("REST request to search CompanyProfiles for query {}", query);
         return companyProfileService.search(query);
     }

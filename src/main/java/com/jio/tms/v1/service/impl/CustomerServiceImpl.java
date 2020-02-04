@@ -4,12 +4,17 @@ import com.jio.tms.v1.service.CustomerService;
 import com.jio.tms.v1.domain.Customer;
 import com.jio.tms.v1.repository.CustomerRepository;
 import com.jio.tms.v1.repository.search.CustomerSearchRepository;
+import com.jio.tms.v1.service.dto.CustomerDTO;
+import com.jio.tms.v1.service.mapper.CustomerMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,37 +33,44 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
 
+    private final CustomerMapper customerMapper;
+
     private final CustomerSearchRepository customerSearchRepository;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerSearchRepository customerSearchRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper, CustomerSearchRepository customerSearchRepository) {
         this.customerRepository = customerRepository;
+        this.customerMapper = customerMapper;
         this.customerSearchRepository = customerSearchRepository;
     }
 
     /**
      * Save a customer.
      *
-     * @param customer the entity to save.
+     * @param customerDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public Customer save(Customer customer) {
-        log.debug("Request to save Customer : {}", customer);
-        Customer result = customerRepository.save(customer);
-        customerSearchRepository.save(result);
+    public CustomerDTO save(CustomerDTO customerDTO) {
+        log.debug("Request to save Customer : {}", customerDTO);
+        Customer customer = customerMapper.toEntity(customerDTO);
+        customer = customerRepository.save(customer);
+        CustomerDTO result = customerMapper.toDto(customer);
+        customerSearchRepository.save(customer);
         return result;
     }
 
     /**
      * Get all the customers.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Customer> findAll() {
+    public Page<CustomerDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Customers");
-        return customerRepository.findAll();
+        return customerRepository.findAll(pageable)
+            .map(customerMapper::toDto);
     }
 
 
@@ -68,12 +80,13 @@ public class CustomerServiceImpl implements CustomerService {
      *  @return the list of entities.
      */
     @Transactional(readOnly = true) 
-    public List<Customer> findAllWhereAccountsIsNull() {
+    public List<CustomerDTO> findAllWhereAccountsIsNull() {
         log.debug("Request to get all customers where Accounts is null");
         return StreamSupport
             .stream(customerRepository.findAll().spliterator(), false)
             .filter(customer -> customer.getAccounts() == null)
-            .collect(Collectors.toList());
+            .map(customerMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
@@ -84,9 +97,10 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Customer> findOne(Long id) {
+    public Optional<CustomerDTO> findOne(Long id) {
         log.debug("Request to get Customer : {}", id);
-        return customerRepository.findById(id);
+        return customerRepository.findById(id)
+            .map(customerMapper::toDto);
     }
 
     /**
@@ -105,14 +119,14 @@ public class CustomerServiceImpl implements CustomerService {
      * Search for the customer corresponding to the query.
      *
      * @param query the query of the search.
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Customer> search(String query) {
-        log.debug("Request to search Customers for query {}", query);
-        return StreamSupport
-            .stream(customerSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public Page<CustomerDTO> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of Customers for query {}", query);
+        return customerSearchRepository.search(queryStringQuery(query), pageable)
+            .map(customerMapper::toDto);
     }
 }

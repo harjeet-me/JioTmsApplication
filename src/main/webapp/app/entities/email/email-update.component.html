@@ -25,9 +25,42 @@
                            formControlName="userbcc"/>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.subject" for="field_subject">Subject</label>
+                    <input type="text" class="form-control" name="subject" id="field_subject"
+                           formControlName="subject"/>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.message" for="field_message">Message</label>
                     <input type="text" class="form-control" name="message" id="field_message"
                            formControlName="message"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.multipart" for="field_multipart">Multipart</label>
+                    <input type="checkbox" class="form-control" name="multipart" id="field_multipart"
+                           formControlName="multipart"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.htmlBody" for="field_htmlBody">Html Body</label>
+                    <input type="checkbox" class="form-control" name="htmlBody" id="field_htmlBody"
+                           formControlName="htmlBody"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.attachment" for="field_attachment">Attachment</label>
+                    <div>
+                        <div *ngIf="editForm.get('attachment')!.value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(editForm.get('attachmentContentType')!.value, editForm.get('attachment')!.value)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{editForm.get('attachmentContentType')!.value}}, {{byteSize(editForm.get('attachment')!.value)}}</span>
+                            <button type="button" (click)="editForm.patchValue({attachment: null});editForm.patchValue({attachmentContentType: null});"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_attachment" (change)="setFileData($event, 'attachment', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="attachment" id="field_attachment"
+                           formControlName="attachment"/>
+                    <input type="hidden" class="form-control" name="attachmentContentType" id="field_attachmentContentType"
+                           formControlName="attachmentContentType" />
                 </div>
 
             </div>

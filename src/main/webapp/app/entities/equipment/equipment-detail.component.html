@@ -59,8 +59,8 @@
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.insurance">Insurance</span></dt>
                 <dd>
-                    <div *ngIf="equipment.insurance">
-                        <a [routerLink]="['/insurance', equipment.insurance?.id, 'view']">{{equipment.insurance?.id}}</a>
+                    <div *ngIf="equipment.insuranceId">
+                        <a [routerLink]="['/insurance', equipment.insuranceId, 'view']">{{equipment.insuranceId}}</a>
                     </div>
                 </dd>
             </dl>

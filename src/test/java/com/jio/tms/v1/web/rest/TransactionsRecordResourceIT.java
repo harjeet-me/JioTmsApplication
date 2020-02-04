@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.TransactionsRecord;
 import com.jio.tms.v1.repository.TransactionsRecordRepository;
 import com.jio.tms.v1.repository.search.TransactionsRecordSearchRepository;
 import com.jio.tms.v1.service.TransactionsRecordService;
+import com.jio.tms.v1.service.dto.TransactionsRecordDTO;
+import com.jio.tms.v1.service.mapper.TransactionsRecordMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -84,6 +88,9 @@ public class TransactionsRecordResourceIT {
 
     @Autowired
     private TransactionsRecordRepository transactionsRecordRepository;
+
+    @Autowired
+    private TransactionsRecordMapper transactionsRecordMapper;
 
     @Autowired
     private TransactionsRecordService transactionsRecordService;
@@ -185,9 +192,10 @@ public class TransactionsRecordResourceIT {
         int databaseSizeBeforeCreate = transactionsRecordRepository.findAll().size();
 
         // Create the TransactionsRecord
+        TransactionsRecordDTO transactionsRecordDTO = transactionsRecordMapper.toDto(transactionsRecord);
         restTransactionsRecordMockMvc.perform(post("/api/transactions-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(transactionsRecord)))
+            .content(TestUtil.convertObjectToJsonBytes(transactionsRecordDTO)))
             .andExpect(status().isCreated());
 
         // Validate the TransactionsRecord in the database
@@ -219,11 +227,12 @@ public class TransactionsRecordResourceIT {
 
         // Create the TransactionsRecord with an existing ID
         transactionsRecord.setId(1L);
+        TransactionsRecordDTO transactionsRecordDTO = transactionsRecordMapper.toDto(transactionsRecord);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restTransactionsRecordMockMvc.perform(post("/api/transactions-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(transactionsRecord)))
+            .content(TestUtil.convertObjectToJsonBytes(transactionsRecordDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the TransactionsRecord in the database
@@ -299,9 +308,7 @@ public class TransactionsRecordResourceIT {
     @Transactional
     public void updateTransactionsRecord() throws Exception {
         // Initialize the database
-        transactionsRecordService.save(transactionsRecord);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockTransactionsRecordSearchRepository);
+        transactionsRecordRepository.saveAndFlush(transactionsRecord);
 
         int databaseSizeBeforeUpdate = transactionsRecordRepository.findAll().size();
 
@@ -323,10 +330,11 @@ public class TransactionsRecordResourceIT {
             .txDocContentType(UPDATED_TX_DOC_CONTENT_TYPE)
             .currency(UPDATED_CURRENCY)
             .remarks(UPDATED_REMARKS);
+        TransactionsRecordDTO transactionsRecordDTO = transactionsRecordMapper.toDto(updatedTransactionsRecord);
 
         restTransactionsRecordMockMvc.perform(put("/api/transactions-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedTransactionsRecord)))
+            .content(TestUtil.convertObjectToJsonBytes(transactionsRecordDTO)))
             .andExpect(status().isOk());
 
         // Validate the TransactionsRecord in the database
@@ -357,11 +365,12 @@ public class TransactionsRecordResourceIT {
         int databaseSizeBeforeUpdate = transactionsRecordRepository.findAll().size();
 
         // Create the TransactionsRecord
+        TransactionsRecordDTO transactionsRecordDTO = transactionsRecordMapper.toDto(transactionsRecord);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restTransactionsRecordMockMvc.perform(put("/api/transactions-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(transactionsRecord)))
+            .content(TestUtil.convertObjectToJsonBytes(transactionsRecordDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the TransactionsRecord in the database
@@ -376,7 +385,7 @@ public class TransactionsRecordResourceIT {
     @Transactional
     public void deleteTransactionsRecord() throws Exception {
         // Initialize the database
-        transactionsRecordService.save(transactionsRecord);
+        transactionsRecordRepository.saveAndFlush(transactionsRecord);
 
         int databaseSizeBeforeDelete = transactionsRecordRepository.findAll().size();
 
@@ -397,9 +406,9 @@ public class TransactionsRecordResourceIT {
     @Transactional
     public void searchTransactionsRecord() throws Exception {
         // Initialize the database
-        transactionsRecordService.save(transactionsRecord);
-        when(mockTransactionsRecordSearchRepository.search(queryStringQuery("id:" + transactionsRecord.getId())))
-            .thenReturn(Collections.singletonList(transactionsRecord));
+        transactionsRecordRepository.saveAndFlush(transactionsRecord);
+        when(mockTransactionsRecordSearchRepository.search(queryStringQuery("id:" + transactionsRecord.getId()), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(transactionsRecord), PageRequest.of(0, 1), 1));
         // Search the transactionsRecord
         restTransactionsRecordMockMvc.perform(get("/api/_search/transactions-records?query=id:" + transactionsRecord.getId()))
             .andExpect(status().isOk())

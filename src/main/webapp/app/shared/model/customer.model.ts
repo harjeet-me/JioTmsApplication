@@ -3,7 +3,6 @@ import { ITrip } from 'app/shared/model/trip.model';
 import { IInvoice } from 'app/shared/model/invoice.model';
 import { IContact } from 'app/shared/model/contact.model';
 import { ITransactionsRecord } from 'app/shared/model/transactions-record.model';
-import { IAccounts } from 'app/shared/model/accounts.model';
 import { Designation } from 'app/shared/model/enumerations/designation.model';
 import { PreffredContactType } from 'app/shared/model/enumerations/preffred-contact-type.model';
 import { CountryEnum } from 'app/shared/model/enumerations/country-enum.model';
@@ -47,7 +46,7 @@ export interface ICustomer {
   invoices?: IInvoice[];
   morecontacts?: IContact[];
   transactionsRecords?: ITransactionsRecord[];
-  accounts?: IAccounts;
+  accountsId?: number;
 }
 
 export class Customer implements ICustomer {
@@ -88,6 +87,6 @@ export class Customer implements ICustomer {
     public invoices?: IInvoice[],
     public morecontacts?: IContact[],
     public transactionsRecords?: ITransactionsRecord[],
-    public accounts?: IAccounts
+    public accountsId?: number
   ) {}
 }

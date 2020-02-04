@@ -37,7 +37,7 @@
     ],
     "changelogDate": "20200106223843",
     "entityTableName": "invoice_item",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

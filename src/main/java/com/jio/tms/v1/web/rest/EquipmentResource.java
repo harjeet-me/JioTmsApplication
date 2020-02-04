@@ -1,8 +1,8 @@
 package com.jio.tms.v1.web.rest;
 
-import com.jio.tms.v1.domain.Equipment;
 import com.jio.tms.v1.service.EquipmentService;
 import com.jio.tms.v1.web.rest.errors.BadRequestAlertException;
+import com.jio.tms.v1.service.dto.EquipmentDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -44,17 +44,17 @@ public class EquipmentResource {
     /**
      * {@code POST  /equipment} : Create a new equipment.
      *
-     * @param equipment the equipment to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new equipment, or with status {@code 400 (Bad Request)} if the equipment has already an ID.
+     * @param equipmentDTO the equipmentDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new equipmentDTO, or with status {@code 400 (Bad Request)} if the equipment has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/equipment")
-    public ResponseEntity<Equipment> createEquipment(@RequestBody Equipment equipment) throws URISyntaxException {
-        log.debug("REST request to save Equipment : {}", equipment);
-        if (equipment.getId() != null) {
+    public ResponseEntity<EquipmentDTO> createEquipment(@RequestBody EquipmentDTO equipmentDTO) throws URISyntaxException {
+        log.debug("REST request to save Equipment : {}", equipmentDTO);
+        if (equipmentDTO.getId() != null) {
             throw new BadRequestAlertException("A new equipment cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Equipment result = equipmentService.save(equipment);
+        EquipmentDTO result = equipmentService.save(equipmentDTO);
         return ResponseEntity.created(new URI("/api/equipment/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -63,21 +63,21 @@ public class EquipmentResource {
     /**
      * {@code PUT  /equipment} : Updates an existing equipment.
      *
-     * @param equipment the equipment to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated equipment,
-     * or with status {@code 400 (Bad Request)} if the equipment is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the equipment couldn't be updated.
+     * @param equipmentDTO the equipmentDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated equipmentDTO,
+     * or with status {@code 400 (Bad Request)} if the equipmentDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the equipmentDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/equipment")
-    public ResponseEntity<Equipment> updateEquipment(@RequestBody Equipment equipment) throws URISyntaxException {
-        log.debug("REST request to update Equipment : {}", equipment);
-        if (equipment.getId() == null) {
+    public ResponseEntity<EquipmentDTO> updateEquipment(@RequestBody EquipmentDTO equipmentDTO) throws URISyntaxException {
+        log.debug("REST request to update Equipment : {}", equipmentDTO);
+        if (equipmentDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Equipment result = equipmentService.save(equipment);
+        EquipmentDTO result = equipmentService.save(equipmentDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, equipment.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, equipmentDTO.getId().toString()))
             .body(result);
     }
 
@@ -88,7 +88,7 @@ public class EquipmentResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of equipment in body.
      */
     @GetMapping("/equipment")
-    public List<Equipment> getAllEquipment() {
+    public List<EquipmentDTO> getAllEquipment() {
         log.debug("REST request to get all Equipment");
         return equipmentService.findAll();
     }
@@ -96,20 +96,20 @@ public class EquipmentResource {
     /**
      * {@code GET  /equipment/:id} : get the "id" equipment.
      *
-     * @param id the id of the equipment to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the equipment, or with status {@code 404 (Not Found)}.
+     * @param id the id of the equipmentDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the equipmentDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/equipment/{id}")
-    public ResponseEntity<Equipment> getEquipment(@PathVariable Long id) {
+    public ResponseEntity<EquipmentDTO> getEquipment(@PathVariable Long id) {
         log.debug("REST request to get Equipment : {}", id);
-        Optional<Equipment> equipment = equipmentService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(equipment);
+        Optional<EquipmentDTO> equipmentDTO = equipmentService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(equipmentDTO);
     }
 
     /**
      * {@code DELETE  /equipment/:id} : delete the "id" equipment.
      *
-     * @param id the id of the equipment to delete.
+     * @param id the id of the equipmentDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/equipment/{id}")
@@ -127,7 +127,7 @@ public class EquipmentResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/equipment")
-    public List<Equipment> searchEquipment(@RequestParam String query) {
+    public List<EquipmentDTO> searchEquipment(@RequestParam String query) {
         log.debug("REST request to search Equipment for query {}", query);
         return equipmentService.search(query);
     }

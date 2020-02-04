@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { JhiResolvePagingParams } from 'ng-jhipster';
 import { Observable, of, EMPTY } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
@@ -37,8 +38,12 @@ export const invoiceRoute: Routes = [
   {
     path: '',
     component: InvoiceComponent,
+    resolve: {
+      pagingParams: JhiResolvePagingParams
+    },
     data: {
       authorities: ['ROLE_USER'],
+      defaultSort: 'id,asc',
       pageTitle: 'jioTmsApplicationApp.invoice.home.title'
     },
     canActivate: [UserRouteAccessService]

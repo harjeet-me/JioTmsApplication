@@ -1,29 +1,32 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.Email;
+import com.jio.tms.v1.service.dto.EmailDTO;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link Email}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.Email}.
  */
 public interface EmailService {
 
     /**
      * Save a email.
      *
-     * @param email the entity to save.
+     * @param emailDTO the entity to save.
      * @return the persisted entity.
      */
-    Email save(Email email);
+    EmailDTO save(EmailDTO emailDTO);
 
     /**
      * Get all the emails.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    List<Email> findAll();
+    Page<EmailDTO> findAll(Pageable pageable);
 
 
     /**
@@ -32,7 +35,7 @@ public interface EmailService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Email> findOne(Long id);
+    Optional<EmailDTO> findOne(Long id);
 
     /**
      * Delete the "id" email.
@@ -46,7 +49,8 @@ public interface EmailService {
      *
      * @param query the query of the search.
      * 
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    List<Email> search(String query);
+    Page<EmailDTO> search(String query, Pageable pageable);
 }

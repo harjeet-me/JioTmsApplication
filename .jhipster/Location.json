@@ -38,7 +38,7 @@
     "relationships": [],
     "changelogDate": "20200106223851",
     "entityTableName": "location",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

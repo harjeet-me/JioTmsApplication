@@ -1,8 +1,8 @@
 package com.jio.tms.v1.web.rest;
 
-import com.jio.tms.v1.domain.OwnerOperator;
 import com.jio.tms.v1.service.OwnerOperatorService;
 import com.jio.tms.v1.web.rest.errors.BadRequestAlertException;
+import com.jio.tms.v1.service.dto.OwnerOperatorDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -44,17 +44,17 @@ public class OwnerOperatorResource {
     /**
      * {@code POST  /owner-operators} : Create a new ownerOperator.
      *
-     * @param ownerOperator the ownerOperator to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ownerOperator, or with status {@code 400 (Bad Request)} if the ownerOperator has already an ID.
+     * @param ownerOperatorDTO the ownerOperatorDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ownerOperatorDTO, or with status {@code 400 (Bad Request)} if the ownerOperator has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/owner-operators")
-    public ResponseEntity<OwnerOperator> createOwnerOperator(@RequestBody OwnerOperator ownerOperator) throws URISyntaxException {
-        log.debug("REST request to save OwnerOperator : {}", ownerOperator);
-        if (ownerOperator.getId() != null) {
+    public ResponseEntity<OwnerOperatorDTO> createOwnerOperator(@RequestBody OwnerOperatorDTO ownerOperatorDTO) throws URISyntaxException {
+        log.debug("REST request to save OwnerOperator : {}", ownerOperatorDTO);
+        if (ownerOperatorDTO.getId() != null) {
             throw new BadRequestAlertException("A new ownerOperator cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        OwnerOperator result = ownerOperatorService.save(ownerOperator);
+        OwnerOperatorDTO result = ownerOperatorService.save(ownerOperatorDTO);
         return ResponseEntity.created(new URI("/api/owner-operators/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -63,21 +63,21 @@ public class OwnerOperatorResource {
     /**
      * {@code PUT  /owner-operators} : Updates an existing ownerOperator.
      *
-     * @param ownerOperator the ownerOperator to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ownerOperator,
-     * or with status {@code 400 (Bad Request)} if the ownerOperator is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the ownerOperator couldn't be updated.
+     * @param ownerOperatorDTO the ownerOperatorDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ownerOperatorDTO,
+     * or with status {@code 400 (Bad Request)} if the ownerOperatorDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the ownerOperatorDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/owner-operators")
-    public ResponseEntity<OwnerOperator> updateOwnerOperator(@RequestBody OwnerOperator ownerOperator) throws URISyntaxException {
-        log.debug("REST request to update OwnerOperator : {}", ownerOperator);
-        if (ownerOperator.getId() == null) {
+    public ResponseEntity<OwnerOperatorDTO> updateOwnerOperator(@RequestBody OwnerOperatorDTO ownerOperatorDTO) throws URISyntaxException {
+        log.debug("REST request to update OwnerOperator : {}", ownerOperatorDTO);
+        if (ownerOperatorDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        OwnerOperator result = ownerOperatorService.save(ownerOperator);
+        OwnerOperatorDTO result = ownerOperatorService.save(ownerOperatorDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ownerOperator.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ownerOperatorDTO.getId().toString()))
             .body(result);
     }
 
@@ -88,7 +88,7 @@ public class OwnerOperatorResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ownerOperators in body.
      */
     @GetMapping("/owner-operators")
-    public List<OwnerOperator> getAllOwnerOperators() {
+    public List<OwnerOperatorDTO> getAllOwnerOperators() {
         log.debug("REST request to get all OwnerOperators");
         return ownerOperatorService.findAll();
     }
@@ -96,20 +96,20 @@ public class OwnerOperatorResource {
     /**
      * {@code GET  /owner-operators/:id} : get the "id" ownerOperator.
      *
-     * @param id the id of the ownerOperator to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ownerOperator, or with status {@code 404 (Not Found)}.
+     * @param id the id of the ownerOperatorDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ownerOperatorDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/owner-operators/{id}")
-    public ResponseEntity<OwnerOperator> getOwnerOperator(@PathVariable Long id) {
+    public ResponseEntity<OwnerOperatorDTO> getOwnerOperator(@PathVariable Long id) {
         log.debug("REST request to get OwnerOperator : {}", id);
-        Optional<OwnerOperator> ownerOperator = ownerOperatorService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(ownerOperator);
+        Optional<OwnerOperatorDTO> ownerOperatorDTO = ownerOperatorService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(ownerOperatorDTO);
     }
 
     /**
      * {@code DELETE  /owner-operators/:id} : delete the "id" ownerOperator.
      *
-     * @param id the id of the ownerOperator to delete.
+     * @param id the id of the ownerOperatorDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/owner-operators/{id}")
@@ -127,7 +127,7 @@ public class OwnerOperatorResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/owner-operators")
-    public List<OwnerOperator> searchOwnerOperators(@RequestParam String query) {
+    public List<OwnerOperatorDTO> searchOwnerOperators(@RequestParam String query) {
         log.debug("REST request to search OwnerOperators for query {}", query);
         return ownerOperatorService.search(query);
     }

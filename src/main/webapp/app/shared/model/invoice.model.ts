@@ -1,8 +1,5 @@
 import { Moment } from 'moment';
-import { IReference } from 'app/shared/model/reference.model';
 import { IInvoiceItem } from 'app/shared/model/invoice-item.model';
-import { ICustomer } from 'app/shared/model/customer.model';
-import { ITrip } from 'app/shared/model/trip.model';
 import { TaxType } from 'app/shared/model/enumerations/tax-type.model';
 import { CURRENCY } from 'app/shared/model/enumerations/currency.model';
 import { InvoiceStatus } from 'app/shared/model/enumerations/invoice-status.model';
@@ -27,12 +24,16 @@ export interface IInvoice {
   invoicePdfContentType?: string;
   invoicePdf?: any;
   remarks?: string;
-  reference1?: IReference;
-  reference2?: IReference;
-  reference3?: IReference;
+  reference1Reference?: string;
+  reference1Id?: number;
+  reference2Reference?: string;
+  reference2Id?: number;
+  reference3Reference?: string;
+  reference3Id?: number;
   invoiceItems?: IInvoiceItem[];
-  customer?: ICustomer;
-  trip?: ITrip;
+  customerCompany?: string;
+  customerId?: number;
+  tripId?: number;
 }
 
 export class Invoice implements IInvoice {
@@ -56,11 +57,15 @@ export class Invoice implements IInvoice {
     public invoicePdfContentType?: string,
     public invoicePdf?: any,
     public remarks?: string,
-    public reference1?: IReference,
-    public reference2?: IReference,
-    public reference3?: IReference,
+    public reference1Reference?: string,
+    public reference1Id?: number,
+    public reference2Reference?: string,
+    public reference2Id?: number,
+    public reference3Reference?: string,
+    public reference3Id?: number,
     public invoiceItems?: IInvoiceItem[],
-    public customer?: ICustomer,
-    public trip?: ITrip
+    public customerCompany?: string,
+    public customerId?: number,
+    public tripId?: number
   ) {}
 }

@@ -1,8 +1,8 @@
 package com.jio.tms.v1.web.rest;
 
-import com.jio.tms.v1.domain.InvoiceRef;
 import com.jio.tms.v1.service.InvoiceRefService;
 import com.jio.tms.v1.web.rest.errors.BadRequestAlertException;
+import com.jio.tms.v1.service.dto.InvoiceRefDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -44,17 +44,17 @@ public class InvoiceRefResource {
     /**
      * {@code POST  /invoice-refs} : Create a new invoiceRef.
      *
-     * @param invoiceRef the invoiceRef to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new invoiceRef, or with status {@code 400 (Bad Request)} if the invoiceRef has already an ID.
+     * @param invoiceRefDTO the invoiceRefDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new invoiceRefDTO, or with status {@code 400 (Bad Request)} if the invoiceRef has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/invoice-refs")
-    public ResponseEntity<InvoiceRef> createInvoiceRef(@RequestBody InvoiceRef invoiceRef) throws URISyntaxException {
-        log.debug("REST request to save InvoiceRef : {}", invoiceRef);
-        if (invoiceRef.getId() != null) {
+    public ResponseEntity<InvoiceRefDTO> createInvoiceRef(@RequestBody InvoiceRefDTO invoiceRefDTO) throws URISyntaxException {
+        log.debug("REST request to save InvoiceRef : {}", invoiceRefDTO);
+        if (invoiceRefDTO.getId() != null) {
             throw new BadRequestAlertException("A new invoiceRef cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        InvoiceRef result = invoiceRefService.save(invoiceRef);
+        InvoiceRefDTO result = invoiceRefService.save(invoiceRefDTO);
         return ResponseEntity.created(new URI("/api/invoice-refs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -63,21 +63,21 @@ public class InvoiceRefResource {
     /**
      * {@code PUT  /invoice-refs} : Updates an existing invoiceRef.
      *
-     * @param invoiceRef the invoiceRef to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated invoiceRef,
-     * or with status {@code 400 (Bad Request)} if the invoiceRef is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the invoiceRef couldn't be updated.
+     * @param invoiceRefDTO the invoiceRefDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated invoiceRefDTO,
+     * or with status {@code 400 (Bad Request)} if the invoiceRefDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the invoiceRefDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/invoice-refs")
-    public ResponseEntity<InvoiceRef> updateInvoiceRef(@RequestBody InvoiceRef invoiceRef) throws URISyntaxException {
-        log.debug("REST request to update InvoiceRef : {}", invoiceRef);
-        if (invoiceRef.getId() == null) {
+    public ResponseEntity<InvoiceRefDTO> updateInvoiceRef(@RequestBody InvoiceRefDTO invoiceRefDTO) throws URISyntaxException {
+        log.debug("REST request to update InvoiceRef : {}", invoiceRefDTO);
+        if (invoiceRefDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        InvoiceRef result = invoiceRefService.save(invoiceRef);
+        InvoiceRefDTO result = invoiceRefService.save(invoiceRefDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, invoiceRef.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, invoiceRefDTO.getId().toString()))
             .body(result);
     }
 
@@ -88,7 +88,7 @@ public class InvoiceRefResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of invoiceRefs in body.
      */
     @GetMapping("/invoice-refs")
-    public List<InvoiceRef> getAllInvoiceRefs() {
+    public List<InvoiceRefDTO> getAllInvoiceRefs() {
         log.debug("REST request to get all InvoiceRefs");
         return invoiceRefService.findAll();
     }
@@ -96,20 +96,20 @@ public class InvoiceRefResource {
     /**
      * {@code GET  /invoice-refs/:id} : get the "id" invoiceRef.
      *
-     * @param id the id of the invoiceRef to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the invoiceRef, or with status {@code 404 (Not Found)}.
+     * @param id the id of the invoiceRefDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the invoiceRefDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/invoice-refs/{id}")
-    public ResponseEntity<InvoiceRef> getInvoiceRef(@PathVariable Long id) {
+    public ResponseEntity<InvoiceRefDTO> getInvoiceRef(@PathVariable Long id) {
         log.debug("REST request to get InvoiceRef : {}", id);
-        Optional<InvoiceRef> invoiceRef = invoiceRefService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(invoiceRef);
+        Optional<InvoiceRefDTO> invoiceRefDTO = invoiceRefService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(invoiceRefDTO);
     }
 
     /**
      * {@code DELETE  /invoice-refs/:id} : delete the "id" invoiceRef.
      *
-     * @param id the id of the invoiceRef to delete.
+     * @param id the id of the invoiceRefDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/invoice-refs/{id}")
@@ -127,7 +127,7 @@ public class InvoiceRefResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/invoice-refs")
-    public List<InvoiceRef> searchInvoiceRefs(@RequestParam String query) {
+    public List<InvoiceRefDTO> searchInvoiceRefs(@RequestParam String query) {
         log.debug("REST request to search InvoiceRefs for query {}", query);
         return invoiceRefService.search(query);
     }

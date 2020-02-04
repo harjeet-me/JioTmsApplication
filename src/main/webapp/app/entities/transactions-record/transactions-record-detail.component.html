@@ -58,14 +58,14 @@
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.customer">Customer</span></dt>
                 <dd>
-                    <div *ngIf="transactionsRecord.customer">
-                        <a [routerLink]="['/customer', transactionsRecord.customer?.id, 'view']">{{transactionsRecord.customer?.company}}</a>
+                    <div *ngIf="transactionsRecord.customerId">
+                        <a [routerLink]="['/customer', transactionsRecord.customerId, 'view']">{{transactionsRecord.customerCompany}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.account">Account</span></dt>
                 <dd>
-                    <div *ngIf="transactionsRecord.account">
-                        <a [routerLink]="['/accounts', transactionsRecord.account?.id, 'view']">{{transactionsRecord.account?.id}}</a>
+                    <div *ngIf="transactionsRecord.accountId">
+                        <a [routerLink]="['/accounts', transactionsRecord.accountId, 'view']">{{transactionsRecord.accountId}}</a>
                     </div>
                 </dd>
             </dl>

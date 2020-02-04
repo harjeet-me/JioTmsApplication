@@ -1,29 +1,29 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.CompanyProfile;
+import com.jio.tms.v1.service.dto.CompanyProfileDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link CompanyProfile}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.CompanyProfile}.
  */
 public interface CompanyProfileService {
 
     /**
      * Save a companyProfile.
      *
-     * @param companyProfile the entity to save.
+     * @param companyProfileDTO the entity to save.
      * @return the persisted entity.
      */
-    CompanyProfile save(CompanyProfile companyProfile);
+    CompanyProfileDTO save(CompanyProfileDTO companyProfileDTO);
 
     /**
      * Get all the companyProfiles.
      *
      * @return the list of entities.
      */
-    List<CompanyProfile> findAll();
+    List<CompanyProfileDTO> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface CompanyProfileService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<CompanyProfile> findOne(Long id);
+    Optional<CompanyProfileDTO> findOne(Long id);
 
     /**
      * Delete the "id" companyProfile.
@@ -48,5 +48,5 @@ public interface CompanyProfileService {
      * 
      * @return the list of entities.
      */
-    List<CompanyProfile> search(String query);
+    List<CompanyProfileDTO> search(String query);
 }

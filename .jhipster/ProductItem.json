@@ -25,7 +25,7 @@
     "relationships": [],
     "changelogDate": "20200106230342",
     "entityTableName": "product_item",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

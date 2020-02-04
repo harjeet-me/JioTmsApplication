@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.Customer;
 import com.jio.tms.v1.repository.CustomerRepository;
 import com.jio.tms.v1.repository.search.CustomerSearchRepository;
 import com.jio.tms.v1.service.CustomerService;
+import com.jio.tms.v1.service.dto.CustomerDTO;
+import com.jio.tms.v1.service.mapper.CustomerMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -143,6 +147,9 @@ public class CustomerResourceIT {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private CustomerMapper customerMapper;
 
     @Autowired
     private CustomerService customerService;
@@ -280,9 +287,10 @@ public class CustomerResourceIT {
         int databaseSizeBeforeCreate = customerRepository.findAll().size();
 
         // Create the Customer
+        CustomerDTO customerDTO = customerMapper.toDto(customer);
         restCustomerMockMvc.perform(post("/api/customers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(customer)))
+            .content(TestUtil.convertObjectToJsonBytes(customerDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Customer in the database
@@ -332,11 +340,12 @@ public class CustomerResourceIT {
 
         // Create the Customer with an existing ID
         customer.setId(1L);
+        CustomerDTO customerDTO = customerMapper.toDto(customer);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCustomerMockMvc.perform(post("/api/customers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(customer)))
+            .content(TestUtil.convertObjectToJsonBytes(customerDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Customer in the database
@@ -448,9 +457,7 @@ public class CustomerResourceIT {
     @Transactional
     public void updateCustomer() throws Exception {
         // Initialize the database
-        customerService.save(customer);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockCustomerSearchRepository);
+        customerRepository.saveAndFlush(customer);
 
         int databaseSizeBeforeUpdate = customerRepository.findAll().size();
 
@@ -490,10 +497,11 @@ public class CustomerResourceIT {
             .preffredCurrency(UPDATED_PREFFRED_CURRENCY)
             .payterms(UPDATED_PAYTERMS)
             .timeZone(UPDATED_TIME_ZONE);
+        CustomerDTO customerDTO = customerMapper.toDto(updatedCustomer);
 
         restCustomerMockMvc.perform(put("/api/customers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedCustomer)))
+            .content(TestUtil.convertObjectToJsonBytes(customerDTO)))
             .andExpect(status().isOk());
 
         // Validate the Customer in the database
@@ -542,11 +550,12 @@ public class CustomerResourceIT {
         int databaseSizeBeforeUpdate = customerRepository.findAll().size();
 
         // Create the Customer
+        CustomerDTO customerDTO = customerMapper.toDto(customer);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCustomerMockMvc.perform(put("/api/customers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(customer)))
+            .content(TestUtil.convertObjectToJsonBytes(customerDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Customer in the database
@@ -561,7 +570,7 @@ public class CustomerResourceIT {
     @Transactional
     public void deleteCustomer() throws Exception {
         // Initialize the database
-        customerService.save(customer);
+        customerRepository.saveAndFlush(customer);
 
         int databaseSizeBeforeDelete = customerRepository.findAll().size();
 
@@ -582,9 +591,9 @@ public class CustomerResourceIT {
     @Transactional
     public void searchCustomer() throws Exception {
         // Initialize the database
-        customerService.save(customer);
-        when(mockCustomerSearchRepository.search(queryStringQuery("id:" + customer.getId())))
-            .thenReturn(Collections.singletonList(customer));
+        customerRepository.saveAndFlush(customer);
+        when(mockCustomerSearchRepository.search(queryStringQuery("id:" + customer.getId()), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(customer), PageRequest.of(0, 1), 1));
         // Search the customer
         restCustomerMockMvc.perform(get("/api/_search/customers?query=id:" + customer.getId()))
             .andExpect(status().isOk())

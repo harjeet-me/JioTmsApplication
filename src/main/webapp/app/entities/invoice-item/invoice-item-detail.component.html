@@ -31,8 +31,8 @@
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoiceItem.invoice">Invoice</span></dt>
                 <dd>
-                    <div *ngIf="invoiceItem.invoice">
-                        <a [routerLink]="['/invoice', invoiceItem.invoice?.id, 'view']">{{invoiceItem.invoice?.id}}</a>
+                    <div *ngIf="invoiceItem.invoiceId">
+                        <a [routerLink]="['/invoice', invoiceItem.invoiceId, 'view']">{{invoiceItem.invoiceId}}</a>
                     </div>
                 </dd>
             </dl>

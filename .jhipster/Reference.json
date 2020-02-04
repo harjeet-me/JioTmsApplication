@@ -9,7 +9,7 @@
     "relationships": [],
     "changelogDate": "20200201075637",
     "entityTableName": "reference",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

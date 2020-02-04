@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.Trip;
 import com.jio.tms.v1.repository.TripRepository;
 import com.jio.tms.v1.repository.search.TripSearchRepository;
 import com.jio.tms.v1.service.TripService;
+import com.jio.tms.v1.service.dto.TripDTO;
+import com.jio.tms.v1.service.mapper.TripMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -108,6 +110,9 @@ public class TripResourceIT {
 
     @Autowired
     private TripRepository tripRepository;
+
+    @Autowired
+    private TripMapper tripMapper;
 
     @Autowired
     private TripService tripService;
@@ -221,9 +226,10 @@ public class TripResourceIT {
         int databaseSizeBeforeCreate = tripRepository.findAll().size();
 
         // Create the Trip
+        TripDTO tripDTO = tripMapper.toDto(trip);
         restTripMockMvc.perform(post("/api/trips")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(trip)))
+            .content(TestUtil.convertObjectToJsonBytes(tripDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Trip in the database
@@ -261,11 +267,12 @@ public class TripResourceIT {
 
         // Create the Trip with an existing ID
         trip.setId(1L);
+        TripDTO tripDTO = tripMapper.toDto(trip);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restTripMockMvc.perform(post("/api/trips")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(trip)))
+            .content(TestUtil.convertObjectToJsonBytes(tripDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Trip in the database
@@ -353,9 +360,7 @@ public class TripResourceIT {
     @Transactional
     public void updateTrip() throws Exception {
         // Initialize the database
-        tripService.save(trip);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockTripSearchRepository);
+        tripRepository.saveAndFlush(trip);
 
         int databaseSizeBeforeUpdate = tripRepository.findAll().size();
 
@@ -383,10 +388,11 @@ public class TripResourceIT {
             .containerSize(UPDATED_CONTAINER_SIZE)
             .numbersOfContainer(UPDATED_NUMBERS_OF_CONTAINER)
             .comments(UPDATED_COMMENTS);
+        TripDTO tripDTO = tripMapper.toDto(updatedTrip);
 
         restTripMockMvc.perform(put("/api/trips")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedTrip)))
+            .content(TestUtil.convertObjectToJsonBytes(tripDTO)))
             .andExpect(status().isOk());
 
         // Validate the Trip in the database
@@ -423,11 +429,12 @@ public class TripResourceIT {
         int databaseSizeBeforeUpdate = tripRepository.findAll().size();
 
         // Create the Trip
+        TripDTO tripDTO = tripMapper.toDto(trip);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restTripMockMvc.perform(put("/api/trips")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(trip)))
+            .content(TestUtil.convertObjectToJsonBytes(tripDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Trip in the database
@@ -442,7 +449,7 @@ public class TripResourceIT {
     @Transactional
     public void deleteTrip() throws Exception {
         // Initialize the database
-        tripService.save(trip);
+        tripRepository.saveAndFlush(trip);
 
         int databaseSizeBeforeDelete = tripRepository.findAll().size();
 
@@ -463,7 +470,7 @@ public class TripResourceIT {
     @Transactional
     public void searchTrip() throws Exception {
         // Initialize the database
-        tripService.save(trip);
+        tripRepository.saveAndFlush(trip);
         when(mockTripSearchRepository.search(queryStringQuery("id:" + trip.getId()), PageRequest.of(0, 20)))
             .thenReturn(new PageImpl<>(Collections.singletonList(trip), PageRequest.of(0, 1), 1));
         // Search the trip

@@ -51,9 +51,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.contact.customer" for="field_customer">Customer</label>
-                    <select class="form-control" id="field_customer" name="customer" formControlName="customer">
+                    <select class="form-control" id="field_customer" name="customer" formControlName="customerId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="customerOption.id === editForm.get('customer')!.value?.id ? editForm.get('customer')!.value : customerOption" *ngFor="let customerOption of customers; trackBy: trackById">{{customerOption.company}}</option>
+                        <option [ngValue]="customerOption.id" *ngFor="let customerOption of customers; trackBy: trackById">{{customerOption.company}}</option>
                     </select>
                 </div>
             </div>

@@ -1,29 +1,29 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.InvoiceRef;
+import com.jio.tms.v1.service.dto.InvoiceRefDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link InvoiceRef}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.InvoiceRef}.
  */
 public interface InvoiceRefService {
 
     /**
      * Save a invoiceRef.
      *
-     * @param invoiceRef the entity to save.
+     * @param invoiceRefDTO the entity to save.
      * @return the persisted entity.
      */
-    InvoiceRef save(InvoiceRef invoiceRef);
+    InvoiceRefDTO save(InvoiceRefDTO invoiceRefDTO);
 
     /**
      * Get all the invoiceRefs.
      *
      * @return the list of entities.
      */
-    List<InvoiceRef> findAll();
+    List<InvoiceRefDTO> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface InvoiceRefService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<InvoiceRef> findOne(Long id);
+    Optional<InvoiceRefDTO> findOne(Long id);
 
     /**
      * Delete the "id" invoiceRef.
@@ -48,5 +48,5 @@ public interface InvoiceRefService {
      * 
      * @return the list of entities.
      */
-    List<InvoiceRef> search(String query);
+    List<InvoiceRefDTO> search(String query);
 }

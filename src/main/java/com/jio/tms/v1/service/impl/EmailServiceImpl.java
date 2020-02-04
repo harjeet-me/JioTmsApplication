@@ -4,16 +4,17 @@ import com.jio.tms.v1.service.EmailService;
 import com.jio.tms.v1.domain.Email;
 import com.jio.tms.v1.repository.EmailRepository;
 import com.jio.tms.v1.repository.search.EmailSearchRepository;
+import com.jio.tms.v1.service.dto.EmailDTO;
+import com.jio.tms.v1.service.mapper.EmailMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -28,37 +29,44 @@ public class EmailServiceImpl implements EmailService {
 
     private final EmailRepository emailRepository;
 
+    private final EmailMapper emailMapper;
+
     private final EmailSearchRepository emailSearchRepository;
 
-    public EmailServiceImpl(EmailRepository emailRepository, EmailSearchRepository emailSearchRepository) {
+    public EmailServiceImpl(EmailRepository emailRepository, EmailMapper emailMapper, EmailSearchRepository emailSearchRepository) {
         this.emailRepository = emailRepository;
+        this.emailMapper = emailMapper;
         this.emailSearchRepository = emailSearchRepository;
     }
 
     /**
      * Save a email.
      *
-     * @param email the entity to save.
+     * @param emailDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public Email save(Email email) {
-        log.debug("Request to save Email : {}", email);
-        Email result = emailRepository.save(email);
-        emailSearchRepository.save(result);
+    public EmailDTO save(EmailDTO emailDTO) {
+        log.debug("Request to save Email : {}", emailDTO);
+        Email email = emailMapper.toEntity(emailDTO);
+        email = emailRepository.save(email);
+        EmailDTO result = emailMapper.toDto(email);
+        emailSearchRepository.save(email);
         return result;
     }
 
     /**
      * Get all the emails.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Email> findAll() {
+    public Page<EmailDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Emails");
-        return emailRepository.findAll();
+        return emailRepository.findAll(pageable)
+            .map(emailMapper::toDto);
     }
 
 
@@ -70,9 +78,10 @@ public class EmailServiceImpl implements EmailService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Email> findOne(Long id) {
+    public Optional<EmailDTO> findOne(Long id) {
         log.debug("Request to get Email : {}", id);
-        return emailRepository.findById(id);
+        return emailRepository.findById(id)
+            .map(emailMapper::toDto);
     }
 
     /**
@@ -91,14 +100,14 @@ public class EmailServiceImpl implements EmailService {
      * Search for the email corresponding to the query.
      *
      * @param query the query of the search.
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Email> search(String query) {
-        log.debug("Request to search Emails for query {}", query);
-        return StreamSupport
-            .stream(emailSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public Page<EmailDTO> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of Emails for query {}", query);
+        return emailSearchRepository.search(queryStringQuery(query), pageable)
+            .map(emailMapper::toDto);
     }
 }

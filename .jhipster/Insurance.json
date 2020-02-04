@@ -34,7 +34,7 @@
     ],
     "changelogDate": "20200106223847",
     "entityTableName": "insurance",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

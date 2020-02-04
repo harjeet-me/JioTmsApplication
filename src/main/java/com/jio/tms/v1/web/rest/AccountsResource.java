@@ -1,8 +1,8 @@
 package com.jio.tms.v1.web.rest;
 
-import com.jio.tms.v1.domain.Accounts;
 import com.jio.tms.v1.service.AccountsService;
 import com.jio.tms.v1.web.rest.errors.BadRequestAlertException;
+import com.jio.tms.v1.service.dto.AccountsDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -44,17 +44,17 @@ public class AccountsResource {
     /**
      * {@code POST  /accounts} : Create a new accounts.
      *
-     * @param accounts the accounts to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new accounts, or with status {@code 400 (Bad Request)} if the accounts has already an ID.
+     * @param accountsDTO the accountsDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new accountsDTO, or with status {@code 400 (Bad Request)} if the accounts has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/accounts")
-    public ResponseEntity<Accounts> createAccounts(@RequestBody Accounts accounts) throws URISyntaxException {
-        log.debug("REST request to save Accounts : {}", accounts);
-        if (accounts.getId() != null) {
+    public ResponseEntity<AccountsDTO> createAccounts(@RequestBody AccountsDTO accountsDTO) throws URISyntaxException {
+        log.debug("REST request to save Accounts : {}", accountsDTO);
+        if (accountsDTO.getId() != null) {
             throw new BadRequestAlertException("A new accounts cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Accounts result = accountsService.save(accounts);
+        AccountsDTO result = accountsService.save(accountsDTO);
         return ResponseEntity.created(new URI("/api/accounts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -63,21 +63,21 @@ public class AccountsResource {
     /**
      * {@code PUT  /accounts} : Updates an existing accounts.
      *
-     * @param accounts the accounts to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated accounts,
-     * or with status {@code 400 (Bad Request)} if the accounts is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the accounts couldn't be updated.
+     * @param accountsDTO the accountsDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated accountsDTO,
+     * or with status {@code 400 (Bad Request)} if the accountsDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the accountsDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/accounts")
-    public ResponseEntity<Accounts> updateAccounts(@RequestBody Accounts accounts) throws URISyntaxException {
-        log.debug("REST request to update Accounts : {}", accounts);
-        if (accounts.getId() == null) {
+    public ResponseEntity<AccountsDTO> updateAccounts(@RequestBody AccountsDTO accountsDTO) throws URISyntaxException {
+        log.debug("REST request to update Accounts : {}", accountsDTO);
+        if (accountsDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Accounts result = accountsService.save(accounts);
+        AccountsDTO result = accountsService.save(accountsDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, accounts.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, accountsDTO.getId().toString()))
             .body(result);
     }
 
@@ -88,7 +88,7 @@ public class AccountsResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of accounts in body.
      */
     @GetMapping("/accounts")
-    public List<Accounts> getAllAccounts() {
+    public List<AccountsDTO> getAllAccounts() {
         log.debug("REST request to get all Accounts");
         return accountsService.findAll();
     }
@@ -96,20 +96,20 @@ public class AccountsResource {
     /**
      * {@code GET  /accounts/:id} : get the "id" accounts.
      *
-     * @param id the id of the accounts to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the accounts, or with status {@code 404 (Not Found)}.
+     * @param id the id of the accountsDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the accountsDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/accounts/{id}")
-    public ResponseEntity<Accounts> getAccounts(@PathVariable Long id) {
+    public ResponseEntity<AccountsDTO> getAccounts(@PathVariable Long id) {
         log.debug("REST request to get Accounts : {}", id);
-        Optional<Accounts> accounts = accountsService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(accounts);
+        Optional<AccountsDTO> accountsDTO = accountsService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(accountsDTO);
     }
 
     /**
      * {@code DELETE  /accounts/:id} : delete the "id" accounts.
      *
-     * @param id the id of the accounts to delete.
+     * @param id the id of the accountsDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/accounts/{id}")
@@ -127,7 +127,7 @@ public class AccountsResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/accounts")
-    public List<Accounts> searchAccounts(@RequestParam String query) {
+    public List<AccountsDTO> searchAccounts(@RequestParam String query) {
         log.debug("REST request to search Accounts for query {}", query);
         return accountsService.search(query);
     }

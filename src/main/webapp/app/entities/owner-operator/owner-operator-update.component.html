@@ -122,9 +122,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.ownerOperator.operInsurance" for="field_operInsurance">Oper Insurance</label>
-                    <select class="form-control" id="field_operInsurance" name="operInsurance" formControlName="operInsurance">
+                    <select class="form-control" id="field_operInsurance" name="operInsurance" formControlName="operInsuranceId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="insuranceOption.id === editForm.get('operInsurance')!.value?.id ? editForm.get('operInsurance')!.value : insuranceOption" *ngFor="let insuranceOption of operinsurances; trackBy: trackById">{{insuranceOption.id}}</option>
+                        <option [ngValue]="insuranceOption.id" *ngFor="let insuranceOption of operinsurances; trackBy: trackById">{{insuranceOption.id}}</option>
                     </select>
                 </div>
             </div>

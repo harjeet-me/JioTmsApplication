@@ -38,7 +38,7 @@ export class EquipmentUpdateComponent implements OnInit {
     licensePlateNumber: [],
     licensePlateExpiration: [],
     inspectionStickerExpiration: [],
-    insurance: []
+    insuranceId: []
   });
 
   constructor(
@@ -60,11 +60,11 @@ export class EquipmentUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: IInsurance[]) => {
-          if (!equipment.insurance || !equipment.insurance.id) {
+          if (!equipment.insuranceId) {
             this.insurances = resBody;
           } else {
             this.insuranceService
-              .find(equipment.insurance.id)
+              .find(equipment.insuranceId)
               .pipe(
                 map((subRes: HttpResponse<IInsurance>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -94,7 +94,7 @@ export class EquipmentUpdateComponent implements OnInit {
       licensePlateNumber: equipment.licensePlateNumber,
       licensePlateExpiration: equipment.licensePlateExpiration,
       inspectionStickerExpiration: equipment.inspectionStickerExpiration,
-      insurance: equipment.insurance
+      insuranceId: equipment.insuranceId
     });
   }
 
@@ -129,7 +129,7 @@ export class EquipmentUpdateComponent implements OnInit {
       licensePlateNumber: this.editForm.get(['licensePlateNumber'])!.value,
       licensePlateExpiration: this.editForm.get(['licensePlateExpiration'])!.value,
       inspectionStickerExpiration: this.editForm.get(['inspectionStickerExpiration'])!.value,
-      insurance: this.editForm.get(['insurance'])!.value
+      insuranceId: this.editForm.get(['insuranceId'])!.value
     };
   }
 

@@ -1,29 +1,29 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.Driver;
+import com.jio.tms.v1.service.dto.DriverDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link Driver}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.Driver}.
  */
 public interface DriverService {
 
     /**
      * Save a driver.
      *
-     * @param driver the entity to save.
+     * @param driverDTO the entity to save.
      * @return the persisted entity.
      */
-    Driver save(Driver driver);
+    DriverDTO save(DriverDTO driverDTO);
 
     /**
      * Get all the drivers.
      *
      * @return the list of entities.
      */
-    List<Driver> findAll();
+    List<DriverDTO> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface DriverService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Driver> findOne(Long id);
+    Optional<DriverDTO> findOne(Long id);
 
     /**
      * Delete the "id" driver.
@@ -48,5 +48,5 @@ public interface DriverService {
      * 
      * @return the list of entities.
      */
-    List<Driver> search(String query);
+    List<DriverDTO> search(String query);
 }

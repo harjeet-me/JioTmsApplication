@@ -1,8 +1,8 @@
 package com.jio.tms.v1.web.rest;
 
-import com.jio.tms.v1.domain.Reference;
 import com.jio.tms.v1.service.ReferenceService;
 import com.jio.tms.v1.web.rest.errors.BadRequestAlertException;
+import com.jio.tms.v1.service.dto.ReferenceDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -44,17 +44,17 @@ public class ReferenceResource {
     /**
      * {@code POST  /references} : Create a new reference.
      *
-     * @param reference the reference to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new reference, or with status {@code 400 (Bad Request)} if the reference has already an ID.
+     * @param referenceDTO the referenceDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new referenceDTO, or with status {@code 400 (Bad Request)} if the reference has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/references")
-    public ResponseEntity<Reference> createReference(@RequestBody Reference reference) throws URISyntaxException {
-        log.debug("REST request to save Reference : {}", reference);
-        if (reference.getId() != null) {
+    public ResponseEntity<ReferenceDTO> createReference(@RequestBody ReferenceDTO referenceDTO) throws URISyntaxException {
+        log.debug("REST request to save Reference : {}", referenceDTO);
+        if (referenceDTO.getId() != null) {
             throw new BadRequestAlertException("A new reference cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Reference result = referenceService.save(reference);
+        ReferenceDTO result = referenceService.save(referenceDTO);
         return ResponseEntity.created(new URI("/api/references/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -63,21 +63,21 @@ public class ReferenceResource {
     /**
      * {@code PUT  /references} : Updates an existing reference.
      *
-     * @param reference the reference to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated reference,
-     * or with status {@code 400 (Bad Request)} if the reference is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the reference couldn't be updated.
+     * @param referenceDTO the referenceDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated referenceDTO,
+     * or with status {@code 400 (Bad Request)} if the referenceDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the referenceDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/references")
-    public ResponseEntity<Reference> updateReference(@RequestBody Reference reference) throws URISyntaxException {
-        log.debug("REST request to update Reference : {}", reference);
-        if (reference.getId() == null) {
+    public ResponseEntity<ReferenceDTO> updateReference(@RequestBody ReferenceDTO referenceDTO) throws URISyntaxException {
+        log.debug("REST request to update Reference : {}", referenceDTO);
+        if (referenceDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Reference result = referenceService.save(reference);
+        ReferenceDTO result = referenceService.save(referenceDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, reference.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, referenceDTO.getId().toString()))
             .body(result);
     }
 
@@ -88,7 +88,7 @@ public class ReferenceResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of references in body.
      */
     @GetMapping("/references")
-    public List<Reference> getAllReferences() {
+    public List<ReferenceDTO> getAllReferences() {
         log.debug("REST request to get all References");
         return referenceService.findAll();
     }
@@ -96,20 +96,20 @@ public class ReferenceResource {
     /**
      * {@code GET  /references/:id} : get the "id" reference.
      *
-     * @param id the id of the reference to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the reference, or with status {@code 404 (Not Found)}.
+     * @param id the id of the referenceDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the referenceDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/references/{id}")
-    public ResponseEntity<Reference> getReference(@PathVariable Long id) {
+    public ResponseEntity<ReferenceDTO> getReference(@PathVariable Long id) {
         log.debug("REST request to get Reference : {}", id);
-        Optional<Reference> reference = referenceService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(reference);
+        Optional<ReferenceDTO> referenceDTO = referenceService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(referenceDTO);
     }
 
     /**
      * {@code DELETE  /references/:id} : delete the "id" reference.
      *
-     * @param id the id of the reference to delete.
+     * @param id the id of the referenceDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/references/{id}")
@@ -127,7 +127,7 @@ public class ReferenceResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/references")
-    public List<Reference> searchReferences(@RequestParam String query) {
+    public List<ReferenceDTO> searchReferences(@RequestParam String query) {
         log.debug("REST request to search References for query {}", query);
         return referenceService.search(query);
     }

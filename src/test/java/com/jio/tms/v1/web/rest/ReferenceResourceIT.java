@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.Reference;
 import com.jio.tms.v1.repository.ReferenceRepository;
 import com.jio.tms.v1.repository.search.ReferenceSearchRepository;
 import com.jio.tms.v1.service.ReferenceService;
+import com.jio.tms.v1.service.dto.ReferenceDTO;
+import com.jio.tms.v1.service.mapper.ReferenceMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +45,9 @@ public class ReferenceResourceIT {
 
     @Autowired
     private ReferenceRepository referenceRepository;
+
+    @Autowired
+    private ReferenceMapper referenceMapper;
 
     @Autowired
     private ReferenceService referenceService;
@@ -120,9 +125,10 @@ public class ReferenceResourceIT {
         int databaseSizeBeforeCreate = referenceRepository.findAll().size();
 
         // Create the Reference
+        ReferenceDTO referenceDTO = referenceMapper.toDto(reference);
         restReferenceMockMvc.perform(post("/api/references")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(reference)))
+            .content(TestUtil.convertObjectToJsonBytes(referenceDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Reference in the database
@@ -142,11 +148,12 @@ public class ReferenceResourceIT {
 
         // Create the Reference with an existing ID
         reference.setId(1L);
+        ReferenceDTO referenceDTO = referenceMapper.toDto(reference);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restReferenceMockMvc.perform(post("/api/references")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(reference)))
+            .content(TestUtil.convertObjectToJsonBytes(referenceDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Reference in the database
@@ -198,9 +205,7 @@ public class ReferenceResourceIT {
     @Transactional
     public void updateReference() throws Exception {
         // Initialize the database
-        referenceService.save(reference);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockReferenceSearchRepository);
+        referenceRepository.saveAndFlush(reference);
 
         int databaseSizeBeforeUpdate = referenceRepository.findAll().size();
 
@@ -210,10 +215,11 @@ public class ReferenceResourceIT {
         em.detach(updatedReference);
         updatedReference
             .reference(UPDATED_REFERENCE);
+        ReferenceDTO referenceDTO = referenceMapper.toDto(updatedReference);
 
         restReferenceMockMvc.perform(put("/api/references")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedReference)))
+            .content(TestUtil.convertObjectToJsonBytes(referenceDTO)))
             .andExpect(status().isOk());
 
         // Validate the Reference in the database
@@ -232,11 +238,12 @@ public class ReferenceResourceIT {
         int databaseSizeBeforeUpdate = referenceRepository.findAll().size();
 
         // Create the Reference
+        ReferenceDTO referenceDTO = referenceMapper.toDto(reference);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restReferenceMockMvc.perform(put("/api/references")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(reference)))
+            .content(TestUtil.convertObjectToJsonBytes(referenceDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Reference in the database
@@ -251,7 +258,7 @@ public class ReferenceResourceIT {
     @Transactional
     public void deleteReference() throws Exception {
         // Initialize the database
-        referenceService.save(reference);
+        referenceRepository.saveAndFlush(reference);
 
         int databaseSizeBeforeDelete = referenceRepository.findAll().size();
 
@@ -272,7 +279,7 @@ public class ReferenceResourceIT {
     @Transactional
     public void searchReference() throws Exception {
         // Initialize the database
-        referenceService.save(reference);
+        referenceRepository.saveAndFlush(reference);
         when(mockReferenceSearchRepository.search(queryStringQuery("id:" + reference.getId())))
             .thenReturn(Collections.singletonList(reference));
         // Search the reference

@@ -1,8 +1,8 @@
 package com.jio.tms.v1.web.rest;
 
-import com.jio.tms.v1.domain.Insurance;
 import com.jio.tms.v1.service.InsuranceService;
 import com.jio.tms.v1.web.rest.errors.BadRequestAlertException;
+import com.jio.tms.v1.service.dto.InsuranceDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -44,17 +44,17 @@ public class InsuranceResource {
     /**
      * {@code POST  /insurances} : Create a new insurance.
      *
-     * @param insurance the insurance to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new insurance, or with status {@code 400 (Bad Request)} if the insurance has already an ID.
+     * @param insuranceDTO the insuranceDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new insuranceDTO, or with status {@code 400 (Bad Request)} if the insurance has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/insurances")
-    public ResponseEntity<Insurance> createInsurance(@RequestBody Insurance insurance) throws URISyntaxException {
-        log.debug("REST request to save Insurance : {}", insurance);
-        if (insurance.getId() != null) {
+    public ResponseEntity<InsuranceDTO> createInsurance(@RequestBody InsuranceDTO insuranceDTO) throws URISyntaxException {
+        log.debug("REST request to save Insurance : {}", insuranceDTO);
+        if (insuranceDTO.getId() != null) {
             throw new BadRequestAlertException("A new insurance cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Insurance result = insuranceService.save(insurance);
+        InsuranceDTO result = insuranceService.save(insuranceDTO);
         return ResponseEntity.created(new URI("/api/insurances/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -63,21 +63,21 @@ public class InsuranceResource {
     /**
      * {@code PUT  /insurances} : Updates an existing insurance.
      *
-     * @param insurance the insurance to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated insurance,
-     * or with status {@code 400 (Bad Request)} if the insurance is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the insurance couldn't be updated.
+     * @param insuranceDTO the insuranceDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated insuranceDTO,
+     * or with status {@code 400 (Bad Request)} if the insuranceDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the insuranceDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/insurances")
-    public ResponseEntity<Insurance> updateInsurance(@RequestBody Insurance insurance) throws URISyntaxException {
-        log.debug("REST request to update Insurance : {}", insurance);
-        if (insurance.getId() == null) {
+    public ResponseEntity<InsuranceDTO> updateInsurance(@RequestBody InsuranceDTO insuranceDTO) throws URISyntaxException {
+        log.debug("REST request to update Insurance : {}", insuranceDTO);
+        if (insuranceDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Insurance result = insuranceService.save(insurance);
+        InsuranceDTO result = insuranceService.save(insuranceDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, insurance.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, insuranceDTO.getId().toString()))
             .body(result);
     }
 
@@ -89,7 +89,7 @@ public class InsuranceResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of insurances in body.
      */
     @GetMapping("/insurances")
-    public List<Insurance> getAllInsurances(@RequestParam(required = false) String filter) {
+    public List<InsuranceDTO> getAllInsurances(@RequestParam(required = false) String filter) {
         if ("owneroperator-is-null".equals(filter)) {
             log.debug("REST request to get all Insurances where ownerOperator is null");
             return insuranceService.findAllWhereOwnerOperatorIsNull();
@@ -101,20 +101,20 @@ public class InsuranceResource {
     /**
      * {@code GET  /insurances/:id} : get the "id" insurance.
      *
-     * @param id the id of the insurance to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the insurance, or with status {@code 404 (Not Found)}.
+     * @param id the id of the insuranceDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the insuranceDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/insurances/{id}")
-    public ResponseEntity<Insurance> getInsurance(@PathVariable Long id) {
+    public ResponseEntity<InsuranceDTO> getInsurance(@PathVariable Long id) {
         log.debug("REST request to get Insurance : {}", id);
-        Optional<Insurance> insurance = insuranceService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(insurance);
+        Optional<InsuranceDTO> insuranceDTO = insuranceService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(insuranceDTO);
     }
 
     /**
      * {@code DELETE  /insurances/:id} : delete the "id" insurance.
      *
-     * @param id the id of the insurance to delete.
+     * @param id the id of the insuranceDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/insurances/{id}")
@@ -132,7 +132,7 @@ public class InsuranceResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/insurances")
-    public List<Insurance> searchInsurances(@RequestParam String query) {
+    public List<InsuranceDTO> searchInsurances(@RequestParam String query) {
         log.debug("REST request to search Insurances for query {}", query);
         return insuranceService.search(query);
     }

@@ -68,8 +68,8 @@
                 <td>{{equipment.licensePlateExpiration | date:'mediumDate'}}</td>
                 <td>{{equipment.inspectionStickerExpiration | date:'mediumDate'}}</td>
                 <td>
-                    <div *ngIf="equipment.insurance">
-                        <a [routerLink]="['/insurance', equipment.insurance?.id, 'view' ]" >{{equipment.insurance?.id}}</a>
+                    <div *ngIf="equipment.insuranceId">
+                        <a [routerLink]="['/insurance', equipment.insuranceId , 'view' ]" >{{equipment.insuranceId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

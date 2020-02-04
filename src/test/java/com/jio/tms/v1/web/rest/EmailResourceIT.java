@@ -5,6 +5,8 @@ import com.jio.tms.v1.domain.Email;
 import com.jio.tms.v1.repository.EmailRepository;
 import com.jio.tms.v1.repository.search.EmailSearchRepository;
 import com.jio.tms.v1.service.EmailService;
+import com.jio.tms.v1.service.dto.EmailDTO;
+import com.jio.tms.v1.service.mapper.EmailMapper;
 import com.jio.tms.v1.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,12 +14,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
@@ -47,11 +52,28 @@ public class EmailResourceIT {
     private static final String DEFAULT_USERBCC = "AAAAAAAAAA";
     private static final String UPDATED_USERBCC = "BBBBBBBBBB";
 
+    private static final String DEFAULT_SUBJECT = "AAAAAAAAAA";
+    private static final String UPDATED_SUBJECT = "BBBBBBBBBB";
+
     private static final String DEFAULT_MESSAGE = "AAAAAAAAAA";
     private static final String UPDATED_MESSAGE = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_MULTIPART = false;
+    private static final Boolean UPDATED_MULTIPART = true;
+
+    private static final Boolean DEFAULT_HTML_BODY = false;
+    private static final Boolean UPDATED_HTML_BODY = true;
+
+    private static final byte[] DEFAULT_ATTACHMENT = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_ATTACHMENT = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_ATTACHMENT_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_ATTACHMENT_CONTENT_TYPE = "image/png";
+
     @Autowired
     private EmailRepository emailRepository;
+
+    @Autowired
+    private EmailMapper emailMapper;
 
     @Autowired
     private EmailService emailService;
@@ -106,7 +128,12 @@ public class EmailResourceIT {
             .userto(DEFAULT_USERTO)
             .usercc(DEFAULT_USERCC)
             .userbcc(DEFAULT_USERBCC)
-            .message(DEFAULT_MESSAGE);
+            .subject(DEFAULT_SUBJECT)
+            .message(DEFAULT_MESSAGE)
+            .multipart(DEFAULT_MULTIPART)
+            .htmlBody(DEFAULT_HTML_BODY)
+            .attachment(DEFAULT_ATTACHMENT)
+            .attachmentContentType(DEFAULT_ATTACHMENT_CONTENT_TYPE);
         return email;
     }
     /**
@@ -120,7 +147,12 @@ public class EmailResourceIT {
             .userto(UPDATED_USERTO)
             .usercc(UPDATED_USERCC)
             .userbcc(UPDATED_USERBCC)
-            .message(UPDATED_MESSAGE);
+            .subject(UPDATED_SUBJECT)
+            .message(UPDATED_MESSAGE)
+            .multipart(UPDATED_MULTIPART)
+            .htmlBody(UPDATED_HTML_BODY)
+            .attachment(UPDATED_ATTACHMENT)
+            .attachmentContentType(UPDATED_ATTACHMENT_CONTENT_TYPE);
         return email;
     }
 
@@ -135,9 +167,10 @@ public class EmailResourceIT {
         int databaseSizeBeforeCreate = emailRepository.findAll().size();
 
         // Create the Email
+        EmailDTO emailDTO = emailMapper.toDto(email);
         restEmailMockMvc.perform(post("/api/emails")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(email)))
+            .content(TestUtil.convertObjectToJsonBytes(emailDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Email in the database
@@ -147,7 +180,12 @@ public class EmailResourceIT {
         assertThat(testEmail.getUserto()).isEqualTo(DEFAULT_USERTO);
         assertThat(testEmail.getUsercc()).isEqualTo(DEFAULT_USERCC);
         assertThat(testEmail.getUserbcc()).isEqualTo(DEFAULT_USERBCC);
+        assertThat(testEmail.getSubject()).isEqualTo(DEFAULT_SUBJECT);
         assertThat(testEmail.getMessage()).isEqualTo(DEFAULT_MESSAGE);
+        assertThat(testEmail.isMultipart()).isEqualTo(DEFAULT_MULTIPART);
+        assertThat(testEmail.isHtmlBody()).isEqualTo(DEFAULT_HTML_BODY);
+        assertThat(testEmail.getAttachment()).isEqualTo(DEFAULT_ATTACHMENT);
+        assertThat(testEmail.getAttachmentContentType()).isEqualTo(DEFAULT_ATTACHMENT_CONTENT_TYPE);
 
         // Validate the Email in Elasticsearch
         verify(mockEmailSearchRepository, times(1)).save(testEmail);
@@ -160,11 +198,12 @@ public class EmailResourceIT {
 
         // Create the Email with an existing ID
         email.setId(1L);
+        EmailDTO emailDTO = emailMapper.toDto(email);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restEmailMockMvc.perform(post("/api/emails")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(email)))
+            .content(TestUtil.convertObjectToJsonBytes(emailDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Email in the database
@@ -190,7 +229,12 @@ public class EmailResourceIT {
             .andExpect(jsonPath("$.[*].userto").value(hasItem(DEFAULT_USERTO)))
             .andExpect(jsonPath("$.[*].usercc").value(hasItem(DEFAULT_USERCC)))
             .andExpect(jsonPath("$.[*].userbcc").value(hasItem(DEFAULT_USERBCC)))
-            .andExpect(jsonPath("$.[*].message").value(hasItem(DEFAULT_MESSAGE)));
+            .andExpect(jsonPath("$.[*].subject").value(hasItem(DEFAULT_SUBJECT)))
+            .andExpect(jsonPath("$.[*].message").value(hasItem(DEFAULT_MESSAGE)))
+            .andExpect(jsonPath("$.[*].multipart").value(hasItem(DEFAULT_MULTIPART.booleanValue())))
+            .andExpect(jsonPath("$.[*].htmlBody").value(hasItem(DEFAULT_HTML_BODY.booleanValue())))
+            .andExpect(jsonPath("$.[*].attachmentContentType").value(hasItem(DEFAULT_ATTACHMENT_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].attachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_ATTACHMENT))));
     }
     
     @Test
@@ -207,7 +251,12 @@ public class EmailResourceIT {
             .andExpect(jsonPath("$.userto").value(DEFAULT_USERTO))
             .andExpect(jsonPath("$.usercc").value(DEFAULT_USERCC))
             .andExpect(jsonPath("$.userbcc").value(DEFAULT_USERBCC))
-            .andExpect(jsonPath("$.message").value(DEFAULT_MESSAGE));
+            .andExpect(jsonPath("$.subject").value(DEFAULT_SUBJECT))
+            .andExpect(jsonPath("$.message").value(DEFAULT_MESSAGE))
+            .andExpect(jsonPath("$.multipart").value(DEFAULT_MULTIPART.booleanValue()))
+            .andExpect(jsonPath("$.htmlBody").value(DEFAULT_HTML_BODY.booleanValue()))
+            .andExpect(jsonPath("$.attachmentContentType").value(DEFAULT_ATTACHMENT_CONTENT_TYPE))
+            .andExpect(jsonPath("$.attachment").value(Base64Utils.encodeToString(DEFAULT_ATTACHMENT)));
     }
 
     @Test
@@ -222,9 +271,7 @@ public class EmailResourceIT {
     @Transactional
     public void updateEmail() throws Exception {
         // Initialize the database
-        emailService.save(email);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockEmailSearchRepository);
+        emailRepository.saveAndFlush(email);
 
         int databaseSizeBeforeUpdate = emailRepository.findAll().size();
 
@@ -236,11 +283,17 @@ public class EmailResourceIT {
             .userto(UPDATED_USERTO)
             .usercc(UPDATED_USERCC)
             .userbcc(UPDATED_USERBCC)
-            .message(UPDATED_MESSAGE);
+            .subject(UPDATED_SUBJECT)
+            .message(UPDATED_MESSAGE)
+            .multipart(UPDATED_MULTIPART)
+            .htmlBody(UPDATED_HTML_BODY)
+            .attachment(UPDATED_ATTACHMENT)
+            .attachmentContentType(UPDATED_ATTACHMENT_CONTENT_TYPE);
+        EmailDTO emailDTO = emailMapper.toDto(updatedEmail);
 
         restEmailMockMvc.perform(put("/api/emails")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedEmail)))
+            .content(TestUtil.convertObjectToJsonBytes(emailDTO)))
             .andExpect(status().isOk());
 
         // Validate the Email in the database
@@ -250,7 +303,12 @@ public class EmailResourceIT {
         assertThat(testEmail.getUserto()).isEqualTo(UPDATED_USERTO);
         assertThat(testEmail.getUsercc()).isEqualTo(UPDATED_USERCC);
         assertThat(testEmail.getUserbcc()).isEqualTo(UPDATED_USERBCC);
+        assertThat(testEmail.getSubject()).isEqualTo(UPDATED_SUBJECT);
         assertThat(testEmail.getMessage()).isEqualTo(UPDATED_MESSAGE);
+        assertThat(testEmail.isMultipart()).isEqualTo(UPDATED_MULTIPART);
+        assertThat(testEmail.isHtmlBody()).isEqualTo(UPDATED_HTML_BODY);
+        assertThat(testEmail.getAttachment()).isEqualTo(UPDATED_ATTACHMENT);
+        assertThat(testEmail.getAttachmentContentType()).isEqualTo(UPDATED_ATTACHMENT_CONTENT_TYPE);
 
         // Validate the Email in Elasticsearch
         verify(mockEmailSearchRepository, times(1)).save(testEmail);
@@ -262,11 +320,12 @@ public class EmailResourceIT {
         int databaseSizeBeforeUpdate = emailRepository.findAll().size();
 
         // Create the Email
+        EmailDTO emailDTO = emailMapper.toDto(email);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restEmailMockMvc.perform(put("/api/emails")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(email)))
+            .content(TestUtil.convertObjectToJsonBytes(emailDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Email in the database
@@ -281,7 +340,7 @@ public class EmailResourceIT {
     @Transactional
     public void deleteEmail() throws Exception {
         // Initialize the database
-        emailService.save(email);
+        emailRepository.saveAndFlush(email);
 
         int databaseSizeBeforeDelete = emailRepository.findAll().size();
 
@@ -302,9 +361,9 @@ public class EmailResourceIT {
     @Transactional
     public void searchEmail() throws Exception {
         // Initialize the database
-        emailService.save(email);
-        when(mockEmailSearchRepository.search(queryStringQuery("id:" + email.getId())))
-            .thenReturn(Collections.singletonList(email));
+        emailRepository.saveAndFlush(email);
+        when(mockEmailSearchRepository.search(queryStringQuery("id:" + email.getId()), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(email), PageRequest.of(0, 1), 1));
         // Search the email
         restEmailMockMvc.perform(get("/api/_search/emails?query=id:" + email.getId()))
             .andExpect(status().isOk())
@@ -313,6 +372,11 @@ public class EmailResourceIT {
             .andExpect(jsonPath("$.[*].userto").value(hasItem(DEFAULT_USERTO)))
             .andExpect(jsonPath("$.[*].usercc").value(hasItem(DEFAULT_USERCC)))
             .andExpect(jsonPath("$.[*].userbcc").value(hasItem(DEFAULT_USERBCC)))
-            .andExpect(jsonPath("$.[*].message").value(hasItem(DEFAULT_MESSAGE)));
+            .andExpect(jsonPath("$.[*].subject").value(hasItem(DEFAULT_SUBJECT)))
+            .andExpect(jsonPath("$.[*].message").value(hasItem(DEFAULT_MESSAGE)))
+            .andExpect(jsonPath("$.[*].multipart").value(hasItem(DEFAULT_MULTIPART.booleanValue())))
+            .andExpect(jsonPath("$.[*].htmlBody").value(hasItem(DEFAULT_HTML_BODY.booleanValue())))
+            .andExpect(jsonPath("$.[*].attachmentContentType").value(hasItem(DEFAULT_ATTACHMENT_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].attachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_ATTACHMENT))));
     }
 }

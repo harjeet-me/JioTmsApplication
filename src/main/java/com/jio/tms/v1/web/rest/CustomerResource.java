@@ -1,14 +1,20 @@
 package com.jio.tms.v1.web.rest;
 
-import com.jio.tms.v1.domain.Customer;
 import com.jio.tms.v1.service.CustomerService;
 import com.jio.tms.v1.web.rest.errors.BadRequestAlertException;
+import com.jio.tms.v1.service.dto.CustomerDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,17 +50,17 @@ public class CustomerResource {
     /**
      * {@code POST  /customers} : Create a new customer.
      *
-     * @param customer the customer to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new customer, or with status {@code 400 (Bad Request)} if the customer has already an ID.
+     * @param customerDTO the customerDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new customerDTO, or with status {@code 400 (Bad Request)} if the customer has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/customers")
-    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) throws URISyntaxException {
-        log.debug("REST request to save Customer : {}", customer);
-        if (customer.getId() != null) {
+    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) throws URISyntaxException {
+        log.debug("REST request to save Customer : {}", customerDTO);
+        if (customerDTO.getId() != null) {
             throw new BadRequestAlertException("A new customer cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Customer result = customerService.save(customer);
+        CustomerDTO result = customerService.save(customerDTO);
         return ResponseEntity.created(new URI("/api/customers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -63,21 +69,21 @@ public class CustomerResource {
     /**
      * {@code PUT  /customers} : Updates an existing customer.
      *
-     * @param customer the customer to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated customer,
-     * or with status {@code 400 (Bad Request)} if the customer is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the customer couldn't be updated.
+     * @param customerDTO the customerDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated customerDTO,
+     * or with status {@code 400 (Bad Request)} if the customerDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the customerDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/customers")
-    public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer) throws URISyntaxException {
-        log.debug("REST request to update Customer : {}", customer);
-        if (customer.getId() == null) {
+    public ResponseEntity<CustomerDTO> updateCustomer(@RequestBody CustomerDTO customerDTO) throws URISyntaxException {
+        log.debug("REST request to update Customer : {}", customerDTO);
+        if (customerDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Customer result = customerService.save(customer);
+        CustomerDTO result = customerService.save(customerDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, customer.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, customerDTO.getId().toString()))
             .body(result);
     }
 
@@ -85,36 +91,41 @@ public class CustomerResource {
      * {@code GET  /customers} : get all the customers.
      *
 
+     * @param pageable the pagination information.
+
      * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of customers in body.
      */
     @GetMapping("/customers")
-    public List<Customer> getAllCustomers(@RequestParam(required = false) String filter) {
+    public ResponseEntity<List<CustomerDTO>> getAllCustomers(Pageable pageable, @RequestParam(required = false) String filter) {
         if ("accounts-is-null".equals(filter)) {
             log.debug("REST request to get all Customers where accounts is null");
-            return customerService.findAllWhereAccountsIsNull();
+            return new ResponseEntity<>(customerService.findAllWhereAccountsIsNull(),
+                    HttpStatus.OK);
         }
-        log.debug("REST request to get all Customers");
-        return customerService.findAll();
+        log.debug("REST request to get a page of Customers");
+        Page<CustomerDTO> page = customerService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
      * {@code GET  /customers/:id} : get the "id" customer.
      *
-     * @param id the id of the customer to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the customer, or with status {@code 404 (Not Found)}.
+     * @param id the id of the customerDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the customerDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/customers/{id}")
-    public ResponseEntity<Customer> getCustomer(@PathVariable Long id) {
+    public ResponseEntity<CustomerDTO> getCustomer(@PathVariable Long id) {
         log.debug("REST request to get Customer : {}", id);
-        Optional<Customer> customer = customerService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(customer);
+        Optional<CustomerDTO> customerDTO = customerService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(customerDTO);
     }
 
     /**
      * {@code DELETE  /customers/:id} : delete the "id" customer.
      *
-     * @param id the id of the customer to delete.
+     * @param id the id of the customerDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/customers/{id}")
@@ -129,11 +140,14 @@ public class CustomerResource {
      * to the query.
      *
      * @param query the query of the customer search.
+     * @param pageable the pagination information.
      * @return the result of the search.
      */
     @GetMapping("/_search/customers")
-    public List<Customer> searchCustomers(@RequestParam String query) {
-        log.debug("REST request to search Customers for query {}", query);
-        return customerService.search(query);
+    public ResponseEntity<List<CustomerDTO>> searchCustomers(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of Customers for query {}", query);
+        Page<CustomerDTO> page = customerService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

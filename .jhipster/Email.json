@@ -14,22 +14,39 @@
             "fieldType": "String"
         },
         {
+            "fieldName": "subject",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "message",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "multipart",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "htmlBody",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "attachment",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
         }
     ],
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "otherEntityName": "files",
+            "otherEntityName": "fileSystem",
             "otherEntityRelationshipName": "email",
-            "relationshipName": "files"
+            "relationshipName": "fileSystem"
         }
     ],
     "changelogDate": "20200202070556",
     "entityTableName": "email",
-    "dto": "no",
-    "pagination": "no",
+    "dto": "mapstruct",
+    "pagination": "pagination",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,

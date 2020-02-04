@@ -32,37 +32,37 @@
     <div class="table-responsive" *ngIf="customers?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr>
-            <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.company">Company</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.firstName">First Name</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.lastName">Last Name</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.contactDesignation">Contact Designation</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.email">Email</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.phoneNumber">Phone Number</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.preffredContactType">Preffred Contact Type</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.website">Website</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.secondaryContactPerson">Secondary Contact Person</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.secContactNumber">Sec Contact Number</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.secContactEmail">Sec Contact Email</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.secContactPreContactTime">Sec Contact Pre Contact Time</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.fax">Fax</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.address">Address</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.streetAddress">Street Address</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.city">City</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.stateProvince">State Province</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.country">Country</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.postalCode">Postal Code</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.dot">Dot</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.mc">Mc</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.companyLogo">Company Logo</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.customerSince">Customer Since</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.remarks">Remarks</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.contract">Contract</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.status">Status</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.preffredCurrency">Preffred Currency</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.payterms">Payterms</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.customer.timeZone">Time Zone</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="company"><span jhiTranslate="jioTmsApplicationApp.customer.company">Company</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="firstName"><span jhiTranslate="jioTmsApplicationApp.customer.firstName">First Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="lastName"><span jhiTranslate="jioTmsApplicationApp.customer.lastName">Last Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="contactDesignation"><span jhiTranslate="jioTmsApplicationApp.customer.contactDesignation">Contact Designation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="email"><span jhiTranslate="jioTmsApplicationApp.customer.email">Email</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="phoneNumber"><span jhiTranslate="jioTmsApplicationApp.customer.phoneNumber">Phone Number</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="preffredContactType"><span jhiTranslate="jioTmsApplicationApp.customer.preffredContactType">Preffred Contact Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="website"><span jhiTranslate="jioTmsApplicationApp.customer.website">Website</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="secondaryContactPerson"><span jhiTranslate="jioTmsApplicationApp.customer.secondaryContactPerson">Secondary Contact Person</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="secContactNumber"><span jhiTranslate="jioTmsApplicationApp.customer.secContactNumber">Sec Contact Number</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="secContactEmail"><span jhiTranslate="jioTmsApplicationApp.customer.secContactEmail">Sec Contact Email</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="secContactPreContactTime"><span jhiTranslate="jioTmsApplicationApp.customer.secContactPreContactTime">Sec Contact Pre Contact Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="fax"><span jhiTranslate="jioTmsApplicationApp.customer.fax">Fax</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="address"><span jhiTranslate="jioTmsApplicationApp.customer.address">Address</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="streetAddress"><span jhiTranslate="jioTmsApplicationApp.customer.streetAddress">Street Address</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="city"><span jhiTranslate="jioTmsApplicationApp.customer.city">City</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="stateProvince"><span jhiTranslate="jioTmsApplicationApp.customer.stateProvince">State Province</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="country"><span jhiTranslate="jioTmsApplicationApp.customer.country">Country</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="postalCode"><span jhiTranslate="jioTmsApplicationApp.customer.postalCode">Postal Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="dot"><span jhiTranslate="jioTmsApplicationApp.customer.dot">Dot</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="mc"><span jhiTranslate="jioTmsApplicationApp.customer.mc">Mc</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="companyLogo"><span jhiTranslate="jioTmsApplicationApp.customer.companyLogo">Company Logo</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="customerSince"><span jhiTranslate="jioTmsApplicationApp.customer.customerSince">Customer Since</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="remarks"><span jhiTranslate="jioTmsApplicationApp.customer.remarks">Remarks</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="contract"><span jhiTranslate="jioTmsApplicationApp.customer.contract">Contract</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="status"><span jhiTranslate="jioTmsApplicationApp.customer.status">Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="preffredCurrency"><span jhiTranslate="jioTmsApplicationApp.customer.preffredCurrency">Preffred Currency</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="payterms"><span jhiTranslate="jioTmsApplicationApp.customer.payterms">Payterms</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="timeZone"><span jhiTranslate="jioTmsApplicationApp.customer.timeZone">Time Zone</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -130,5 +130,13 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div *ngIf="customers?.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
     </div>
 </div>

@@ -4,12 +4,15 @@ import com.jio.tms.v1.service.InvoiceRefService;
 import com.jio.tms.v1.domain.InvoiceRef;
 import com.jio.tms.v1.repository.InvoiceRefRepository;
 import com.jio.tms.v1.repository.search.InvoiceRefSearchRepository;
+import com.jio.tms.v1.service.dto.InvoiceRefDTO;
+import com.jio.tms.v1.service.mapper.InvoiceRefMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,24 +31,29 @@ public class InvoiceRefServiceImpl implements InvoiceRefService {
 
     private final InvoiceRefRepository invoiceRefRepository;
 
+    private final InvoiceRefMapper invoiceRefMapper;
+
     private final InvoiceRefSearchRepository invoiceRefSearchRepository;
 
-    public InvoiceRefServiceImpl(InvoiceRefRepository invoiceRefRepository, InvoiceRefSearchRepository invoiceRefSearchRepository) {
+    public InvoiceRefServiceImpl(InvoiceRefRepository invoiceRefRepository, InvoiceRefMapper invoiceRefMapper, InvoiceRefSearchRepository invoiceRefSearchRepository) {
         this.invoiceRefRepository = invoiceRefRepository;
+        this.invoiceRefMapper = invoiceRefMapper;
         this.invoiceRefSearchRepository = invoiceRefSearchRepository;
     }
 
     /**
      * Save a invoiceRef.
      *
-     * @param invoiceRef the entity to save.
+     * @param invoiceRefDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public InvoiceRef save(InvoiceRef invoiceRef) {
-        log.debug("Request to save InvoiceRef : {}", invoiceRef);
-        InvoiceRef result = invoiceRefRepository.save(invoiceRef);
-        invoiceRefSearchRepository.save(result);
+    public InvoiceRefDTO save(InvoiceRefDTO invoiceRefDTO) {
+        log.debug("Request to save InvoiceRef : {}", invoiceRefDTO);
+        InvoiceRef invoiceRef = invoiceRefMapper.toEntity(invoiceRefDTO);
+        invoiceRef = invoiceRefRepository.save(invoiceRef);
+        InvoiceRefDTO result = invoiceRefMapper.toDto(invoiceRef);
+        invoiceRefSearchRepository.save(invoiceRef);
         return result;
     }
 
@@ -56,9 +64,11 @@ public class InvoiceRefServiceImpl implements InvoiceRefService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<InvoiceRef> findAll() {
+    public List<InvoiceRefDTO> findAll() {
         log.debug("Request to get all InvoiceRefs");
-        return invoiceRefRepository.findAll();
+        return invoiceRefRepository.findAll().stream()
+            .map(invoiceRefMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -70,9 +80,10 @@ public class InvoiceRefServiceImpl implements InvoiceRefService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<InvoiceRef> findOne(Long id) {
+    public Optional<InvoiceRefDTO> findOne(Long id) {
         log.debug("Request to get InvoiceRef : {}", id);
-        return invoiceRefRepository.findById(id);
+        return invoiceRefRepository.findById(id)
+            .map(invoiceRefMapper::toDto);
     }
 
     /**
@@ -95,10 +106,11 @@ public class InvoiceRefServiceImpl implements InvoiceRefService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<InvoiceRef> search(String query) {
+    public List<InvoiceRefDTO> search(String query) {
         log.debug("Request to search InvoiceRefs for query {}", query);
         return StreamSupport
             .stream(invoiceRefSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(invoiceRefMapper::toDto)
             .collect(Collectors.toList());
     }
 }

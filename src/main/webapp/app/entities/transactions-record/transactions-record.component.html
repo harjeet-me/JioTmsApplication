@@ -32,22 +32,22 @@
     <div class="table-responsive" *ngIf="transactionsRecords?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr>
-            <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txType">Tx Type</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.description">Description</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txAmmount">Tx Ammount</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txRefNo">Tx Ref No</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txCreatedBy">Tx Created By</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txCreatedDate">Tx Created Date</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txCompletedBy">Tx Completed By</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txCompletedDate">Tx Completed Date</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.status">Status</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txDoc">Tx Doc</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.currency">Currency</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.remarks">Remarks</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.customer">Customer</span></th>
-            <th scope="col" ><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.account">Account</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="txType"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txType">Tx Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="description"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="txAmmount"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txAmmount">Tx Ammount</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="txRefNo"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txRefNo">Tx Ref No</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="txCreatedBy"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txCreatedBy">Tx Created By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="txCreatedDate"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txCreatedDate">Tx Created Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="txCompletedBy"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txCompletedBy">Tx Completed By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="txCompletedDate"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txCompletedDate">Tx Completed Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="status"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.status">Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="txDoc"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txDoc">Tx Doc</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="currency"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.currency">Currency</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="remarks"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.remarks">Remarks</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="customerCompany"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.customer">Customer</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="accountId"><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.account">Account</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -70,13 +70,13 @@
                 <td jhiTranslate="{{'jioTmsApplicationApp.CURRENCY.' + transactionsRecord.currency}}">{{transactionsRecord.currency}}</td>
                 <td>{{transactionsRecord.remarks}}</td>
                 <td>
-                    <div *ngIf="transactionsRecord.customer">
-                        <a [routerLink]="['/customer', transactionsRecord.customer?.id, 'view' ]" >{{transactionsRecord.customer?.company}}</a>
+                    <div *ngIf="transactionsRecord.customerId">
+                        <a [routerLink]="['/customer', transactionsRecord.customerId , 'view' ]" >{{transactionsRecord.customerCompany}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="transactionsRecord.account">
-                        <a [routerLink]="['/accounts', transactionsRecord.account?.id, 'view' ]" >{{transactionsRecord.account?.id}}</a>
+                    <div *ngIf="transactionsRecord.accountId">
+                        <a [routerLink]="['/accounts', transactionsRecord.accountId , 'view' ]" >{{transactionsRecord.accountId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
@@ -103,5 +103,13 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div *ngIf="transactionsRecords?.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
     </div>
 </div>

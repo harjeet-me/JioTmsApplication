@@ -26,7 +26,7 @@ export class AccountsUpdateComponent implements OnInit {
     over30: [],
     over60: [],
     over90: [],
-    customer: []
+    customerId: []
   });
 
   constructor(
@@ -48,11 +48,11 @@ export class AccountsUpdateComponent implements OnInit {
           })
         )
         .subscribe((resBody: ICustomer[]) => {
-          if (!accounts.customer || !accounts.customer.id) {
+          if (!accounts.customerId) {
             this.customers = resBody;
           } else {
             this.customerService
-              .find(accounts.customer.id)
+              .find(accounts.customerId)
               .pipe(
                 map((subRes: HttpResponse<ICustomer>) => {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
@@ -73,7 +73,7 @@ export class AccountsUpdateComponent implements OnInit {
       over30: accounts.over30,
       over60: accounts.over60,
       over90: accounts.over90,
-      customer: accounts.customer
+      customerId: accounts.customerId
     });
   }
 
@@ -99,7 +99,7 @@ export class AccountsUpdateComponent implements OnInit {
       over30: this.editForm.get(['over30'])!.value,
       over60: this.editForm.get(['over60'])!.value,
       over90: this.editForm.get(['over90'])!.value,
-      customer: this.editForm.get(['customer'])!.value
+      customerId: this.editForm.get(['customerId'])!.value
     };
   }
 

@@ -1,5 +1,3 @@
-import { IInvoice } from 'app/shared/model/invoice.model';
-
 export interface IInvoiceItem {
   id?: number;
   itemName?: string;
@@ -8,7 +6,7 @@ export interface IInvoiceItem {
   price?: number;
   discount?: number;
   total?: number;
-  invoice?: IInvoice;
+  invoiceId?: number;
 }
 
 export class InvoiceItem implements IInvoiceItem {
@@ -20,6 +18,6 @@ export class InvoiceItem implements IInvoiceItem {
     public price?: number,
     public discount?: number,
     public total?: number,
-    public invoice?: IInvoice
+    public invoiceId?: number
   ) {}
 }

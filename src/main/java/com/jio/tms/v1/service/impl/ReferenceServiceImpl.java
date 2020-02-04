@@ -4,12 +4,15 @@ import com.jio.tms.v1.service.ReferenceService;
 import com.jio.tms.v1.domain.Reference;
 import com.jio.tms.v1.repository.ReferenceRepository;
 import com.jio.tms.v1.repository.search.ReferenceSearchRepository;
+import com.jio.tms.v1.service.dto.ReferenceDTO;
+import com.jio.tms.v1.service.mapper.ReferenceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,24 +31,29 @@ public class ReferenceServiceImpl implements ReferenceService {
 
     private final ReferenceRepository referenceRepository;
 
+    private final ReferenceMapper referenceMapper;
+
     private final ReferenceSearchRepository referenceSearchRepository;
 
-    public ReferenceServiceImpl(ReferenceRepository referenceRepository, ReferenceSearchRepository referenceSearchRepository) {
+    public ReferenceServiceImpl(ReferenceRepository referenceRepository, ReferenceMapper referenceMapper, ReferenceSearchRepository referenceSearchRepository) {
         this.referenceRepository = referenceRepository;
+        this.referenceMapper = referenceMapper;
         this.referenceSearchRepository = referenceSearchRepository;
     }
 
     /**
      * Save a reference.
      *
-     * @param reference the entity to save.
+     * @param referenceDTO the entity to save.
      * @return the persisted entity.
      */
     @Override
-    public Reference save(Reference reference) {
-        log.debug("Request to save Reference : {}", reference);
-        Reference result = referenceRepository.save(reference);
-        referenceSearchRepository.save(result);
+    public ReferenceDTO save(ReferenceDTO referenceDTO) {
+        log.debug("Request to save Reference : {}", referenceDTO);
+        Reference reference = referenceMapper.toEntity(referenceDTO);
+        reference = referenceRepository.save(reference);
+        ReferenceDTO result = referenceMapper.toDto(reference);
+        referenceSearchRepository.save(reference);
         return result;
     }
 
@@ -56,9 +64,11 @@ public class ReferenceServiceImpl implements ReferenceService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Reference> findAll() {
+    public List<ReferenceDTO> findAll() {
         log.debug("Request to get all References");
-        return referenceRepository.findAll();
+        return referenceRepository.findAll().stream()
+            .map(referenceMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -70,9 +80,10 @@ public class ReferenceServiceImpl implements ReferenceService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Reference> findOne(Long id) {
+    public Optional<ReferenceDTO> findOne(Long id) {
         log.debug("Request to get Reference : {}", id);
-        return referenceRepository.findById(id);
+        return referenceRepository.findById(id)
+            .map(referenceMapper::toDto);
     }
 
     /**
@@ -95,10 +106,11 @@ public class ReferenceServiceImpl implements ReferenceService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Reference> search(String query) {
+    public List<ReferenceDTO> search(String query) {
         log.debug("Request to search References for query {}", query);
         return StreamSupport
             .stream(referenceSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(referenceMapper::toDto)
             .collect(Collectors.toList());
     }
 }

@@ -1,29 +1,29 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.Reference;
+import com.jio.tms.v1.service.dto.ReferenceDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link Reference}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.Reference}.
  */
 public interface ReferenceService {
 
     /**
      * Save a reference.
      *
-     * @param reference the entity to save.
+     * @param referenceDTO the entity to save.
      * @return the persisted entity.
      */
-    Reference save(Reference reference);
+    ReferenceDTO save(ReferenceDTO referenceDTO);
 
     /**
      * Get all the references.
      *
      * @return the list of entities.
      */
-    List<Reference> findAll();
+    List<ReferenceDTO> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface ReferenceService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Reference> findOne(Long id);
+    Optional<ReferenceDTO> findOne(Long id);
 
     /**
      * Delete the "id" reference.
@@ -48,5 +48,5 @@ public interface ReferenceService {
      * 
      * @return the list of entities.
      */
-    List<Reference> search(String query);
+    List<ReferenceDTO> search(String query);
 }

@@ -1,29 +1,29 @@
 package com.jio.tms.v1.service;
 
-import com.jio.tms.v1.domain.OwnerOperator;
+import com.jio.tms.v1.service.dto.OwnerOperatorDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing {@link OwnerOperator}.
+ * Service Interface for managing {@link com.jio.tms.v1.domain.OwnerOperator}.
  */
 public interface OwnerOperatorService {
 
     /**
      * Save a ownerOperator.
      *
-     * @param ownerOperator the entity to save.
+     * @param ownerOperatorDTO the entity to save.
      * @return the persisted entity.
      */
-    OwnerOperator save(OwnerOperator ownerOperator);
+    OwnerOperatorDTO save(OwnerOperatorDTO ownerOperatorDTO);
 
     /**
      * Get all the ownerOperators.
      *
      * @return the list of entities.
      */
-    List<OwnerOperator> findAll();
+    List<OwnerOperatorDTO> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface OwnerOperatorService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<OwnerOperator> findOne(Long id);
+    Optional<OwnerOperatorDTO> findOne(Long id);
 
     /**
      * Delete the "id" ownerOperator.
@@ -48,5 +48,5 @@ public interface OwnerOperatorService {
      * 
      * @return the list of entities.
      */
-    List<OwnerOperator> search(String query);
+    List<OwnerOperatorDTO> search(String query);
 }

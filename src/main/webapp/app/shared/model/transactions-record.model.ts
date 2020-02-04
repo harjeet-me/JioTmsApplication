@@ -1,6 +1,4 @@
 import { Moment } from 'moment';
-import { ICustomer } from 'app/shared/model/customer.model';
-import { IAccounts } from 'app/shared/model/accounts.model';
 import { TransactionType } from 'app/shared/model/enumerations/transaction-type.model';
 import { TxStatus } from 'app/shared/model/enumerations/tx-status.model';
 import { CURRENCY } from 'app/shared/model/enumerations/currency.model';
@@ -20,8 +18,9 @@ export interface ITransactionsRecord {
   txDoc?: any;
   currency?: CURRENCY;
   remarks?: string;
-  customer?: ICustomer;
-  account?: IAccounts;
+  customerCompany?: string;
+  customerId?: number;
+  accountId?: number;
 }
 
 export class TransactionsRecord implements ITransactionsRecord {
@@ -40,7 +39,8 @@ export class TransactionsRecord implements ITransactionsRecord {
     public txDoc?: any,
     public currency?: CURRENCY,
     public remarks?: string,
-    public customer?: ICustomer,
-    public account?: IAccounts
+    public customerCompany?: string,
+    public customerId?: number,
+    public accountId?: number
   ) {}
 }

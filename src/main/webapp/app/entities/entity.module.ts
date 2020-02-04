@@ -76,6 +76,10 @@ import { RouterModule } from '@angular/router';
       {
         path: 'files',
         loadChildren: () => import('./files/files.module').then(m => m.JioTmsApplicationFilesModule)
+      },
+      {
+        path: 'file-system',
+        loadChildren: () => import('./file-system/file-system.module').then(m => m.JioTmsApplicationFileSystemModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])
