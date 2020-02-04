@@ -325,7 +325,11 @@ entity Email {
 userto String,
 usercc String,
 userbcc String,
-message String
+subject String,
+message String,
+multipart Boolean,
+htmlBody Boolean ,
+attachment Blob ,
 
 }
 
@@ -333,6 +337,12 @@ entity Files {
 content Blob
 
 }
+entity FileSystem {
+data Blob
+
+}
+
+
 // defining multiple OneToMany relationships with comments
 relationship OneToMany {
    
@@ -346,7 +356,7 @@ relationship OneToMany {
     Invoice   to  InvoiceItem { invoice  }
     Customer  to TransactionsRecord {customer (company)}
     Accounts  to TransactionsRecord {account}
-    Email  to Files 
+    Email  to FileSystem 
    
     
 }
@@ -371,10 +381,10 @@ relationship OneToMany {
 
 // Set pagination options
 //paginate JobHistory, Employee with infinite-scroll
-paginate Trip with pagination
+paginate Trip , Customer , Invoice , TransactionsRecord ,  Email , FileSystem  with pagination
 
 // Use Data Transfert Objects (DTO)
-// dto * with mapstruct
+ dto * with mapstruct
 
 // Set service options to all except few
 service all with serviceImpl 
