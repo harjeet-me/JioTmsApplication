@@ -1,30 +1,33 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="accounts">
-            <h2><span jhiTranslate="jioTmsApplicationApp.accounts.detail.title">Accounts</span> {{accounts.id}}</h2>
+            <h2><span jhiTranslate="jioTmsApplicationApp.accounts.detail.title">Accounts</span> {{ accounts.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="jioTmsApplicationApp.accounts.balance">Balance</span></dt>
                 <dd>
-                    <span>{{accounts.balance}}</span>
+                    <span>{{ accounts.balance }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.accounts.over30">Over 30</span></dt>
                 <dd>
-                    <span>{{accounts.over30}}</span>
+                    <span>{{ accounts.over30 }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.accounts.over60">Over 60</span></dt>
                 <dd>
-                    <span>{{accounts.over60}}</span>
+                    <span>{{ accounts.over60 }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.accounts.over90">Over 90</span></dt>
                 <dd>
-                    <span>{{accounts.over90}}</span>
+                    <span>{{ accounts.over90 }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.accounts.customer">Customer</span></dt>
                 <dd>
                     <div *ngIf="accounts.customerId">
-                        <a [routerLink]="['/customer', accounts.customerId, 'view']">{{accounts.customerCompany}}</a>
+                        <a [routerLink]="['/customer', accounts.customerId, 'view']">{{ accounts.customerCompany }}</a>
                     </div>
                 </dd>
             </dl>
@@ -32,13 +35,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/accounts', accounts.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

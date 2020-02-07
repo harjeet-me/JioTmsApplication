@@ -73,6 +73,8 @@ public class CacheConfiguration {
             createCache(cm, com.jio.tms.v1.domain.Files.class.getName());
             createCache(cm, com.jio.tms.v1.domain.Email.class.getName() + ".fileSystems");
             createCache(cm, com.jio.tms.v1.domain.FileSystem.class.getName());
+            createCache(cm, com.jio.tms.v1.domain.Trip.class.getName() + ".containers");
+            createCache(cm, com.jio.tms.v1.domain.Container.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

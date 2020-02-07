@@ -19,7 +19,6 @@ import { InsuranceService } from 'app/entities/insurance/insurance.service';
 })
 export class OwnerOperatorUpdateComponent implements OnInit {
   isSaving = false;
-
   operinsurances: IInsurance[] = [];
 
   editForm = this.fb.group({
@@ -62,7 +61,7 @@ export class OwnerOperatorUpdateComponent implements OnInit {
         .query({ filter: 'owneroperator-is-null' })
         .pipe(
           map((res: HttpResponse<IInsurance[]>) => {
-            return res.body ? res.body : [];
+            return res.body || [];
           })
         )
         .subscribe((resBody: IInsurance[]) => {
@@ -76,9 +75,7 @@ export class OwnerOperatorUpdateComponent implements OnInit {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
                 })
               )
-              .subscribe((concatRes: IInsurance[]) => {
-                this.operinsurances = concatRes;
-              });
+              .subscribe((concatRes: IInsurance[]) => (this.operinsurances = concatRes));
           }
         });
     });

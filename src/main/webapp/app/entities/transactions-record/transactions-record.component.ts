@@ -41,7 +41,8 @@ export class TransactionsRecordComponent implements OnInit, OnDestroy {
   }
 
   loadPage(page?: number): void {
-    const pageToLoad: number = page ? page : this.page;
+    const pageToLoad: number = page || this.page;
+
     if (this.currentSearch) {
       this.transactionsRecordService
         .search({
@@ -56,6 +57,7 @@ export class TransactionsRecordComponent implements OnInit, OnDestroy {
         );
       return;
     }
+
     this.transactionsRecordService
       .query({
         page: pageToLoad - 1,
@@ -132,7 +134,7 @@ export class TransactionsRecordComponent implements OnInit, OnDestroy {
         sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
       }
     });
-    this.transactionsRecords = data ? data : [];
+    this.transactionsRecords = data || [];
   }
 
   protected onError(): void {

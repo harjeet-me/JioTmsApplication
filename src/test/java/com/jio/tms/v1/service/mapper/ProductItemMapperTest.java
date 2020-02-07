@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class ProductItemMapperTest {
 
     private ProductItemMapper productItemMapper;
@@ -16,7 +15,7 @@ public class ProductItemMapperTest {
 
     @Test
     public void testEntityFromId() {
-        Long id = 2L;
+        Long id = 1L;
         assertThat(productItemMapper.fromId(id).getId()).isEqualTo(id);
         assertThat(productItemMapper.fromId(null)).isNull();
     }

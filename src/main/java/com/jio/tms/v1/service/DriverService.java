@@ -25,7 +25,6 @@ public interface DriverService {
      */
     List<DriverDTO> findAll();
 
-
     /**
      * Get the "id" driver.
      *

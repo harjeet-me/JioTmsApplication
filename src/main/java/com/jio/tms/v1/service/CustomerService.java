@@ -35,7 +35,6 @@ public interface CustomerService {
      */
     List<CustomerDTO> findAllWhereAccountsIsNull();
 
-
     /**
      * Get the "id" customer.
      *

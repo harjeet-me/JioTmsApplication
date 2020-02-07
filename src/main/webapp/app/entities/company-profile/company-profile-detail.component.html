@@ -1,61 +1,64 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="companyProfile">
-            <h2><span jhiTranslate="jioTmsApplicationApp.companyProfile.detail.title">Company Profile</span> {{companyProfile.id}}</h2>
+            <h2><span jhiTranslate="jioTmsApplicationApp.companyProfile.detail.title">Company Profile</span> {{ companyProfile.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.active">Active</span></dt>
                 <dd>
-                    <span>{{companyProfile.active}}</span>
+                    <span>{{ companyProfile.active }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.company">Company</span></dt>
                 <dd>
-                    <span>{{companyProfile.company}}</span>
+                    <span>{{ companyProfile.company }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.address">Address</span></dt>
                 <dd>
-                    <span>{{companyProfile.address}}</span>
+                    <span>{{ companyProfile.address }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.streetAddress">Street Address</span></dt>
                 <dd>
-                    <span>{{companyProfile.streetAddress}}</span>
+                    <span>{{ companyProfile.streetAddress }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.city">City</span></dt>
                 <dd>
-                    <span>{{companyProfile.city}}</span>
+                    <span>{{ companyProfile.city }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.stateProvince">State Province</span></dt>
                 <dd>
-                    <span>{{companyProfile.stateProvince}}</span>
+                    <span>{{ companyProfile.stateProvince }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.country">Country</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.CountryEnum.' + companyProfile.country}}">{{companyProfile.country}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.CountryEnum.' + companyProfile.country }}">{{ companyProfile.country }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.postalCode">Postal Code</span></dt>
                 <dd>
-                    <span>{{companyProfile.postalCode}}</span>
+                    <span>{{ companyProfile.postalCode }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.email">Email</span></dt>
                 <dd>
-                    <span>{{companyProfile.email}}</span>
+                    <span>{{ companyProfile.email }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.website">Website</span></dt>
                 <dd>
-                    <span>{{companyProfile.website}}</span>
+                    <span>{{ companyProfile.website }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.phoneNumber">Phone Number</span></dt>
                 <dd>
-                    <span>{{companyProfile.phoneNumber}}</span>
+                    <span>{{ companyProfile.phoneNumber }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.dot">Dot</span></dt>
                 <dd>
-                    <span>{{companyProfile.dot}}</span>
+                    <span>{{ companyProfile.dot }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.mc">Mc</span></dt>
                 <dd>
-                    <span>{{companyProfile.mc}}</span>
+                    <span>{{ companyProfile.mc }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.companyLogo">Company Logo</span></dt>
                 <dd>
@@ -63,29 +66,29 @@
                         <a (click)="openFile(companyProfile.companyLogoContentType!, companyProfile.companyLogo)">
                             <img [src]="'data:' + companyProfile.companyLogoContentType + ';base64,' + companyProfile.companyLogo" style="max-width: 100%;" alt="companyProfile image"/>
                         </a>
-                        {{companyProfile.companyLogoContentType}}, {{byteSize(companyProfile.companyLogo)}}
+                        {{ companyProfile.companyLogoContentType }}, {{ byteSize(companyProfile.companyLogo) }}
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.profileStatus">Profile Status</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.ToggleStatus.' + companyProfile.profileStatus}}">{{companyProfile.profileStatus}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.ToggleStatus.' + companyProfile.profileStatus }}">{{ companyProfile.profileStatus }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.companyProfile.preffredCurrency">Preffred Currency</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.CURRENCY.' + companyProfile.preffredCurrency}}">{{companyProfile.preffredCurrency}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.CURRENCY.' + companyProfile.preffredCurrency }}">{{ companyProfile.preffredCurrency }}</span>
                 </dd>
             </dl>
 
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/company-profile', companyProfile.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

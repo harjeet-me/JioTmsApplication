@@ -14,9 +14,7 @@ export class DriverDetailComponent implements OnInit {
   constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ driver }) => {
-      this.driver = driver;
-    });
+    this.activatedRoute.data.subscribe(({ driver }) => (this.driver = driver));
   }
 
   byteSize(base64String: string): string {

@@ -1,141 +1,152 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="jioTmsApplicationApp.invoice.home.title">Invoices</span>
+
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-invoice" [routerLink]="['/invoice/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
+            <fa-icon icon="plus"></fa-icon>
             <span class="hidden-sm-down"  jhiTranslate="jioTmsApplicationApp.invoice.home.createLabel">
             Create a new Invoice
             </span>
         </button>
     </h2>
+
     <jhi-alert-error></jhi-alert-error>
+
     <jhi-alert></jhi-alert>
+
     <div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
                     <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'jioTmsApplicationApp.invoice.home.search' | translate }}">
+
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                        <fa-icon [icon]="'search'"></fa-icon>
+                        <fa-icon icon="search"></fa-icon>
                     </button>
+
                     <button class="input-group-append btn btn-danger" (click)="search('')" *ngIf="currentSearch">
-                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                        <fa-icon icon="trash-alt"></fa-icon>
                     </button>
                 </div>
             </form>
         </div>
     </div>
-    <br/>
-    <div class="alert alert-warning" *ngIf="invoices?.length === 0">
+
+    <div class="alert alert-warning" id="no-result" *ngIf="invoices?.length === 0">
         <span jhiTranslate="jioTmsApplicationApp.invoice.home.notFound">No invoices found</span>
     </div>
-    <div class="table-responsive" *ngIf="invoices?.length > 0">
+
+    <div class="table-responsive" id="entities" *ngIf="invoices?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="orderNo"><span jhiTranslate="jioTmsApplicationApp.invoice.orderNo">Order No</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="taxRate"><span jhiTranslate="jioTmsApplicationApp.invoice.taxRate">Tax Rate</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="taxType"><span jhiTranslate="jioTmsApplicationApp.invoice.taxType">Tax Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="currency"><span jhiTranslate="jioTmsApplicationApp.invoice.currency">Currency</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="invoiceTaxTotal"><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceTaxTotal">Invoice Tax Total</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="invoiceSubTotal"><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceSubTotal">Invoice Sub Total</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="invoiceTotal"><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceTotal">Invoice Total</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="invoiceDate"><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceDate">Invoice Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="invoicePaidDate"><span jhiTranslate="jioTmsApplicationApp.invoice.invoicePaidDate">Invoice Paid Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="refValue1"><span jhiTranslate="jioTmsApplicationApp.invoice.refValue1">Ref Value 1</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="refValue2"><span jhiTranslate="jioTmsApplicationApp.invoice.refValue2">Ref Value 2</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="refValue3"><span jhiTranslate="jioTmsApplicationApp.invoice.refValue3">Ref Value 3</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="payRefNo"><span jhiTranslate="jioTmsApplicationApp.invoice.payRefNo">Pay Ref No</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="invoiceDueDate"><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceDueDate">Invoice Due Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="status"><span jhiTranslate="jioTmsApplicationApp.invoice.status">Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="invoicePdf"><span jhiTranslate="jioTmsApplicationApp.invoice.invoicePdf">Invoice Pdf</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="remarks"><span jhiTranslate="jioTmsApplicationApp.invoice.remarks">Remarks</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="reference1Reference"><span jhiTranslate="jioTmsApplicationApp.invoice.reference1">Reference 1</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="reference2Reference"><span jhiTranslate="jioTmsApplicationApp.invoice.reference2">Reference 2</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="reference3Reference"><span jhiTranslate="jioTmsApplicationApp.invoice.reference3">Reference 3</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="customerCompany"><span jhiTranslate="jioTmsApplicationApp.invoice.customer">Customer</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="tripId"><span jhiTranslate="jioTmsApplicationApp.invoice.trip">Trip</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"></th>
-            </tr>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="orderNo"><span jhiTranslate="jioTmsApplicationApp.invoice.orderNo">Order No</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="taxRate"><span jhiTranslate="jioTmsApplicationApp.invoice.taxRate">Tax Rate</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="taxType"><span jhiTranslate="jioTmsApplicationApp.invoice.taxType">Tax Type</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="currency"><span jhiTranslate="jioTmsApplicationApp.invoice.currency">Currency</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="invoiceTaxTotal"><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceTaxTotal">Invoice Tax Total</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="invoiceSubTotal"><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceSubTotal">Invoice Sub Total</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="invoiceTotal"><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceTotal">Invoice Total</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="invoiceDate"><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceDate">Invoice Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="invoicePaidDate"><span jhiTranslate="jioTmsApplicationApp.invoice.invoicePaidDate">Invoice Paid Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="refValue1"><span jhiTranslate="jioTmsApplicationApp.invoice.refValue1">Ref Value 1</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="refValue2"><span jhiTranslate="jioTmsApplicationApp.invoice.refValue2">Ref Value 2</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="refValue3"><span jhiTranslate="jioTmsApplicationApp.invoice.refValue3">Ref Value 3</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="payRefNo"><span jhiTranslate="jioTmsApplicationApp.invoice.payRefNo">Pay Ref No</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="invoiceDueDate"><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceDueDate">Invoice Due Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="status"><span jhiTranslate="jioTmsApplicationApp.invoice.status">Status</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="invoicePdf"><span jhiTranslate="jioTmsApplicationApp.invoice.invoicePdf">Invoice Pdf</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="remarks"><span jhiTranslate="jioTmsApplicationApp.invoice.remarks">Remarks</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="reference1Reference"><span jhiTranslate="jioTmsApplicationApp.invoice.reference1">Reference 1</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="reference2Reference"><span jhiTranslate="jioTmsApplicationApp.invoice.reference2">Reference 2</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="reference3Reference"><span jhiTranslate="jioTmsApplicationApp.invoice.reference3">Reference 3</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="customerCompany"><span jhiTranslate="jioTmsApplicationApp.invoice.customer">Customer</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="tripId"><span jhiTranslate="jioTmsApplicationApp.invoice.trip">Trip</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let invoice of invoices ;trackBy: trackId">
-                <td><a [routerLink]="['/invoice', invoice.id, 'view' ]">{{invoice.id}}</a></td>
-                <td>{{invoice.orderNo}}</td>
-                <td>{{invoice.taxRate}}</td>
-                <td jhiTranslate="{{'jioTmsApplicationApp.TaxType.' + invoice.taxType}}">{{invoice.taxType}}</td>
-                <td jhiTranslate="{{'jioTmsApplicationApp.CURRENCY.' + invoice.currency}}">{{invoice.currency}}</td>
-                <td>{{invoice.invoiceTaxTotal}}</td>
-                <td>{{invoice.invoiceSubTotal}}</td>
-                <td>{{invoice.invoiceTotal}}</td>
-                <td>{{invoice.invoiceDate | date:'mediumDate'}}</td>
-                <td>{{invoice.invoicePaidDate | date:'mediumDate'}}</td>
-                <td>{{invoice.refValue1}}</td>
-                <td>{{invoice.refValue2}}</td>
-                <td>{{invoice.refValue3}}</td>
-                <td>{{invoice.payRefNo}}</td>
-                <td>{{invoice.invoiceDueDate | date:'mediumDate'}}</td>
-                <td jhiTranslate="{{'jioTmsApplicationApp.InvoiceStatus.' + invoice.status}}">{{invoice.status}}</td>
-                <td>
-                    <a *ngIf="invoice.invoicePdf" (click)="openFile(invoice.invoicePdfContentType, invoice.invoicePdf)" jhiTranslate="entity.action.open">open</a>
-                    <span *ngIf="invoice.invoicePdf">{{invoice.invoicePdfContentType}}, {{byteSize(invoice.invoicePdf)}}</span>
-                </td>
-                <td>{{invoice.remarks}}</td>
-                <td>
-                    <div *ngIf="invoice.reference1Id">
-                        <a [routerLink]="['/reference', invoice.reference1Id , 'view' ]" >{{invoice.reference1Reference}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="invoice.reference2Id">
-                        <a [routerLink]="['/reference', invoice.reference2Id , 'view' ]" >{{invoice.reference2Reference}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="invoice.reference3Id">
-                        <a [routerLink]="['/reference', invoice.reference3Id , 'view' ]" >{{invoice.reference3Reference}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="invoice.customerId">
-                        <a [routerLink]="['/customer', invoice.customerId , 'view' ]" >{{invoice.customerCompany}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="invoice.tripId">
-                        <a [routerLink]="['/trip', invoice.tripId , 'view' ]" >{{invoice.tripId}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group">
-                        <button type="submit"
-                                [routerLink]="['/invoice', invoice.id, 'view' ]"
-                                class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/invoice', invoice.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit" (click)="delete(invoice)"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                <tr *ngFor="let invoice of invoices ;trackBy: trackId">
+                    <td><a [routerLink]="['/invoice', invoice.id, 'view']">{{ invoice.id }}</a></td>
+                    <td>{{ invoice.orderNo }}</td>
+                    <td>{{ invoice.taxRate }}</td>
+                    <td jhiTranslate="{{ 'jioTmsApplicationApp.TaxType.' + invoice.taxType }}">{{ invoice.taxType }}</td>
+                    <td jhiTranslate="{{ 'jioTmsApplicationApp.CURRENCY.' + invoice.currency }}">{{ invoice.currency }}</td>
+                    <td>{{ invoice.invoiceTaxTotal }}</td>
+                    <td>{{ invoice.invoiceSubTotal }}</td>
+                    <td>{{ invoice.invoiceTotal }}</td>
+                    <td>{{ invoice.invoiceDate | date:'mediumDate' }}</td>
+                    <td>{{ invoice.invoicePaidDate | date:'mediumDate' }}</td>
+                    <td>{{ invoice.refValue1 }}</td>
+                    <td>{{ invoice.refValue2 }}</td>
+                    <td>{{ invoice.refValue3 }}</td>
+                    <td>{{ invoice.payRefNo }}</td>
+                    <td>{{ invoice.invoiceDueDate | date:'mediumDate' }}</td>
+                    <td jhiTranslate="{{ 'jioTmsApplicationApp.InvoiceStatus.' + invoice.status }}">{{ invoice.status }}</td>
+                    <td>
+                        <a *ngIf="invoice.invoicePdf" (click)="openFile(invoice.invoicePdfContentType, invoice.invoicePdf)" jhiTranslate="entity.action.open">open</a>
+                        <span *ngIf="invoice.invoicePdf">{{ invoice.invoicePdfContentType }}, {{ byteSize(invoice.invoicePdf) }}</span>
+                    </td>
+                    <td>{{ invoice.remarks }}</td>
+                    <td>
+                        <div *ngIf="invoice.reference1Id">
+                            <a [routerLink]="['/reference', invoice.reference1Id , 'view']" >{{ invoice.reference1Reference }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="invoice.reference2Id">
+                            <a [routerLink]="['/reference', invoice.reference2Id , 'view']" >{{ invoice.reference2Reference }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="invoice.reference3Id">
+                            <a [routerLink]="['/reference', invoice.reference3Id , 'view']" >{{ invoice.reference3Reference }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="invoice.customerId">
+                            <a [routerLink]="['/customer', invoice.customerId , 'view']" >{{ invoice.customerCompany }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="invoice.tripId">
+                            <a [routerLink]="['/trip', invoice.tripId , 'view']" >{{ invoice.tripId }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/invoice', invoice.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/invoice', invoice.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(invoice)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
+
     <div *ngIf="invoices?.length > 0">
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
+
         <div class="row justify-content-center">
             <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>

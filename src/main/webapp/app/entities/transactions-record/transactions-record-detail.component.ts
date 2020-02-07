@@ -14,9 +14,7 @@ export class TransactionsRecordDetailComponent implements OnInit {
   constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ transactionsRecord }) => {
-      this.transactionsRecord = transactionsRecord;
-    });
+    this.activatedRoute.data.subscribe(({ transactionsRecord }) => (this.transactionsRecord = transactionsRecord));
   }
 
   byteSize(base64String: string): string {

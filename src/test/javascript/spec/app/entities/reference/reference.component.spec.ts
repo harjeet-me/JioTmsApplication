@@ -16,8 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [JioTmsApplicationTestModule],
-        declarations: [ReferenceComponent],
-        providers: []
+        declarations: [ReferenceComponent]
       })
         .overrideTemplate(ReferenceComponent, '')
         .compileComponents();

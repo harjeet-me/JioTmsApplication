@@ -26,6 +26,7 @@
         "email": "Email",
         "files": "Files",
         "fileSystem": "File System",
+        "container": "Container",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

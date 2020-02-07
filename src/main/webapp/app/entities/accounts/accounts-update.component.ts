@@ -17,7 +17,6 @@ import { CustomerService } from 'app/entities/customer/customer.service';
 })
 export class AccountsUpdateComponent implements OnInit {
   isSaving = false;
-
   customers: ICustomer[] = [];
 
   editForm = this.fb.group({
@@ -44,7 +43,7 @@ export class AccountsUpdateComponent implements OnInit {
         .query({ filter: 'accounts-is-null' })
         .pipe(
           map((res: HttpResponse<ICustomer[]>) => {
-            return res.body ? res.body : [];
+            return res.body || [];
           })
         )
         .subscribe((resBody: ICustomer[]) => {
@@ -58,9 +57,7 @@ export class AccountsUpdateComponent implements OnInit {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
                 })
               )
-              .subscribe((concatRes: ICustomer[]) => {
-                this.customers = concatRes;
-              });
+              .subscribe((concatRes: ICustomer[]) => (this.customers = concatRes));
           }
         });
     });

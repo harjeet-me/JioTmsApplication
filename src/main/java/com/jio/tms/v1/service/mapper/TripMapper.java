@@ -1,5 +1,6 @@
 package com.jio.tms.v1.service.mapper;
 
+
 import com.jio.tms.v1.domain.*;
 import com.jio.tms.v1.service.dto.TripDTO;
 
@@ -26,6 +27,8 @@ public interface TripMapper extends EntityMapper<TripDTO, Trip> {
     @Mapping(source = "dropLocationId", target = "dropLocation")
     @Mapping(target = "invoices", ignore = true)
     @Mapping(target = "removeInvoice", ignore = true)
+    @Mapping(target = "containers", ignore = true)
+    @Mapping(target = "removeContainer", ignore = true)
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "driverId", target = "driver")
     @Mapping(source = "equipmentId", target = "equipment")

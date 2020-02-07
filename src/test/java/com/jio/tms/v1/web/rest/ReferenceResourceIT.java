@@ -127,7 +127,7 @@ public class ReferenceResourceIT {
         // Create the Reference
         ReferenceDTO referenceDTO = referenceMapper.toDto(reference);
         restReferenceMockMvc.perform(post("/api/references")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(referenceDTO)))
             .andExpect(status().isCreated());
 
@@ -152,7 +152,7 @@ public class ReferenceResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restReferenceMockMvc.perform(post("/api/references")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(referenceDTO)))
             .andExpect(status().isBadRequest());
 
@@ -174,7 +174,7 @@ public class ReferenceResourceIT {
         // Get all the referenceList
         restReferenceMockMvc.perform(get("/api/references?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(reference.getId().intValue())))
             .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)));
     }
@@ -188,7 +188,7 @@ public class ReferenceResourceIT {
         // Get the reference
         restReferenceMockMvc.perform(get("/api/references/{id}", reference.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(reference.getId().intValue()))
             .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE));
     }
@@ -218,7 +218,7 @@ public class ReferenceResourceIT {
         ReferenceDTO referenceDTO = referenceMapper.toDto(updatedReference);
 
         restReferenceMockMvc.perform(put("/api/references")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(referenceDTO)))
             .andExpect(status().isOk());
 
@@ -242,7 +242,7 @@ public class ReferenceResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restReferenceMockMvc.perform(put("/api/references")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(referenceDTO)))
             .andExpect(status().isBadRequest());
 
@@ -264,7 +264,7 @@ public class ReferenceResourceIT {
 
         // Delete the reference
         restReferenceMockMvc.perform(delete("/api/references/{id}", reference.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -285,7 +285,7 @@ public class ReferenceResourceIT {
         // Search the reference
         restReferenceMockMvc.perform(get("/api/_search/references?query=id:" + reference.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(reference.getId().intValue())))
             .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)));
     }

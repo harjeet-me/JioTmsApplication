@@ -71,7 +71,6 @@ public class AccountsServiceImpl implements AccountsService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one accounts by id.
      *

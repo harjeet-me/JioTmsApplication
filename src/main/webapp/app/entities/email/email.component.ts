@@ -41,7 +41,8 @@ export class EmailComponent implements OnInit, OnDestroy {
   }
 
   loadPage(page?: number): void {
-    const pageToLoad: number = page ? page : this.page;
+    const pageToLoad: number = page || this.page;
+
     if (this.currentSearch) {
       this.emailService
         .search({
@@ -56,6 +57,7 @@ export class EmailComponent implements OnInit, OnDestroy {
         );
       return;
     }
+
     this.emailService
       .query({
         page: pageToLoad - 1,
@@ -132,7 +134,7 @@ export class EmailComponent implements OnInit, OnDestroy {
         sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
       }
     });
-    this.emails = data ? data : [];
+    this.emails = data || [];
   }
 
   protected onError(): void {

@@ -25,7 +25,6 @@ public interface ProductItemService {
      */
     List<ProductItemDTO> findAll();
 
-
     /**
      * Get the "id" productItem.
      *

@@ -38,6 +38,7 @@
       "pickupLocation": "Pickup Location",
       "dropLocation": "Drop Location",
       "invoice": "Invoice",
+      "container": "Container",
       "customer": "Customer",
       "driver": "Driver",
       "equipment": "Equipment",

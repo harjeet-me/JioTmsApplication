@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -84,7 +83,6 @@ public class CompanyProfileResource {
     /**
      * {@code GET  /company-profiles} : get all the companyProfiles.
      *
-
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of companyProfiles in body.
      */
     @GetMapping("/company-profiles")

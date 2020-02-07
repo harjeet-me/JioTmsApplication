@@ -37,13 +37,11 @@ export class FilesComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<IFiles[]>) => (this.files = res.body ? res.body : []));
+        .subscribe((res: HttpResponse<IFiles[]>) => (this.files = res.body || []));
       return;
     }
-    this.filesService.query().subscribe((res: HttpResponse<IFiles[]>) => {
-      this.files = res.body ? res.body : [];
-      this.currentSearch = '';
-    });
+
+    this.filesService.query().subscribe((res: HttpResponse<IFiles[]>) => (this.files = res.body || []));
   }
 
   search(query: string): void {

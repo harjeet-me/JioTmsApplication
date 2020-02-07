@@ -25,7 +25,6 @@ public interface OwnerOperatorService {
      */
     List<OwnerOperatorDTO> findAll();
 
-
     /**
      * Get the "id" ownerOperator.
      *

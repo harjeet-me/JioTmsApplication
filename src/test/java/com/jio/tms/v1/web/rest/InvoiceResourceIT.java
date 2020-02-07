@@ -219,7 +219,7 @@ public class InvoiceResourceIT {
         // Create the Invoice
         InvoiceDTO invoiceDTO = invoiceMapper.toDto(invoice);
         restInvoiceMockMvc.perform(post("/api/invoices")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(invoiceDTO)))
             .andExpect(status().isCreated());
 
@@ -261,7 +261,7 @@ public class InvoiceResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restInvoiceMockMvc.perform(post("/api/invoices")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(invoiceDTO)))
             .andExpect(status().isBadRequest());
 
@@ -283,7 +283,7 @@ public class InvoiceResourceIT {
         // Get all the invoiceList
         restInvoiceMockMvc.perform(get("/api/invoices?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(invoice.getId().intValue())))
             .andExpect(jsonPath("$.[*].orderNo").value(hasItem(DEFAULT_ORDER_NO)))
             .andExpect(jsonPath("$.[*].taxRate").value(hasItem(DEFAULT_TAX_RATE.doubleValue())))
@@ -314,7 +314,7 @@ public class InvoiceResourceIT {
         // Get the invoice
         restInvoiceMockMvc.perform(get("/api/invoices/{id}", invoice.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(invoice.getId().intValue()))
             .andExpect(jsonPath("$.orderNo").value(DEFAULT_ORDER_NO))
             .andExpect(jsonPath("$.taxRate").value(DEFAULT_TAX_RATE.doubleValue()))
@@ -378,7 +378,7 @@ public class InvoiceResourceIT {
         InvoiceDTO invoiceDTO = invoiceMapper.toDto(updatedInvoice);
 
         restInvoiceMockMvc.perform(put("/api/invoices")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(invoiceDTO)))
             .andExpect(status().isOk());
 
@@ -419,7 +419,7 @@ public class InvoiceResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restInvoiceMockMvc.perform(put("/api/invoices")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(invoiceDTO)))
             .andExpect(status().isBadRequest());
 
@@ -441,7 +441,7 @@ public class InvoiceResourceIT {
 
         // Delete the invoice
         restInvoiceMockMvc.perform(delete("/api/invoices/{id}", invoice.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -462,7 +462,7 @@ public class InvoiceResourceIT {
         // Search the invoice
         restInvoiceMockMvc.perform(get("/api/_search/invoices?query=id:" + invoice.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(invoice.getId().intValue())))
             .andExpect(jsonPath("$.[*].orderNo").value(hasItem(DEFAULT_ORDER_NO)))
             .andExpect(jsonPath("$.[*].taxRate").value(hasItem(DEFAULT_TAX_RATE.doubleValue())))

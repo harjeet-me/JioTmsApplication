@@ -36,13 +36,11 @@ export class LocationComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<ILocation[]>) => (this.locations = res.body ? res.body : []));
+        .subscribe((res: HttpResponse<ILocation[]>) => (this.locations = res.body || []));
       return;
     }
-    this.locationService.query().subscribe((res: HttpResponse<ILocation[]>) => {
-      this.locations = res.body ? res.body : [];
-      this.currentSearch = '';
-    });
+
+    this.locationService.query().subscribe((res: HttpResponse<ILocation[]>) => (this.locations = res.body || []));
   }
 
   search(query: string): void {

@@ -1,71 +1,74 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="transactionsRecord">
-            <h2><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.detail.title">Transactions Record</span> {{transactionsRecord.id}}</h2>
+            <h2><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.detail.title">Transactions Record</span> {{ transactionsRecord.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txType">Tx Type</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.TransactionType.' + transactionsRecord.txType}}">{{transactionsRecord.txType}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.TransactionType.' + transactionsRecord.txType }}">{{ transactionsRecord.txType }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.description">Description</span></dt>
                 <dd>
-                    <span>{{transactionsRecord.description}}</span>
+                    <span>{{ transactionsRecord.description }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txAmmount">Tx Ammount</span></dt>
                 <dd>
-                    <span>{{transactionsRecord.txAmmount}}</span>
+                    <span>{{ transactionsRecord.txAmmount }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txRefNo">Tx Ref No</span></dt>
                 <dd>
-                    <span>{{transactionsRecord.txRefNo}}</span>
+                    <span>{{ transactionsRecord.txRefNo }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txCreatedBy">Tx Created By</span></dt>
                 <dd>
-                    <span>{{transactionsRecord.txCreatedBy}}</span>
+                    <span>{{ transactionsRecord.txCreatedBy }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txCreatedDate">Tx Created Date</span></dt>
                 <dd>
-                    <span>{{transactionsRecord.txCreatedDate}}</span>
+                    <span>{{ transactionsRecord.txCreatedDate }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txCompletedBy">Tx Completed By</span></dt>
                 <dd>
-                    <span>{{transactionsRecord.txCompletedBy}}</span>
+                    <span>{{ transactionsRecord.txCompletedBy }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txCompletedDate">Tx Completed Date</span></dt>
                 <dd>
-                    <span>{{transactionsRecord.txCompletedDate}}</span>
+                    <span>{{ transactionsRecord.txCompletedDate }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.status">Status</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.TxStatus.' + transactionsRecord.status}}">{{transactionsRecord.status}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.TxStatus.' + transactionsRecord.status }}">{{ transactionsRecord.status }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.txDoc">Tx Doc</span></dt>
                 <dd>
                     <div *ngIf="transactionsRecord.txDoc">
                         <a (click)="openFile(transactionsRecord.txDocContentType!, transactionsRecord.txDoc)" jhiTranslate="entity.action.open">open</a>
-                        {{transactionsRecord.txDocContentType}}, {{byteSize(transactionsRecord.txDoc)}}
+                        {{ transactionsRecord.txDocContentType }}, {{ byteSize(transactionsRecord.txDoc) }}
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.currency">Currency</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.CURRENCY.' + transactionsRecord.currency}}">{{transactionsRecord.currency}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.CURRENCY.' + transactionsRecord.currency }}">{{ transactionsRecord.currency }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.remarks">Remarks</span></dt>
                 <dd>
-                    <span>{{transactionsRecord.remarks}}</span>
+                    <span>{{ transactionsRecord.remarks }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.customer">Customer</span></dt>
                 <dd>
                     <div *ngIf="transactionsRecord.customerId">
-                        <a [routerLink]="['/customer', transactionsRecord.customerId, 'view']">{{transactionsRecord.customerCompany}}</a>
+                        <a [routerLink]="['/customer', transactionsRecord.customerId, 'view']">{{ transactionsRecord.customerCompany }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.transactionsRecord.account">Account</span></dt>
                 <dd>
                     <div *ngIf="transactionsRecord.accountId">
-                        <a [routerLink]="['/accounts', transactionsRecord.accountId, 'view']">{{transactionsRecord.accountId}}</a>
+                        <a [routerLink]="['/accounts', transactionsRecord.accountId, 'view']">{{ transactionsRecord.accountId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -73,13 +76,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/transactions-record', transactionsRecord.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

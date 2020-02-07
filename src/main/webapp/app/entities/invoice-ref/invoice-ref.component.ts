@@ -36,13 +36,11 @@ export class InvoiceRefComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<IInvoiceRef[]>) => (this.invoiceRefs = res.body ? res.body : []));
+        .subscribe((res: HttpResponse<IInvoiceRef[]>) => (this.invoiceRefs = res.body || []));
       return;
     }
-    this.invoiceRefService.query().subscribe((res: HttpResponse<IInvoiceRef[]>) => {
-      this.invoiceRefs = res.body ? res.body : [];
-      this.currentSearch = '';
-    });
+
+    this.invoiceRefService.query().subscribe((res: HttpResponse<IInvoiceRef[]>) => (this.invoiceRefs = res.body || []));
   }
 
   search(query: string): void {

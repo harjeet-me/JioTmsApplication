@@ -37,13 +37,11 @@ export class DriverComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<IDriver[]>) => (this.drivers = res.body ? res.body : []));
+        .subscribe((res: HttpResponse<IDriver[]>) => (this.drivers = res.body || []));
       return;
     }
-    this.driverService.query().subscribe((res: HttpResponse<IDriver[]>) => {
-      this.drivers = res.body ? res.body : [];
-      this.currentSearch = '';
-    });
+
+    this.driverService.query().subscribe((res: HttpResponse<IDriver[]>) => (this.drivers = res.body || []));
   }
 
   search(query: string): void {

@@ -13,9 +13,7 @@ export class InvoiceItemDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ invoiceItem }) => {
-      this.invoiceItem = invoiceItem;
-    });
+    this.activatedRoute.data.subscribe(({ invoiceItem }) => (this.invoiceItem = invoiceItem));
   }
 
   previousState(): void {

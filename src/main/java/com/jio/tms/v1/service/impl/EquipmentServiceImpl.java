@@ -71,7 +71,6 @@ public class EquipmentServiceImpl implements EquipmentService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one equipment by id.
      *

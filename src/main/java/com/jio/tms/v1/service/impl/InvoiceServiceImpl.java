@@ -69,7 +69,6 @@ public class InvoiceServiceImpl implements InvoiceService {
             .map(invoiceMapper::toDto);
     }
 
-
     /**
      * Get one invoice by id.
      *

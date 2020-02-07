@@ -14,9 +14,7 @@ export class CustomerDetailComponent implements OnInit {
   constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ customer }) => {
-      this.customer = customer;
-    });
+    this.activatedRoute.data.subscribe(({ customer }) => (this.customer = customer));
   }
 
   byteSize(base64String: string): string {

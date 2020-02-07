@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class InvoiceRefMapperTest {
 
     private InvoiceRefMapper invoiceRefMapper;
@@ -16,7 +15,7 @@ public class InvoiceRefMapperTest {
 
     @Test
     public void testEntityFromId() {
-        Long id = 2L;
+        Long id = 1L;
         assertThat(invoiceRefMapper.fromId(id).getId()).isEqualTo(id);
         assertThat(invoiceRefMapper.fromId(null)).isNull();
     }

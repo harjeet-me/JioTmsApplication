@@ -1,42 +1,45 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="contact">
-            <h2><span jhiTranslate="jioTmsApplicationApp.contact.detail.title">Contact</span> {{contact.id}}</h2>
+            <h2><span jhiTranslate="jioTmsApplicationApp.contact.detail.title">Contact</span> {{ contact.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="jioTmsApplicationApp.contact.firstName">First Name</span></dt>
                 <dd>
-                    <span>{{contact.firstName}}</span>
+                    <span>{{ contact.firstName }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.contact.lastName">Last Name</span></dt>
                 <dd>
-                    <span>{{contact.lastName}}</span>
+                    <span>{{ contact.lastName }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.contact.contactDesignation">Contact Designation</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.Designation.' + contact.contactDesignation}}">{{contact.contactDesignation}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.Designation.' + contact.contactDesignation }}">{{ contact.contactDesignation }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.contact.email">Email</span></dt>
                 <dd>
-                    <span>{{contact.email}}</span>
+                    <span>{{ contact.email }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.contact.phoneNumber">Phone Number</span></dt>
                 <dd>
-                    <span>{{contact.phoneNumber}}</span>
+                    <span>{{ contact.phoneNumber }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.contact.remarks">Remarks</span></dt>
                 <dd>
-                    <span>{{contact.remarks}}</span>
+                    <span>{{ contact.remarks }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.contact.preferredTime">Preferred Time</span></dt>
                 <dd>
-                    <span>{{contact.preferredTime}}</span>
+                    <span>{{ contact.preferredTime }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.contact.customer">Customer</span></dt>
                 <dd>
                     <div *ngIf="contact.customerId">
-                        <a [routerLink]="['/customer', contact.customerId, 'view']">{{contact.customerCompany}}</a>
+                        <a [routerLink]="['/customer', contact.customerId, 'view']">{{ contact.customerCompany }}</a>
                     </div>
                 </dd>
             </dl>
@@ -44,13 +47,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/contact', contact.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

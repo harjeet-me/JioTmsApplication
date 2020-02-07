@@ -36,13 +36,11 @@ export class ReferenceComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<IReference[]>) => (this.references = res.body ? res.body : []));
+        .subscribe((res: HttpResponse<IReference[]>) => (this.references = res.body || []));
       return;
     }
-    this.referenceService.query().subscribe((res: HttpResponse<IReference[]>) => {
-      this.references = res.body ? res.body : [];
-      this.currentSearch = '';
-    });
+
+    this.referenceService.query().subscribe((res: HttpResponse<IReference[]>) => (this.references = res.body || []));
   }
 
   search(query: string): void {

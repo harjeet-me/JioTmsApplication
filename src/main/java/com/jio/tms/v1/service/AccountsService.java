@@ -25,7 +25,6 @@ public interface AccountsService {
      */
     List<AccountsDTO> findAll();
 
-
     /**
      * Get the "id" accounts.
      *

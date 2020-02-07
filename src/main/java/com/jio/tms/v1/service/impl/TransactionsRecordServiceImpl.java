@@ -69,7 +69,6 @@ public class TransactionsRecordServiceImpl implements TransactionsRecordService 
             .map(transactionsRecordMapper::toDto);
     }
 
-
     /**
      * Get one transactionsRecord by id.
      *

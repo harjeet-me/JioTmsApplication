@@ -2,121 +2,138 @@
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-invoice-heading" jhiTranslate="jioTmsApplicationApp.invoice.home.createOrEditLabel">Create or edit a Invoice</h2>
+
             <div>
                 <jhi-alert-error></jhi-alert-error>
+
                 <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
-                        readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.orderNo" for="field_orderNo">Order No</label>
                     <input type="text" class="form-control" name="orderNo" id="field_orderNo"
                            formControlName="orderNo"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.taxRate" for="field_taxRate">Tax Rate</label>
                     <input type="number" class="form-control" name="taxRate" id="field_taxRate"
                            formControlName="taxRate"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.taxType" for="field_taxType">Tax Type</label>
                     <select class="form-control" name="taxType" formControlName="taxType" id="field_taxType">
-                        <option value="GST">{{'jioTmsApplicationApp.TaxType.GST' | translate}}</option>
-                        <option value="FEDRAL">{{'jioTmsApplicationApp.TaxType.FEDRAL' | translate}}</option>
+                        <option value="GST">{{ 'jioTmsApplicationApp.TaxType.GST' | translate }}</option>
+                        <option value="FEDRAL">{{ 'jioTmsApplicationApp.TaxType.FEDRAL' | translate }}</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.currency" for="field_currency">Currency</label>
                     <select class="form-control" name="currency" formControlName="currency" id="field_currency">
-                        <option value="USD">{{'jioTmsApplicationApp.CURRENCY.USD' | translate}}</option>
-                        <option value="CAD">{{'jioTmsApplicationApp.CURRENCY.CAD' | translate}}</option>
-                        <option value="INR">{{'jioTmsApplicationApp.CURRENCY.INR' | translate}}</option>
+                        <option value="USD">{{ 'jioTmsApplicationApp.CURRENCY.USD' | translate }}</option>
+                        <option value="CAD">{{ 'jioTmsApplicationApp.CURRENCY.CAD' | translate }}</option>
+                        <option value="INR">{{ 'jioTmsApplicationApp.CURRENCY.INR' | translate }}</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.invoiceTaxTotal" for="field_invoiceTaxTotal">Invoice Tax Total</label>
                     <input type="number" class="form-control" name="invoiceTaxTotal" id="field_invoiceTaxTotal"
                            formControlName="invoiceTaxTotal"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.invoiceSubTotal" for="field_invoiceSubTotal">Invoice Sub Total</label>
                     <input type="number" class="form-control" name="invoiceSubTotal" id="field_invoiceSubTotal"
                            formControlName="invoiceSubTotal"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.invoiceTotal" for="field_invoiceTotal">Invoice Total</label>
                     <input type="number" class="form-control" name="invoiceTotal" id="field_invoiceTotal"
                            formControlName="invoiceTotal"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.invoiceDate" for="field_invoiceDate">Invoice Date</label>
                     <div class="input-group">
-                        <input id="field_invoiceDate" type="text" class="form-control" name="invoiceDate" ngbDatepicker  #invoiceDateDp="ngbDatepicker" formControlName="invoiceDate"/>
+                        <input id="field_invoiceDate" type="text" class="form-control" name="invoiceDate" ngbDatepicker #invoiceDateDp="ngbDatepicker" formControlName="invoiceDate"/>
                         <span class="input-group-append">
-                            <button type="button" class="btn btn-secondary" (click)="invoiceDateDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                            <button type="button" class="btn btn-secondary" (click)="invoiceDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
                         </span>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.invoicePaidDate" for="field_invoicePaidDate">Invoice Paid Date</label>
                     <div class="input-group">
-                        <input id="field_invoicePaidDate" type="text" class="form-control" name="invoicePaidDate" ngbDatepicker  #invoicePaidDateDp="ngbDatepicker" formControlName="invoicePaidDate"/>
+                        <input id="field_invoicePaidDate" type="text" class="form-control" name="invoicePaidDate" ngbDatepicker #invoicePaidDateDp="ngbDatepicker" formControlName="invoicePaidDate"/>
                         <span class="input-group-append">
-                            <button type="button" class="btn btn-secondary" (click)="invoicePaidDateDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                            <button type="button" class="btn btn-secondary" (click)="invoicePaidDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
                         </span>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.refValue1" for="field_refValue1">Ref Value 1</label>
                     <input type="text" class="form-control" name="refValue1" id="field_refValue1"
                            formControlName="refValue1"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.refValue2" for="field_refValue2">Ref Value 2</label>
                     <input type="text" class="form-control" name="refValue2" id="field_refValue2"
                            formControlName="refValue2"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.refValue3" for="field_refValue3">Ref Value 3</label>
                     <input type="text" class="form-control" name="refValue3" id="field_refValue3"
                            formControlName="refValue3"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.payRefNo" for="field_payRefNo">Pay Ref No</label>
                     <input type="text" class="form-control" name="payRefNo" id="field_payRefNo"
                            formControlName="payRefNo"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.invoiceDueDate" for="field_invoiceDueDate">Invoice Due Date</label>
                     <div class="input-group">
-                        <input id="field_invoiceDueDate" type="text" class="form-control" name="invoiceDueDate" ngbDatepicker  #invoiceDueDateDp="ngbDatepicker" formControlName="invoiceDueDate"/>
+                        <input id="field_invoiceDueDate" type="text" class="form-control" name="invoiceDueDate" ngbDatepicker #invoiceDueDateDp="ngbDatepicker" formControlName="invoiceDueDate"/>
                         <span class="input-group-append">
-                            <button type="button" class="btn btn-secondary" (click)="invoiceDueDateDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                            <button type="button" class="btn btn-secondary" (click)="invoiceDueDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
                         </span>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.status" for="field_status">Status</label>
                     <select class="form-control" name="status" formControlName="status" id="field_status">
-                        <option value="DRAFT">{{'jioTmsApplicationApp.InvoiceStatus.DRAFT' | translate}}</option>
-                        <option value="GENERATED">{{'jioTmsApplicationApp.InvoiceStatus.GENERATED' | translate}}</option>
-                        <option value="SENT">{{'jioTmsApplicationApp.InvoiceStatus.SENT' | translate}}</option>
-                        <option value="PAID">{{'jioTmsApplicationApp.InvoiceStatus.PAID' | translate}}</option>
-                        <option value="OVERDRAFT">{{'jioTmsApplicationApp.InvoiceStatus.OVERDRAFT' | translate}}</option>
-                        <option value="VOIDED">{{'jioTmsApplicationApp.InvoiceStatus.VOIDED' | translate}}</option>
-                        <option value="PARTIALLY_PAID">{{'jioTmsApplicationApp.InvoiceStatus.PARTIALLY_PAID' | translate}}</option>
+                        <option value="DRAFT">{{ 'jioTmsApplicationApp.InvoiceStatus.DRAFT' | translate }}</option>
+                        <option value="GENERATED">{{ 'jioTmsApplicationApp.InvoiceStatus.GENERATED' | translate }}</option>
+                        <option value="SENT">{{ 'jioTmsApplicationApp.InvoiceStatus.SENT' | translate }}</option>
+                        <option value="PAID">{{ 'jioTmsApplicationApp.InvoiceStatus.PAID' | translate }}</option>
+                        <option value="OVERDRAFT">{{ 'jioTmsApplicationApp.InvoiceStatus.OVERDRAFT' | translate }}</option>
+                        <option value="VOIDED">{{ 'jioTmsApplicationApp.InvoiceStatus.VOIDED' | translate }}</option>
+                        <option value="PARTIALLY_PAID">{{ 'jioTmsApplicationApp.InvoiceStatus.PARTIALLY_PAID' | translate }}</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.invoicePdf" for="field_invoicePdf">Invoice Pdf</label>
                     <div>
                         <div *ngIf="editForm.get('invoicePdf')!.value" class="form-text text-danger clearfix">
                             <a class="pull-left" (click)="openFile(editForm.get('invoicePdfContentType')!.value, editForm.get('invoicePdf')!.value)" jhiTranslate="entity.action.open">open</a><br>
-                            <span class="pull-left">{{editForm.get('invoicePdfContentType')!.value}}, {{byteSize(editForm.get('invoicePdf')!.value)}}</span>
+                            <span class="pull-left">{{ editForm.get('invoicePdfContentType')!.value }}, {{ byteSize(editForm.get('invoicePdf')!.value) }}</span>
                             <button type="button" (click)="editForm.patchValue({invoicePdf: null});editForm.patchValue({invoicePdfContentType: null});"
                                     class="btn btn-secondary btn-xs pull-right">
-                                <fa-icon [icon]="'times'"></fa-icon>
+                                <fa-icon icon="times"></fa-icon>
                             </button>
                         </div>
                         <input type="file" id="file_invoicePdf" (change)="setFileData($event, 'invoicePdf', false)" jhiTranslate="entity.action.addblob"/>
@@ -126,6 +143,7 @@
                     <input type="hidden" class="form-control" name="invoicePdfContentType" id="field_invoicePdfContentType"
                            formControlName="invoicePdfContentType" />
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.remarks" for="field_remarks">Remarks</label>
                     <input type="text" class="form-control" name="remarks" id="field_remarks"
@@ -136,44 +154,50 @@
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.reference1" for="field_reference1">Reference 1</label>
                     <select class="form-control" id="field_reference1" name="reference1" formControlName="reference1Id">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="referenceOption.id" *ngFor="let referenceOption of reference1s; trackBy: trackById">{{referenceOption.reference}}</option>
+                        <option [ngValue]="referenceOption.id" *ngFor="let referenceOption of reference1s; trackBy: trackById">{{ referenceOption.reference }}</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.reference2" for="field_reference2">Reference 2</label>
                     <select class="form-control" id="field_reference2" name="reference2" formControlName="reference2Id">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="referenceOption.id" *ngFor="let referenceOption of reference2s; trackBy: trackById">{{referenceOption.reference}}</option>
+                        <option [ngValue]="referenceOption.id" *ngFor="let referenceOption of reference2s; trackBy: trackById">{{ referenceOption.reference }}</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.reference3" for="field_reference3">Reference 3</label>
                     <select class="form-control" id="field_reference3" name="reference3" formControlName="reference3Id">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="referenceOption.id" *ngFor="let referenceOption of reference3s; trackBy: trackById">{{referenceOption.reference}}</option>
+                        <option [ngValue]="referenceOption.id" *ngFor="let referenceOption of reference3s; trackBy: trackById">{{ referenceOption.reference }}</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.customer" for="field_customer">Customer</label>
                     <select class="form-control" id="field_customer" name="customer" formControlName="customerId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="customerOption.id" *ngFor="let customerOption of customers; trackBy: trackById">{{customerOption.company}}</option>
+                        <option [ngValue]="customerOption.id" *ngFor="let customerOption of customers; trackBy: trackById">{{ customerOption.company }}</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.invoice.trip" for="field_trip">Trip</label>
                     <select class="form-control" id="field_trip" name="trip" formControlName="tripId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="tripOption.id" *ngFor="let tripOption of trips; trackBy: trackById">{{tripOption.id}}</option>
+                        <option [ngValue]="tripOption.id" *ngFor="let tripOption of trips; trackBy: trackById">{{ tripOption.id }}</option>
                     </select>
                 </div>
             </div>
+
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
+
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>
         </form>

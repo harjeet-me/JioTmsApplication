@@ -25,7 +25,6 @@ public interface EquipmentService {
      */
     List<EquipmentDTO> findAll();
 
-
     /**
      * Get the "id" equipment.
      *

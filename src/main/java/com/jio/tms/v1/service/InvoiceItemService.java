@@ -25,7 +25,6 @@ public interface InvoiceItemService {
      */
     List<InvoiceItemDTO> findAll();
 
-
     /**
      * Get the "id" invoiceItem.
      *

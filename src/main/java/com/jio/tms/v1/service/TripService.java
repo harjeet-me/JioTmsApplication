@@ -28,7 +28,6 @@ public interface TripService {
      */
     Page<TripDTO> findAll(Pageable pageable);
 
-
     /**
      * Get the "id" trip.
      *

@@ -1,49 +1,52 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="trip">
-            <h2><span jhiTranslate="jioTmsApplicationApp.trip.detail.title">Trip</span> {{trip.id}}</h2>
+            <h2><span jhiTranslate="jioTmsApplicationApp.trip.detail.title">Trip</span> {{ trip.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.tripNumber">Trip Number</span></dt>
                 <dd>
-                    <span>{{trip.tripNumber}}</span>
+                    <span>{{ trip.tripNumber }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.description">Description</span></dt>
                 <dd>
-                    <span>{{trip.description}}</span>
+                    <span>{{ trip.description }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.shipmentNumber">Shipment Number</span></dt>
                 <dd>
-                    <span>{{trip.shipmentNumber}}</span>
+                    <span>{{ trip.shipmentNumber }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.bol">Bol</span></dt>
                 <dd>
-                    <span>{{trip.bol}}</span>
+                    <span>{{ trip.bol }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.pickup">Pickup</span></dt>
                 <dd>
-                    <span>{{trip.pickup}}</span>
+                    <span>{{ trip.pickup }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.drop">Drop</span></dt>
                 <dd>
-                    <span>{{trip.drop}}</span>
+                    <span>{{ trip.drop }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.currentLocation">Current Location</span></dt>
                 <dd>
-                    <span>{{trip.currentLocation}}</span>
+                    <span>{{ trip.currentLocation }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.status">Status</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.StatusEnum.' + trip.status}}">{{trip.status}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.StatusEnum.' + trip.status }}">{{ trip.status }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.detention">Detention</span></dt>
                 <dd>
-                    <span>{{trip.detention}}</span>
+                    <span>{{ trip.detention }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.chasisInTime">Chasis In Time</span></dt>
                 <dd>
-                    <span>{{trip.chasisInTime}}</span>
+                    <span>{{ trip.chasisInTime }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.pod">Pod</span></dt>
                 <dd>
@@ -51,71 +54,71 @@
                         <a (click)="openFile(trip.podContentType!, trip.pod)">
                             <img [src]="'data:' + trip.podContentType + ';base64,' + trip.pod" style="max-width: 100%;" alt="trip image"/>
                         </a>
-                        {{trip.podContentType}}, {{byteSize(trip.pod)}}
+                        {{ trip.podContentType }}, {{ byteSize(trip.pod) }}
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.hazmat">Hazmat</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.HAZMAT.' + trip.hazmat}}">{{trip.hazmat}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.HAZMAT.' + trip.hazmat }}">{{ trip.hazmat }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.recievedBy">Recieved By</span></dt>
                 <dd>
-                    <span>{{trip.recievedBy}}</span>
+                    <span>{{ trip.recievedBy }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.coveredBy">Covered By</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.COVEREDBY.' + trip.coveredBy}}">{{trip.coveredBy}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.COVEREDBY.' + trip.coveredBy }}">{{ trip.coveredBy }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.loadType">Load Type</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.LoadType.' + trip.loadType}}">{{trip.loadType}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.LoadType.' + trip.loadType }}">{{ trip.loadType }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.containerSize">Container Size</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.SizeEnum.' + trip.containerSize}}">{{trip.containerSize}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.SizeEnum.' + trip.containerSize }}">{{ trip.containerSize }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.numbersOfContainer">Numbers Of Container</span></dt>
                 <dd>
-                    <span>{{trip.numbersOfContainer}}</span>
+                    <span>{{ trip.numbersOfContainer }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.comments">Comments</span></dt>
                 <dd>
-                    <span>{{trip.comments}}</span>
+                    <span>{{ trip.comments }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.pickupLocation">Pickup Location</span></dt>
                 <dd>
                     <div *ngIf="trip.pickupLocationId">
-                        <a [routerLink]="['/location', trip.pickupLocationId, 'view']">{{trip.pickupLocationAddress}}</a>
+                        <a [routerLink]="['/location', trip.pickupLocationId, 'view']">{{ trip.pickupLocationAddress }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.dropLocation">Drop Location</span></dt>
                 <dd>
                     <div *ngIf="trip.dropLocationId">
-                        <a [routerLink]="['/location', trip.dropLocationId, 'view']">{{trip.dropLocationAddress}}</a>
+                        <a [routerLink]="['/location', trip.dropLocationId, 'view']">{{ trip.dropLocationAddress }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.customer">Customer</span></dt>
                 <dd>
                     <div *ngIf="trip.customerId">
-                        <a [routerLink]="['/customer', trip.customerId, 'view']">{{trip.customerEmail}}</a>
+                        <a [routerLink]="['/customer', trip.customerId, 'view']">{{ trip.customerEmail }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.driver">Driver</span></dt>
                 <dd>
                     <div *ngIf="trip.driverId">
-                        <a [routerLink]="['/driver', trip.driverId, 'view']">{{trip.driverId}}</a>
+                        <a [routerLink]="['/driver', trip.driverId, 'view']">{{ trip.driverId }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.equipment">Equipment</span></dt>
                 <dd>
                     <div *ngIf="trip.equipmentId">
-                        <a [routerLink]="['/equipment', trip.equipmentId, 'view']">{{trip.equipmentId}}</a>
+                        <a [routerLink]="['/equipment', trip.equipmentId, 'view']">{{ trip.equipmentId }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.trip.ownerOperator">Owner Operator</span></dt>
                 <dd>
                     <div *ngIf="trip.ownerOperatorId">
-                        <a [routerLink]="['/owner-operator', trip.ownerOperatorId, 'view']">{{trip.ownerOperatorId}}</a>
+                        <a [routerLink]="['/owner-operator', trip.ownerOperatorId, 'view']">{{ trip.ownerOperatorId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -123,13 +126,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/trip', trip.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

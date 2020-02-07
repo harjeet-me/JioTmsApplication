@@ -4,8 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import * as moment from 'moment';
 import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
 import { ITransactionsRecord, TransactionsRecord } from 'app/shared/model/transactions-record.model';
@@ -24,9 +22,7 @@ type SelectableEntity = ICustomer | IAccounts;
 })
 export class TransactionsRecordUpdateComponent implements OnInit {
   isSaving = false;
-
   customers: ICustomer[] = [];
-
   accounts: IAccounts[] = [];
   txCreatedDateDp: any;
   txCompletedDateDp: any;
@@ -64,23 +60,9 @@ export class TransactionsRecordUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ transactionsRecord }) => {
       this.updateForm(transactionsRecord);
 
-      this.customerService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ICustomer[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ICustomer[]) => (this.customers = resBody));
+      this.customerService.query().subscribe((res: HttpResponse<ICustomer[]>) => (this.customers = res.body || []));
 
-      this.accountsService
-        .query()
-        .pipe(
-          map((res: HttpResponse<IAccounts[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IAccounts[]) => (this.accounts = resBody));
+      this.accountsService.query().subscribe((res: HttpResponse<IAccounts[]>) => (this.accounts = res.body || []));
     });
   }
 

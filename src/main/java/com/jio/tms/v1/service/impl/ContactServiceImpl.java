@@ -71,7 +71,6 @@ public class ContactServiceImpl implements ContactService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one contact by id.
      *

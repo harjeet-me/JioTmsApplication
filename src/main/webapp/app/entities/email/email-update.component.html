@@ -2,57 +2,66 @@
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-email-heading" jhiTranslate="jioTmsApplicationApp.email.home.createOrEditLabel">Create or edit a Email</h2>
+
             <div>
                 <jhi-alert-error></jhi-alert-error>
+
                 <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
-                        readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.userto" for="field_userto">Userto</label>
                     <input type="text" class="form-control" name="userto" id="field_userto"
                            formControlName="userto"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.usercc" for="field_usercc">Usercc</label>
                     <input type="text" class="form-control" name="usercc" id="field_usercc"
                            formControlName="usercc"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.userbcc" for="field_userbcc">Userbcc</label>
                     <input type="text" class="form-control" name="userbcc" id="field_userbcc"
                            formControlName="userbcc"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.subject" for="field_subject">Subject</label>
                     <input type="text" class="form-control" name="subject" id="field_subject"
                            formControlName="subject"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.message" for="field_message">Message</label>
                     <input type="text" class="form-control" name="message" id="field_message"
                            formControlName="message"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.multipart" for="field_multipart">Multipart</label>
                     <input type="checkbox" class="form-control" name="multipart" id="field_multipart"
                            formControlName="multipart"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.htmlBody" for="field_htmlBody">Html Body</label>
                     <input type="checkbox" class="form-control" name="htmlBody" id="field_htmlBody"
                            formControlName="htmlBody"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="jioTmsApplicationApp.email.attachment" for="field_attachment">Attachment</label>
                     <div>
                         <div *ngIf="editForm.get('attachment')!.value" class="form-text text-danger clearfix">
                             <a class="pull-left" (click)="openFile(editForm.get('attachmentContentType')!.value, editForm.get('attachment')!.value)" jhiTranslate="entity.action.open">open</a><br>
-                            <span class="pull-left">{{editForm.get('attachmentContentType')!.value}}, {{byteSize(editForm.get('attachment')!.value)}}</span>
+                            <span class="pull-left">{{ editForm.get('attachmentContentType')!.value }}, {{ byteSize(editForm.get('attachment')!.value) }}</span>
                             <button type="button" (click)="editForm.patchValue({attachment: null});editForm.patchValue({attachmentContentType: null});"
                                     class="btn btn-secondary btn-xs pull-right">
-                                <fa-icon [icon]="'times'"></fa-icon>
+                                <fa-icon icon="times"></fa-icon>
                             </button>
                         </div>
                         <input type="file" id="file_attachment" (change)="setFileData($event, 'attachment', false)" jhiTranslate="entity.action.addblob"/>
@@ -62,14 +71,15 @@
                     <input type="hidden" class="form-control" name="attachmentContentType" id="field_attachmentContentType"
                            formControlName="attachmentContentType" />
                 </div>
-
             </div>
+
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
+
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>
         </form>

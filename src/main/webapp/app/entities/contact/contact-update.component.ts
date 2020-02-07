@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { IContact, Contact } from 'app/shared/model/contact.model';
 import { ContactService } from './contact.service';
@@ -17,7 +16,6 @@ import { CustomerService } from 'app/entities/customer/customer.service';
 })
 export class ContactUpdateComponent implements OnInit {
   isSaving = false;
-
   customers: ICustomer[] = [];
 
   editForm = this.fb.group({
@@ -43,14 +41,7 @@ export class ContactUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ contact }) => {
       this.updateForm(contact);
 
-      this.customerService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ICustomer[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ICustomer[]) => (this.customers = resBody));
+      this.customerService.query().subscribe((res: HttpResponse<ICustomer[]>) => (this.customers = res.body || []));
     });
   }
 

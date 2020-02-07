@@ -71,7 +71,6 @@ public class InvoiceRefServiceImpl implements InvoiceRefService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one invoiceRef by id.
      *

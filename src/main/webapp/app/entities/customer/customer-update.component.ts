@@ -66,6 +66,11 @@ export class CustomerUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ customer }) => {
+      if (!customer.id) {
+        const today = moment().startOf('day');
+        customer.timeZone = today;
+      }
+
       this.updateForm(customer);
     });
   }
@@ -103,7 +108,7 @@ export class CustomerUpdateComponent implements OnInit {
       status: customer.status,
       preffredCurrency: customer.preffredCurrency,
       payterms: customer.payterms,
-      timeZone: customer.timeZone != null ? customer.timeZone.format(DATE_TIME_FORMAT) : null
+      timeZone: customer.timeZone ? customer.timeZone.format(DATE_TIME_FORMAT) : null
     });
   }
 
@@ -181,8 +186,7 @@ export class CustomerUpdateComponent implements OnInit {
       status: this.editForm.get(['status'])!.value,
       preffredCurrency: this.editForm.get(['preffredCurrency'])!.value,
       payterms: this.editForm.get(['payterms'])!.value,
-      timeZone:
-        this.editForm.get(['timeZone'])!.value != null ? moment(this.editForm.get(['timeZone'])!.value, DATE_TIME_FORMAT) : undefined
+      timeZone: this.editForm.get(['timeZone'])!.value ? moment(this.editForm.get(['timeZone'])!.value, DATE_TIME_FORMAT) : undefined
     };
   }
 

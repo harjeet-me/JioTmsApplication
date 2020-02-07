@@ -31,7 +31,6 @@ public interface InsuranceService {
      */
     List<InsuranceDTO> findAllWhereOwnerOperatorIsNull();
 
-
     /**
      * Get the "id" insurance.
      *

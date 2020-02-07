@@ -14,9 +14,7 @@ export class OwnerOperatorDetailComponent implements OnInit {
   constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ ownerOperator }) => {
-      this.ownerOperator = ownerOperator;
-    });
+    this.activatedRoute.data.subscribe(({ ownerOperator }) => (this.ownerOperator = ownerOperator));
   }
 
   byteSize(base64String: string): string {

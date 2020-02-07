@@ -71,7 +71,6 @@ public class ProductItemServiceImpl implements ProductItemService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one productItem by id.
      *

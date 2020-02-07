@@ -25,7 +25,6 @@ public interface ReferenceService {
      */
     List<ReferenceDTO> findAll();
 
-
     /**
      * Get the "id" reference.
      *

@@ -31,17 +31,11 @@ type SelectableEntity = ILocation | ICustomer | IDriver | IEquipment | IOwnerOpe
 })
 export class TripUpdateComponent implements OnInit {
   isSaving = false;
-
   pickuplocations: ILocation[] = [];
-
   droplocations: ILocation[] = [];
-
   customers: ICustomer[] = [];
-
   drivers: IDriver[] = [];
-
   equipment: IEquipment[] = [];
-
   owneroperators: IOwnerOperator[] = [];
   pickupDp: any;
   dropDp: any;
@@ -91,13 +85,18 @@ export class TripUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ trip }) => {
+      if (!trip.id) {
+        const today = moment().startOf('day');
+        trip.chasisInTime = today;
+      }
+
       this.updateForm(trip);
 
       this.locationService
         .query({ filter: 'trip-is-null' })
         .pipe(
           map((res: HttpResponse<ILocation[]>) => {
-            return res.body ? res.body : [];
+            return res.body || [];
           })
         )
         .subscribe((resBody: ILocation[]) => {
@@ -111,9 +110,7 @@ export class TripUpdateComponent implements OnInit {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
                 })
               )
-              .subscribe((concatRes: ILocation[]) => {
-                this.pickuplocations = concatRes;
-              });
+              .subscribe((concatRes: ILocation[]) => (this.pickuplocations = concatRes));
           }
         });
 
@@ -121,7 +118,7 @@ export class TripUpdateComponent implements OnInit {
         .query({ filter: 'trip-is-null' })
         .pipe(
           map((res: HttpResponse<ILocation[]>) => {
-            return res.body ? res.body : [];
+            return res.body || [];
           })
         )
         .subscribe((resBody: ILocation[]) => {
@@ -135,47 +132,17 @@ export class TripUpdateComponent implements OnInit {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
                 })
               )
-              .subscribe((concatRes: ILocation[]) => {
-                this.droplocations = concatRes;
-              });
+              .subscribe((concatRes: ILocation[]) => (this.droplocations = concatRes));
           }
         });
 
-      this.customerService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ICustomer[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ICustomer[]) => (this.customers = resBody));
+      this.customerService.query().subscribe((res: HttpResponse<ICustomer[]>) => (this.customers = res.body || []));
 
-      this.driverService
-        .query()
-        .pipe(
-          map((res: HttpResponse<IDriver[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IDriver[]) => (this.drivers = resBody));
+      this.driverService.query().subscribe((res: HttpResponse<IDriver[]>) => (this.drivers = res.body || []));
 
-      this.equipmentService
-        .query()
-        .pipe(
-          map((res: HttpResponse<IEquipment[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IEquipment[]) => (this.equipment = resBody));
+      this.equipmentService.query().subscribe((res: HttpResponse<IEquipment[]>) => (this.equipment = res.body || []));
 
-      this.ownerOperatorService
-        .query()
-        .pipe(
-          map((res: HttpResponse<IOwnerOperator[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IOwnerOperator[]) => (this.owneroperators = resBody));
+      this.ownerOperatorService.query().subscribe((res: HttpResponse<IOwnerOperator[]>) => (this.owneroperators = res.body || []));
     });
   }
 
@@ -191,7 +158,7 @@ export class TripUpdateComponent implements OnInit {
       currentLocation: trip.currentLocation,
       status: trip.status,
       detention: trip.detention,
-      chasisInTime: trip.chasisInTime != null ? trip.chasisInTime.format(DATE_TIME_FORMAT) : null,
+      chasisInTime: trip.chasisInTime ? trip.chasisInTime.format(DATE_TIME_FORMAT) : null,
       pod: trip.pod,
       podContentType: trip.podContentType,
       hazmat: trip.hazmat,
@@ -263,10 +230,9 @@ export class TripUpdateComponent implements OnInit {
       currentLocation: this.editForm.get(['currentLocation'])!.value,
       status: this.editForm.get(['status'])!.value,
       detention: this.editForm.get(['detention'])!.value,
-      chasisInTime:
-        this.editForm.get(['chasisInTime'])!.value != null
-          ? moment(this.editForm.get(['chasisInTime'])!.value, DATE_TIME_FORMAT)
-          : undefined,
+      chasisInTime: this.editForm.get(['chasisInTime'])!.value
+        ? moment(this.editForm.get(['chasisInTime'])!.value, DATE_TIME_FORMAT)
+        : undefined,
       podContentType: this.editForm.get(['podContentType'])!.value,
       pod: this.editForm.get(['pod'])!.value,
       hazmat: this.editForm.get(['hazmat'])!.value,

@@ -16,8 +16,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [JioTmsApplicationTestModule],
-        declarations: [OwnerOperatorComponent],
-        providers: []
+        declarations: [OwnerOperatorComponent]
       })
         .overrideTemplate(OwnerOperatorComponent, '')
         .compileComponents();

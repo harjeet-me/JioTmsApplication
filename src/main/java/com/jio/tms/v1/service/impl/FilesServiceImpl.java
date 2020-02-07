@@ -71,7 +71,6 @@ public class FilesServiceImpl implements FilesService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one files by id.
      *

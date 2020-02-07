@@ -69,7 +69,6 @@ public class EmailServiceImpl implements EmailService {
             .map(emailMapper::toDto);
     }
 
-
     /**
      * Get one email by id.
      *

@@ -169,7 +169,7 @@ public class EmailResourceIT {
         // Create the Email
         EmailDTO emailDTO = emailMapper.toDto(email);
         restEmailMockMvc.perform(post("/api/emails")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(emailDTO)))
             .andExpect(status().isCreated());
 
@@ -202,7 +202,7 @@ public class EmailResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restEmailMockMvc.perform(post("/api/emails")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(emailDTO)))
             .andExpect(status().isBadRequest());
 
@@ -224,7 +224,7 @@ public class EmailResourceIT {
         // Get all the emailList
         restEmailMockMvc.perform(get("/api/emails?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(email.getId().intValue())))
             .andExpect(jsonPath("$.[*].userto").value(hasItem(DEFAULT_USERTO)))
             .andExpect(jsonPath("$.[*].usercc").value(hasItem(DEFAULT_USERCC)))
@@ -246,7 +246,7 @@ public class EmailResourceIT {
         // Get the email
         restEmailMockMvc.perform(get("/api/emails/{id}", email.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(email.getId().intValue()))
             .andExpect(jsonPath("$.userto").value(DEFAULT_USERTO))
             .andExpect(jsonPath("$.usercc").value(DEFAULT_USERCC))
@@ -292,7 +292,7 @@ public class EmailResourceIT {
         EmailDTO emailDTO = emailMapper.toDto(updatedEmail);
 
         restEmailMockMvc.perform(put("/api/emails")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(emailDTO)))
             .andExpect(status().isOk());
 
@@ -324,7 +324,7 @@ public class EmailResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restEmailMockMvc.perform(put("/api/emails")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(emailDTO)))
             .andExpect(status().isBadRequest());
 
@@ -346,7 +346,7 @@ public class EmailResourceIT {
 
         // Delete the email
         restEmailMockMvc.perform(delete("/api/emails/{id}", email.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -367,7 +367,7 @@ public class EmailResourceIT {
         // Search the email
         restEmailMockMvc.perform(get("/api/_search/emails?query=id:" + email.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(email.getId().intValue())))
             .andExpect(jsonPath("$.[*].userto").value(hasItem(DEFAULT_USERTO)))
             .andExpect(jsonPath("$.[*].usercc").value(hasItem(DEFAULT_USERCC)))

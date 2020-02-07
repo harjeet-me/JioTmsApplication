@@ -28,7 +28,6 @@ public interface InvoiceService {
      */
     Page<InvoiceDTO> findAll(Pageable pageable);
 
-
     /**
      * Get the "id" invoice.
      *

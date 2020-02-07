@@ -13,7 +13,7 @@ export class FilesDeleteDialogComponent {
 
   constructor(protected filesService: FilesService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
-  clear(): void {
+  cancel(): void {
     this.activeModal.dismiss();
   }
 

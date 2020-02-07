@@ -1,4 +1,5 @@
 package com.jio.tms.v1.domain;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -35,7 +36,6 @@ public class Trip implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "trip_number")
@@ -112,6 +112,10 @@ public class Trip implements Serializable {
     @OneToMany(mappedBy = "trip")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Invoice> invoices = new HashSet<>();
+
+    @OneToMany(mappedBy = "trip")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Container> containers = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties("loadOrders")
@@ -434,6 +438,31 @@ public class Trip implements Serializable {
 
     public void setInvoices(Set<Invoice> invoices) {
         this.invoices = invoices;
+    }
+
+    public Set<Container> getContainers() {
+        return containers;
+    }
+
+    public Trip containers(Set<Container> containers) {
+        this.containers = containers;
+        return this;
+    }
+
+    public Trip addContainer(Container container) {
+        this.containers.add(container);
+        container.setTrip(this);
+        return this;
+    }
+
+    public Trip removeContainer(Container container) {
+        this.containers.remove(container);
+        container.setTrip(null);
+        return this;
+    }
+
+    public void setContainers(Set<Container> containers) {
+        this.containers = containers;
     }
 
     public Customer getCustomer() {

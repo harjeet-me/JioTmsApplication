@@ -74,9 +74,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
-
     /**
-    *  Get all the customers where Accounts is {@code null}.
+     *  Get all the customers where Accounts is {@code null}.
      *  @return the list of entities.
      */
     @Transactional(readOnly = true) 

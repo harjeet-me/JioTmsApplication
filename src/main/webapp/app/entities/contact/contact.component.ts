@@ -36,13 +36,11 @@ export class ContactComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<IContact[]>) => (this.contacts = res.body ? res.body : []));
+        .subscribe((res: HttpResponse<IContact[]>) => (this.contacts = res.body || []));
       return;
     }
-    this.contactService.query().subscribe((res: HttpResponse<IContact[]>) => {
-      this.contacts = res.body ? res.body : [];
-      this.currentSearch = '';
-    });
+
+    this.contactService.query().subscribe((res: HttpResponse<IContact[]>) => (this.contacts = res.body || []));
   }
 
   search(query: string): void {

@@ -25,7 +25,6 @@ public interface InvoiceRefService {
      */
     List<InvoiceRefDTO> findAll();
 
-
     /**
      * Get the "id" invoiceRef.
      *

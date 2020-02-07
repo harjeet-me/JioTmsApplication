@@ -41,7 +41,8 @@ export class FileSystemComponent implements OnInit, OnDestroy {
   }
 
   loadPage(page?: number): void {
-    const pageToLoad: number = page ? page : this.page;
+    const pageToLoad: number = page || this.page;
+
     if (this.currentSearch) {
       this.fileSystemService
         .search({
@@ -56,6 +57,7 @@ export class FileSystemComponent implements OnInit, OnDestroy {
         );
       return;
     }
+
     this.fileSystemService
       .query({
         page: pageToLoad - 1,
@@ -132,7 +134,7 @@ export class FileSystemComponent implements OnInit, OnDestroy {
         sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
       }
     });
-    this.fileSystems = data ? data : [];
+    this.fileSystems = data || [];
   }
 
   protected onError(): void {

@@ -13,9 +13,7 @@ export class AccountsDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ accounts }) => {
-      this.accounts = accounts;
-    });
+    this.activatedRoute.data.subscribe(({ accounts }) => (this.accounts = accounts));
   }
 
   previousState(): void {

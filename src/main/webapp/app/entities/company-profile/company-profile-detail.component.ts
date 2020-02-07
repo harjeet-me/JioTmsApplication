@@ -14,9 +14,7 @@ export class CompanyProfileDetailComponent implements OnInit {
   constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ companyProfile }) => {
-      this.companyProfile = companyProfile;
-    });
+    this.activatedRoute.data.subscribe(({ companyProfile }) => (this.companyProfile = companyProfile));
   }
 
   byteSize(base64String: string): string {

@@ -36,13 +36,11 @@ export class AccountsComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<IAccounts[]>) => (this.accounts = res.body ? res.body : []));
+        .subscribe((res: HttpResponse<IAccounts[]>) => (this.accounts = res.body || []));
       return;
     }
-    this.accountsService.query().subscribe((res: HttpResponse<IAccounts[]>) => {
-      this.accounts = res.body ? res.body : [];
-      this.currentSearch = '';
-    });
+
+    this.accountsService.query().subscribe((res: HttpResponse<IAccounts[]>) => (this.accounts = res.body || []));
   }
 
   search(query: string): void {

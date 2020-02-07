@@ -104,6 +104,12 @@
             "relationshipName": "invoice"
         },
         {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "container",
+            "otherEntityRelationshipName": "trip",
+            "relationshipName": "container"
+        },
+        {
             "relationshipType": "many-to-one",
             "otherEntityName": "customer",
             "otherEntityRelationshipName": "loadOrder",

@@ -72,9 +72,8 @@ public class InsuranceServiceImpl implements InsuranceService {
     }
 
 
-
     /**
-    *  Get all the insurances where OwnerOperator is {@code null}.
+     *  Get all the insurances where OwnerOperator is {@code null}.
      *  @return the list of entities.
      */
     @Transactional(readOnly = true) 
