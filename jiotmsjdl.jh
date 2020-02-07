@@ -156,6 +156,12 @@ entity InvoiceItem {
   
     }
     
+entity Container {
+number String ,
+description String,
+size Integer 
+
+}
  
 entity Equipment {
 enumber String ,
@@ -357,6 +363,7 @@ relationship OneToMany {
     Customer  to TransactionsRecord {customer (company)}
     Accounts  to TransactionsRecord {account}
     Email  to FileSystem 
+    Trip  to Container
    
     
 }
