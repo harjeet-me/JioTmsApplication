@@ -14,9 +14,7 @@ export class FilesDetailComponent implements OnInit {
   constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ files }) => {
-      this.files = files;
-    });
+    this.activatedRoute.data.subscribe(({ files }) => (this.files = files));
   }
 
   byteSize(base64String: string): string {

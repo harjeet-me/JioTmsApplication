@@ -13,7 +13,7 @@ export class InvoiceDeleteDialogComponent {
 
   constructor(protected invoiceService: InvoiceService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
-  clear(): void {
+  cancel(): void {
     this.activeModal.dismiss();
   }
 

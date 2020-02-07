@@ -210,7 +210,7 @@ public class CompanyProfileResourceIT {
         // Create the CompanyProfile
         CompanyProfileDTO companyProfileDTO = companyProfileMapper.toDto(companyProfile);
         restCompanyProfileMockMvc.perform(post("/api/company-profiles")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(companyProfileDTO)))
             .andExpect(status().isCreated());
 
@@ -251,7 +251,7 @@ public class CompanyProfileResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCompanyProfileMockMvc.perform(post("/api/company-profiles")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(companyProfileDTO)))
             .andExpect(status().isBadRequest());
 
@@ -273,7 +273,7 @@ public class CompanyProfileResourceIT {
         // Get all the companyProfileList
         restCompanyProfileMockMvc.perform(get("/api/company-profiles?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(companyProfile.getId().intValue())))
             .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())))
             .andExpect(jsonPath("$.[*].company").value(hasItem(DEFAULT_COMPANY)))
@@ -303,7 +303,7 @@ public class CompanyProfileResourceIT {
         // Get the companyProfile
         restCompanyProfileMockMvc.perform(get("/api/company-profiles/{id}", companyProfile.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(companyProfile.getId().intValue()))
             .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()))
             .andExpect(jsonPath("$.company").value(DEFAULT_COMPANY))
@@ -365,7 +365,7 @@ public class CompanyProfileResourceIT {
         CompanyProfileDTO companyProfileDTO = companyProfileMapper.toDto(updatedCompanyProfile);
 
         restCompanyProfileMockMvc.perform(put("/api/company-profiles")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(companyProfileDTO)))
             .andExpect(status().isOk());
 
@@ -405,7 +405,7 @@ public class CompanyProfileResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCompanyProfileMockMvc.perform(put("/api/company-profiles")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(companyProfileDTO)))
             .andExpect(status().isBadRequest());
 
@@ -427,7 +427,7 @@ public class CompanyProfileResourceIT {
 
         // Delete the companyProfile
         restCompanyProfileMockMvc.perform(delete("/api/company-profiles/{id}", companyProfile.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -448,7 +448,7 @@ public class CompanyProfileResourceIT {
         // Search the companyProfile
         restCompanyProfileMockMvc.perform(get("/api/_search/company-profiles?query=id:" + companyProfile.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(companyProfile.getId().intValue())))
             .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())))
             .andExpect(jsonPath("$.[*].company").value(hasItem(DEFAULT_COMPANY)))

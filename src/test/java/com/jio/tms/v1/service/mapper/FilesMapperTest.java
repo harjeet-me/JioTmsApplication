@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class FilesMapperTest {
 
     private FilesMapper filesMapper;
@@ -16,7 +15,7 @@ public class FilesMapperTest {
 
     @Test
     public void testEntityFromId() {
-        Long id = 2L;
+        Long id = 1L;
         assertThat(filesMapper.fromId(id).getId()).isEqualTo(id);
         assertThat(filesMapper.fromId(null)).isNull();
     }

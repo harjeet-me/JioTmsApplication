@@ -154,7 +154,7 @@ public class InsuranceResourceIT {
         // Create the Insurance
         InsuranceDTO insuranceDTO = insuranceMapper.toDto(insurance);
         restInsuranceMockMvc.perform(post("/api/insurances")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(insuranceDTO)))
             .andExpect(status().isCreated());
 
@@ -184,7 +184,7 @@ public class InsuranceResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restInsuranceMockMvc.perform(post("/api/insurances")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(insuranceDTO)))
             .andExpect(status().isBadRequest());
 
@@ -206,7 +206,7 @@ public class InsuranceResourceIT {
         // Get all the insuranceList
         restInsuranceMockMvc.perform(get("/api/insurances?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(insurance.getId().intValue())))
             .andExpect(jsonPath("$.[*].providerName").value(hasItem(DEFAULT_PROVIDER_NAME)))
             .andExpect(jsonPath("$.[*].issueDate").value(hasItem(DEFAULT_ISSUE_DATE.toString())))
@@ -225,7 +225,7 @@ public class InsuranceResourceIT {
         // Get the insurance
         restInsuranceMockMvc.perform(get("/api/insurances/{id}", insurance.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(insurance.getId().intValue()))
             .andExpect(jsonPath("$.providerName").value(DEFAULT_PROVIDER_NAME))
             .andExpect(jsonPath("$.issueDate").value(DEFAULT_ISSUE_DATE.toString()))
@@ -265,7 +265,7 @@ public class InsuranceResourceIT {
         InsuranceDTO insuranceDTO = insuranceMapper.toDto(updatedInsurance);
 
         restInsuranceMockMvc.perform(put("/api/insurances")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(insuranceDTO)))
             .andExpect(status().isOk());
 
@@ -294,7 +294,7 @@ public class InsuranceResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restInsuranceMockMvc.perform(put("/api/insurances")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(insuranceDTO)))
             .andExpect(status().isBadRequest());
 
@@ -316,7 +316,7 @@ public class InsuranceResourceIT {
 
         // Delete the insurance
         restInsuranceMockMvc.perform(delete("/api/insurances/{id}", insurance.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -337,7 +337,7 @@ public class InsuranceResourceIT {
         // Search the insurance
         restInsuranceMockMvc.perform(get("/api/_search/insurances?query=id:" + insurance.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(insurance.getId().intValue())))
             .andExpect(jsonPath("$.[*].providerName").value(hasItem(DEFAULT_PROVIDER_NAME)))
             .andExpect(jsonPath("$.[*].issueDate").value(hasItem(DEFAULT_ISSUE_DATE.toString())))

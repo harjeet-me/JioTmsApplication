@@ -5,7 +5,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as moment from 'moment';
 import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
 import { IInvoice, Invoice } from 'app/shared/model/invoice.model';
@@ -26,15 +25,10 @@ type SelectableEntity = IReference | ICustomer | ITrip;
 })
 export class InvoiceUpdateComponent implements OnInit {
   isSaving = false;
-
   reference1s: IReference[] = [];
-
   reference2s: IReference[] = [];
-
   reference3s: IReference[] = [];
-
   customers: ICustomer[] = [];
-
   trips: ITrip[] = [];
   invoiceDateDp: any;
   invoicePaidDateDp: any;
@@ -86,7 +80,7 @@ export class InvoiceUpdateComponent implements OnInit {
         .query({ filter: 'invoice-is-null' })
         .pipe(
           map((res: HttpResponse<IReference[]>) => {
-            return res.body ? res.body : [];
+            return res.body || [];
           })
         )
         .subscribe((resBody: IReference[]) => {
@@ -100,9 +94,7 @@ export class InvoiceUpdateComponent implements OnInit {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
                 })
               )
-              .subscribe((concatRes: IReference[]) => {
-                this.reference1s = concatRes;
-              });
+              .subscribe((concatRes: IReference[]) => (this.reference1s = concatRes));
           }
         });
 
@@ -110,7 +102,7 @@ export class InvoiceUpdateComponent implements OnInit {
         .query({ filter: 'invoice-is-null' })
         .pipe(
           map((res: HttpResponse<IReference[]>) => {
-            return res.body ? res.body : [];
+            return res.body || [];
           })
         )
         .subscribe((resBody: IReference[]) => {
@@ -124,9 +116,7 @@ export class InvoiceUpdateComponent implements OnInit {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
                 })
               )
-              .subscribe((concatRes: IReference[]) => {
-                this.reference2s = concatRes;
-              });
+              .subscribe((concatRes: IReference[]) => (this.reference2s = concatRes));
           }
         });
 
@@ -134,7 +124,7 @@ export class InvoiceUpdateComponent implements OnInit {
         .query({ filter: 'invoice-is-null' })
         .pipe(
           map((res: HttpResponse<IReference[]>) => {
-            return res.body ? res.body : [];
+            return res.body || [];
           })
         )
         .subscribe((resBody: IReference[]) => {
@@ -148,29 +138,13 @@ export class InvoiceUpdateComponent implements OnInit {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
                 })
               )
-              .subscribe((concatRes: IReference[]) => {
-                this.reference3s = concatRes;
-              });
+              .subscribe((concatRes: IReference[]) => (this.reference3s = concatRes));
           }
         });
 
-      this.customerService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ICustomer[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ICustomer[]) => (this.customers = resBody));
+      this.customerService.query().subscribe((res: HttpResponse<ICustomer[]>) => (this.customers = res.body || []));
 
-      this.tripService
-        .query()
-        .pipe(
-          map((res: HttpResponse<ITrip[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: ITrip[]) => (this.trips = resBody));
+      this.tripService.query().subscribe((res: HttpResponse<ITrip[]>) => (this.trips = res.body || []));
     });
   }
 

@@ -1,109 +1,112 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="invoice">
-            <h2><span jhiTranslate="jioTmsApplicationApp.invoice.detail.title">Invoice</span> {{invoice.id}}</h2>
+            <h2><span jhiTranslate="jioTmsApplicationApp.invoice.detail.title">Invoice</span> {{ invoice.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.orderNo">Order No</span></dt>
                 <dd>
-                    <span>{{invoice.orderNo}}</span>
+                    <span>{{ invoice.orderNo }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.taxRate">Tax Rate</span></dt>
                 <dd>
-                    <span>{{invoice.taxRate}}</span>
+                    <span>{{ invoice.taxRate }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.taxType">Tax Type</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.TaxType.' + invoice.taxType}}">{{invoice.taxType}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.TaxType.' + invoice.taxType }}">{{ invoice.taxType }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.currency">Currency</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.CURRENCY.' + invoice.currency}}">{{invoice.currency}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.CURRENCY.' + invoice.currency }}">{{ invoice.currency }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceTaxTotal">Invoice Tax Total</span></dt>
                 <dd>
-                    <span>{{invoice.invoiceTaxTotal}}</span>
+                    <span>{{ invoice.invoiceTaxTotal }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceSubTotal">Invoice Sub Total</span></dt>
                 <dd>
-                    <span>{{invoice.invoiceSubTotal}}</span>
+                    <span>{{ invoice.invoiceSubTotal }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceTotal">Invoice Total</span></dt>
                 <dd>
-                    <span>{{invoice.invoiceTotal}}</span>
+                    <span>{{ invoice.invoiceTotal }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceDate">Invoice Date</span></dt>
                 <dd>
-                    <span>{{invoice.invoiceDate}}</span>
+                    <span>{{ invoice.invoiceDate }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.invoicePaidDate">Invoice Paid Date</span></dt>
                 <dd>
-                    <span>{{invoice.invoicePaidDate}}</span>
+                    <span>{{ invoice.invoicePaidDate }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.refValue1">Ref Value 1</span></dt>
                 <dd>
-                    <span>{{invoice.refValue1}}</span>
+                    <span>{{ invoice.refValue1 }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.refValue2">Ref Value 2</span></dt>
                 <dd>
-                    <span>{{invoice.refValue2}}</span>
+                    <span>{{ invoice.refValue2 }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.refValue3">Ref Value 3</span></dt>
                 <dd>
-                    <span>{{invoice.refValue3}}</span>
+                    <span>{{ invoice.refValue3 }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.payRefNo">Pay Ref No</span></dt>
                 <dd>
-                    <span>{{invoice.payRefNo}}</span>
+                    <span>{{ invoice.payRefNo }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.invoiceDueDate">Invoice Due Date</span></dt>
                 <dd>
-                    <span>{{invoice.invoiceDueDate}}</span>
+                    <span>{{ invoice.invoiceDueDate }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.status">Status</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.InvoiceStatus.' + invoice.status}}">{{invoice.status}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.InvoiceStatus.' + invoice.status }}">{{ invoice.status }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.invoicePdf">Invoice Pdf</span></dt>
                 <dd>
                     <div *ngIf="invoice.invoicePdf">
                         <a (click)="openFile(invoice.invoicePdfContentType!, invoice.invoicePdf)" jhiTranslate="entity.action.open">open</a>
-                        {{invoice.invoicePdfContentType}}, {{byteSize(invoice.invoicePdf)}}
+                        {{ invoice.invoicePdfContentType }}, {{ byteSize(invoice.invoicePdf) }}
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.remarks">Remarks</span></dt>
                 <dd>
-                    <span>{{invoice.remarks}}</span>
+                    <span>{{ invoice.remarks }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.reference1">Reference 1</span></dt>
                 <dd>
                     <div *ngIf="invoice.reference1Id">
-                        <a [routerLink]="['/reference', invoice.reference1Id, 'view']">{{invoice.reference1Reference}}</a>
+                        <a [routerLink]="['/reference', invoice.reference1Id, 'view']">{{ invoice.reference1Reference }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.reference2">Reference 2</span></dt>
                 <dd>
                     <div *ngIf="invoice.reference2Id">
-                        <a [routerLink]="['/reference', invoice.reference2Id, 'view']">{{invoice.reference2Reference}}</a>
+                        <a [routerLink]="['/reference', invoice.reference2Id, 'view']">{{ invoice.reference2Reference }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.reference3">Reference 3</span></dt>
                 <dd>
                     <div *ngIf="invoice.reference3Id">
-                        <a [routerLink]="['/reference', invoice.reference3Id, 'view']">{{invoice.reference3Reference}}</a>
+                        <a [routerLink]="['/reference', invoice.reference3Id, 'view']">{{ invoice.reference3Reference }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.customer">Customer</span></dt>
                 <dd>
                     <div *ngIf="invoice.customerId">
-                        <a [routerLink]="['/customer', invoice.customerId, 'view']">{{invoice.customerCompany}}</a>
+                        <a [routerLink]="['/customer', invoice.customerId, 'view']">{{ invoice.customerCompany }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoice.trip">Trip</span></dt>
                 <dd>
                     <div *ngIf="invoice.tripId">
-                        <a [routerLink]="['/trip', invoice.tripId, 'view']">{{invoice.tripId}}</a>
+                        <a [routerLink]="['/trip', invoice.tripId, 'view']">{{ invoice.tripId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -111,13 +114,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/invoice', invoice.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

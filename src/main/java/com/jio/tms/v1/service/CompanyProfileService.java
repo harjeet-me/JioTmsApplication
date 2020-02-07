@@ -25,7 +25,6 @@ public interface CompanyProfileService {
      */
     List<CompanyProfileDTO> findAll();
 
-
     /**
      * Get the "id" companyProfile.
      *

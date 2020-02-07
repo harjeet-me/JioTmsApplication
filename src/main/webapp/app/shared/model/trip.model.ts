@@ -1,5 +1,6 @@
 import { Moment } from 'moment';
 import { IInvoice } from 'app/shared/model/invoice.model';
+import { IContainer } from 'app/shared/model/container.model';
 import { StatusEnum } from 'app/shared/model/enumerations/status-enum.model';
 import { HAZMAT } from 'app/shared/model/enumerations/hazmat.model';
 import { COVEREDBY } from 'app/shared/model/enumerations/coveredby.model';
@@ -32,6 +33,7 @@ export interface ITrip {
   dropLocationAddress?: string;
   dropLocationId?: number;
   invoices?: IInvoice[];
+  containers?: IContainer[];
   customerEmail?: string;
   customerId?: number;
   driverId?: number;
@@ -66,6 +68,7 @@ export class Trip implements ITrip {
     public dropLocationAddress?: string,
     public dropLocationId?: number,
     public invoices?: IInvoice[],
+    public containers?: IContainer[],
     public customerEmail?: string,
     public customerId?: number,
     public driverId?: number,

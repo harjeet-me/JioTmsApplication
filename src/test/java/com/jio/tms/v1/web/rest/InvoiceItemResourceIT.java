@@ -152,7 +152,7 @@ public class InvoiceItemResourceIT {
         // Create the InvoiceItem
         InvoiceItemDTO invoiceItemDTO = invoiceItemMapper.toDto(invoiceItem);
         restInvoiceItemMockMvc.perform(post("/api/invoice-items")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(invoiceItemDTO)))
             .andExpect(status().isCreated());
 
@@ -182,7 +182,7 @@ public class InvoiceItemResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restInvoiceItemMockMvc.perform(post("/api/invoice-items")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(invoiceItemDTO)))
             .andExpect(status().isBadRequest());
 
@@ -204,7 +204,7 @@ public class InvoiceItemResourceIT {
         // Get all the invoiceItemList
         restInvoiceItemMockMvc.perform(get("/api/invoice-items?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(invoiceItem.getId().intValue())))
             .andExpect(jsonPath("$.[*].itemName").value(hasItem(DEFAULT_ITEM_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
@@ -223,7 +223,7 @@ public class InvoiceItemResourceIT {
         // Get the invoiceItem
         restInvoiceItemMockMvc.perform(get("/api/invoice-items/{id}", invoiceItem.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(invoiceItem.getId().intValue()))
             .andExpect(jsonPath("$.itemName").value(DEFAULT_ITEM_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
@@ -263,7 +263,7 @@ public class InvoiceItemResourceIT {
         InvoiceItemDTO invoiceItemDTO = invoiceItemMapper.toDto(updatedInvoiceItem);
 
         restInvoiceItemMockMvc.perform(put("/api/invoice-items")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(invoiceItemDTO)))
             .andExpect(status().isOk());
 
@@ -292,7 +292,7 @@ public class InvoiceItemResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restInvoiceItemMockMvc.perform(put("/api/invoice-items")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(invoiceItemDTO)))
             .andExpect(status().isBadRequest());
 
@@ -314,7 +314,7 @@ public class InvoiceItemResourceIT {
 
         // Delete the invoiceItem
         restInvoiceItemMockMvc.perform(delete("/api/invoice-items/{id}", invoiceItem.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -335,7 +335,7 @@ public class InvoiceItemResourceIT {
         // Search the invoiceItem
         restInvoiceItemMockMvc.perform(get("/api/_search/invoice-items?query=id:" + invoiceItem.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(invoiceItem.getId().intValue())))
             .andExpect(jsonPath("$.[*].itemName").value(hasItem(DEFAULT_ITEM_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))

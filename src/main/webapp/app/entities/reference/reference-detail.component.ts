@@ -13,9 +13,7 @@ export class ReferenceDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ reference }) => {
-      this.reference = reference;
-    });
+    this.activatedRoute.data.subscribe(({ reference }) => (this.reference = reference));
   }
 
   previousState(): void {

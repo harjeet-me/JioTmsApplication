@@ -127,7 +127,7 @@ public class InvoiceRefResourceIT {
         // Create the InvoiceRef
         InvoiceRefDTO invoiceRefDTO = invoiceRefMapper.toDto(invoiceRef);
         restInvoiceRefMockMvc.perform(post("/api/invoice-refs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(invoiceRefDTO)))
             .andExpect(status().isCreated());
 
@@ -152,7 +152,7 @@ public class InvoiceRefResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restInvoiceRefMockMvc.perform(post("/api/invoice-refs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(invoiceRefDTO)))
             .andExpect(status().isBadRequest());
 
@@ -174,7 +174,7 @@ public class InvoiceRefResourceIT {
         // Get all the invoiceRefList
         restInvoiceRefMockMvc.perform(get("/api/invoice-refs?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(invoiceRef.getId().intValue())))
             .andExpect(jsonPath("$.[*].refName").value(hasItem(DEFAULT_REF_NAME)));
     }
@@ -188,7 +188,7 @@ public class InvoiceRefResourceIT {
         // Get the invoiceRef
         restInvoiceRefMockMvc.perform(get("/api/invoice-refs/{id}", invoiceRef.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(invoiceRef.getId().intValue()))
             .andExpect(jsonPath("$.refName").value(DEFAULT_REF_NAME));
     }
@@ -218,7 +218,7 @@ public class InvoiceRefResourceIT {
         InvoiceRefDTO invoiceRefDTO = invoiceRefMapper.toDto(updatedInvoiceRef);
 
         restInvoiceRefMockMvc.perform(put("/api/invoice-refs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(invoiceRefDTO)))
             .andExpect(status().isOk());
 
@@ -242,7 +242,7 @@ public class InvoiceRefResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restInvoiceRefMockMvc.perform(put("/api/invoice-refs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(invoiceRefDTO)))
             .andExpect(status().isBadRequest());
 
@@ -264,7 +264,7 @@ public class InvoiceRefResourceIT {
 
         // Delete the invoiceRef
         restInvoiceRefMockMvc.perform(delete("/api/invoice-refs/{id}", invoiceRef.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -285,7 +285,7 @@ public class InvoiceRefResourceIT {
         // Search the invoiceRef
         restInvoiceRefMockMvc.perform(get("/api/_search/invoice-refs?query=id:" + invoiceRef.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(invoiceRef.getId().intValue())))
             .andExpect(jsonPath("$.[*].refName").value(hasItem(DEFAULT_REF_NAME)));
     }

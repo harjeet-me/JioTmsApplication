@@ -71,7 +71,6 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one invoiceItem by id.
      *

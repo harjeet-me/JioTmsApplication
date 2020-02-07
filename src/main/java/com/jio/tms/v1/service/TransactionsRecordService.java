@@ -28,7 +28,6 @@ public interface TransactionsRecordService {
      */
     Page<TransactionsRecordDTO> findAll(Pageable pageable);
 
-
     /**
      * Get the "id" transactionsRecord.
      *

@@ -36,13 +36,11 @@ export class EquipmentComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<IEquipment[]>) => (this.equipment = res.body ? res.body : []));
+        .subscribe((res: HttpResponse<IEquipment[]>) => (this.equipment = res.body || []));
       return;
     }
-    this.equipmentService.query().subscribe((res: HttpResponse<IEquipment[]>) => {
-      this.equipment = res.body ? res.body : [];
-      this.currentSearch = '';
-    });
+
+    this.equipmentService.query().subscribe((res: HttpResponse<IEquipment[]>) => (this.equipment = res.body || []));
   }
 
   search(query: string): void {

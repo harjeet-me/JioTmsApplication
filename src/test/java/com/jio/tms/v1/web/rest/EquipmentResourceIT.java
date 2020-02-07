@@ -191,7 +191,7 @@ public class EquipmentResourceIT {
         // Create the Equipment
         EquipmentDTO equipmentDTO = equipmentMapper.toDto(equipment);
         restEquipmentMockMvc.perform(post("/api/equipment")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(equipmentDTO)))
             .andExpect(status().isCreated());
 
@@ -228,7 +228,7 @@ public class EquipmentResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restEquipmentMockMvc.perform(post("/api/equipment")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(equipmentDTO)))
             .andExpect(status().isBadRequest());
 
@@ -250,7 +250,7 @@ public class EquipmentResourceIT {
         // Get all the equipmentList
         restEquipmentMockMvc.perform(get("/api/equipment?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(equipment.getId().intValue())))
             .andExpect(jsonPath("$.[*].enumber").value(hasItem(DEFAULT_ENUMBER)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
@@ -276,7 +276,7 @@ public class EquipmentResourceIT {
         // Get the equipment
         restEquipmentMockMvc.perform(get("/api/equipment/{id}", equipment.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(equipment.getId().intValue()))
             .andExpect(jsonPath("$.enumber").value(DEFAULT_ENUMBER))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
@@ -330,7 +330,7 @@ public class EquipmentResourceIT {
         EquipmentDTO equipmentDTO = equipmentMapper.toDto(updatedEquipment);
 
         restEquipmentMockMvc.perform(put("/api/equipment")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(equipmentDTO)))
             .andExpect(status().isOk());
 
@@ -366,7 +366,7 @@ public class EquipmentResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restEquipmentMockMvc.perform(put("/api/equipment")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(equipmentDTO)))
             .andExpect(status().isBadRequest());
 
@@ -388,7 +388,7 @@ public class EquipmentResourceIT {
 
         // Delete the equipment
         restEquipmentMockMvc.perform(delete("/api/equipment/{id}", equipment.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -409,7 +409,7 @@ public class EquipmentResourceIT {
         // Search the equipment
         restEquipmentMockMvc.perform(get("/api/_search/equipment?query=id:" + equipment.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(equipment.getId().intValue())))
             .andExpect(jsonPath("$.[*].enumber").value(hasItem(DEFAULT_ENUMBER)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))

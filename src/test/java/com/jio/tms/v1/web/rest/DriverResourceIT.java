@@ -208,7 +208,7 @@ public class DriverResourceIT {
         // Create the Driver
         DriverDTO driverDTO = driverMapper.toDto(driver);
         restDriverMockMvc.perform(post("/api/drivers")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(driverDTO)))
             .andExpect(status().isCreated());
 
@@ -249,7 +249,7 @@ public class DriverResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restDriverMockMvc.perform(post("/api/drivers")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(driverDTO)))
             .andExpect(status().isBadRequest());
 
@@ -271,7 +271,7 @@ public class DriverResourceIT {
         // Get all the driverList
         restDriverMockMvc.perform(get("/api/drivers?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(driver.getId().intValue())))
             .andExpect(jsonPath("$.[*].company").value(hasItem(DEFAULT_COMPANY)))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
@@ -301,7 +301,7 @@ public class DriverResourceIT {
         // Get the driver
         restDriverMockMvc.perform(get("/api/drivers/{id}", driver.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(driver.getId().intValue()))
             .andExpect(jsonPath("$.company").value(DEFAULT_COMPANY))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
@@ -363,7 +363,7 @@ public class DriverResourceIT {
         DriverDTO driverDTO = driverMapper.toDto(updatedDriver);
 
         restDriverMockMvc.perform(put("/api/drivers")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(driverDTO)))
             .andExpect(status().isOk());
 
@@ -403,7 +403,7 @@ public class DriverResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restDriverMockMvc.perform(put("/api/drivers")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(driverDTO)))
             .andExpect(status().isBadRequest());
 
@@ -425,7 +425,7 @@ public class DriverResourceIT {
 
         // Delete the driver
         restDriverMockMvc.perform(delete("/api/drivers/{id}", driver.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -446,7 +446,7 @@ public class DriverResourceIT {
         // Search the driver
         restDriverMockMvc.perform(get("/api/_search/drivers?query=id:" + driver.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(driver.getId().intValue())))
             .andExpect(jsonPath("$.[*].company").value(hasItem(DEFAULT_COMPANY)))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))

@@ -5,7 +5,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as moment from 'moment';
 
 import { IEquipment, Equipment } from 'app/shared/model/equipment.model';
 import { EquipmentService } from './equipment.service';
@@ -18,7 +17,6 @@ import { InsuranceService } from 'app/entities/insurance/insurance.service';
 })
 export class EquipmentUpdateComponent implements OnInit {
   isSaving = false;
-
   insurances: IInsurance[] = [];
   licensePlateExpirationDp: any;
   inspectionStickerExpirationDp: any;
@@ -56,7 +54,7 @@ export class EquipmentUpdateComponent implements OnInit {
         .query({ filter: 'equipment-is-null' })
         .pipe(
           map((res: HttpResponse<IInsurance[]>) => {
-            return res.body ? res.body : [];
+            return res.body || [];
           })
         )
         .subscribe((resBody: IInsurance[]) => {
@@ -70,9 +68,7 @@ export class EquipmentUpdateComponent implements OnInit {
                   return subRes.body ? [subRes.body].concat(resBody) : resBody;
                 })
               )
-              .subscribe((concatRes: IInsurance[]) => {
-                this.insurances = concatRes;
-              });
+              .subscribe((concatRes: IInsurance[]) => (this.insurances = concatRes));
           }
         });
     });

@@ -142,7 +142,7 @@ public class AccountsResourceIT {
         // Create the Accounts
         AccountsDTO accountsDTO = accountsMapper.toDto(accounts);
         restAccountsMockMvc.perform(post("/api/accounts")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(accountsDTO)))
             .andExpect(status().isCreated());
 
@@ -170,7 +170,7 @@ public class AccountsResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAccountsMockMvc.perform(post("/api/accounts")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(accountsDTO)))
             .andExpect(status().isBadRequest());
 
@@ -192,7 +192,7 @@ public class AccountsResourceIT {
         // Get all the accountsList
         restAccountsMockMvc.perform(get("/api/accounts?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(accounts.getId().intValue())))
             .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.doubleValue())))
             .andExpect(jsonPath("$.[*].over30").value(hasItem(DEFAULT_OVER_30.doubleValue())))
@@ -209,7 +209,7 @@ public class AccountsResourceIT {
         // Get the accounts
         restAccountsMockMvc.perform(get("/api/accounts/{id}", accounts.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(accounts.getId().intValue()))
             .andExpect(jsonPath("$.balance").value(DEFAULT_BALANCE.doubleValue()))
             .andExpect(jsonPath("$.over30").value(DEFAULT_OVER_30.doubleValue()))
@@ -245,7 +245,7 @@ public class AccountsResourceIT {
         AccountsDTO accountsDTO = accountsMapper.toDto(updatedAccounts);
 
         restAccountsMockMvc.perform(put("/api/accounts")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(accountsDTO)))
             .andExpect(status().isOk());
 
@@ -272,7 +272,7 @@ public class AccountsResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAccountsMockMvc.perform(put("/api/accounts")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(accountsDTO)))
             .andExpect(status().isBadRequest());
 
@@ -294,7 +294,7 @@ public class AccountsResourceIT {
 
         // Delete the accounts
         restAccountsMockMvc.perform(delete("/api/accounts/{id}", accounts.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -315,7 +315,7 @@ public class AccountsResourceIT {
         // Search the accounts
         restAccountsMockMvc.perform(get("/api/_search/accounts?query=id:" + accounts.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(accounts.getId().intValue())))
             .andExpect(jsonPath("$.[*].balance").value(hasItem(DEFAULT_BALANCE.doubleValue())))
             .andExpect(jsonPath("$.[*].over30").value(hasItem(DEFAULT_OVER_30.doubleValue())))

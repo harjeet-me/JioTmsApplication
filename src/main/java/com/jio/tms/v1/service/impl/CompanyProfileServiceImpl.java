@@ -71,7 +71,6 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one companyProfile by id.
      *

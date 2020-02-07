@@ -13,9 +13,7 @@ export class ContactDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ contact }) => {
-      this.contact = contact;
-    });
+    this.activatedRoute.data.subscribe(({ contact }) => (this.contact = contact));
   }
 
   previousState(): void {

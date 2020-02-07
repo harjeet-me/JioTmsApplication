@@ -13,9 +13,7 @@ export class LocationDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ location }) => {
-      this.location = location;
-    });
+    this.activatedRoute.data.subscribe(({ location }) => (this.location = location));
   }
 
   previousState(): void {

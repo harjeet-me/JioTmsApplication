@@ -25,7 +25,6 @@ public interface LocationService {
      */
     List<LocationDTO> findAll();
 
-
     /**
      * Get the "id" location.
      *

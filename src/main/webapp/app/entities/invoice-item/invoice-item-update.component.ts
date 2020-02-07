@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { IInvoiceItem, InvoiceItem } from 'app/shared/model/invoice-item.model';
 import { InvoiceItemService } from './invoice-item.service';
@@ -17,7 +16,6 @@ import { InvoiceService } from 'app/entities/invoice/invoice.service';
 })
 export class InvoiceItemUpdateComponent implements OnInit {
   isSaving = false;
-
   invoices: IInvoice[] = [];
 
   editForm = this.fb.group({
@@ -42,14 +40,7 @@ export class InvoiceItemUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ invoiceItem }) => {
       this.updateForm(invoiceItem);
 
-      this.invoiceService
-        .query()
-        .pipe(
-          map((res: HttpResponse<IInvoice[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IInvoice[]) => (this.invoices = resBody));
+      this.invoiceService.query().subscribe((res: HttpResponse<IInvoice[]>) => (this.invoices = res.body || []));
     });
   }
 

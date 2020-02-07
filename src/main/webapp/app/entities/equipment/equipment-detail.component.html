@@ -1,66 +1,69 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="equipment">
-            <h2><span jhiTranslate="jioTmsApplicationApp.equipment.detail.title">Equipment</span> {{equipment.id}}</h2>
+            <h2><span jhiTranslate="jioTmsApplicationApp.equipment.detail.title">Equipment</span> {{ equipment.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.enumber">Enumber</span></dt>
                 <dd>
-                    <span>{{equipment.enumber}}</span>
+                    <span>{{ equipment.enumber }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.type">Type</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.EquipmentEnum.' + equipment.type}}">{{equipment.type}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.EquipmentEnum.' + equipment.type }}">{{ equipment.type }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.ownershiptype">Ownershiptype</span></dt>
                 <dd>
-                    <span>{{equipment.ownershiptype}}</span>
+                    <span>{{ equipment.ownershiptype }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.status">Status</span></dt>
                 <dd>
-                    <span jhiTranslate="{{'jioTmsApplicationApp.ToggleStatus.' + equipment.status}}">{{equipment.status}}</span>
+                    <span jhiTranslate="{{ 'jioTmsApplicationApp.ToggleStatus.' + equipment.status }}">{{ equipment.status }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.vin">Vin</span></dt>
                 <dd>
-                    <span>{{equipment.vin}}</span>
+                    <span>{{ equipment.vin }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.make">Make</span></dt>
                 <dd>
-                    <span>{{equipment.make}}</span>
+                    <span>{{ equipment.make }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.model">Model</span></dt>
                 <dd>
-                    <span>{{equipment.model}}</span>
+                    <span>{{ equipment.model }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.description">Description</span></dt>
                 <dd>
-                    <span>{{equipment.description}}</span>
+                    <span>{{ equipment.description }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.year">Year</span></dt>
                 <dd>
-                    <span>{{equipment.year}}</span>
+                    <span>{{ equipment.year }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.yearPurchased">Year Purchased</span></dt>
                 <dd>
-                    <span>{{equipment.yearPurchased}}</span>
+                    <span>{{ equipment.yearPurchased }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.licensePlateNumber">License Plate Number</span></dt>
                 <dd>
-                    <span>{{equipment.licensePlateNumber}}</span>
+                    <span>{{ equipment.licensePlateNumber }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.licensePlateExpiration">License Plate Expiration</span></dt>
                 <dd>
-                    <span>{{equipment.licensePlateExpiration}}</span>
+                    <span>{{ equipment.licensePlateExpiration }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.inspectionStickerExpiration">Inspection Sticker Expiration</span></dt>
                 <dd>
-                    <span>{{equipment.inspectionStickerExpiration}}</span>
+                    <span>{{ equipment.inspectionStickerExpiration }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.equipment.insurance">Insurance</span></dt>
                 <dd>
                     <div *ngIf="equipment.insuranceId">
-                        <a [routerLink]="['/insurance', equipment.insuranceId, 'view']">{{equipment.insuranceId}}</a>
+                        <a [routerLink]="['/insurance', equipment.insuranceId, 'view']">{{ equipment.insuranceId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -68,13 +71,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/equipment', equipment.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

@@ -28,7 +28,6 @@ public interface FileSystemService {
      */
     Page<FileSystemDTO> findAll(Pageable pageable);
 
-
     /**
      * Get the "id" fileSystem.
      *

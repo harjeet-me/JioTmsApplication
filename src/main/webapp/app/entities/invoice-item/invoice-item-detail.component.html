@@ -1,38 +1,41 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="invoiceItem">
-            <h2><span jhiTranslate="jioTmsApplicationApp.invoiceItem.detail.title">Invoice Item</span> {{invoiceItem.id}}</h2>
+            <h2><span jhiTranslate="jioTmsApplicationApp.invoiceItem.detail.title">Invoice Item</span> {{ invoiceItem.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoiceItem.itemName">Item Name</span></dt>
                 <dd>
-                    <span>{{invoiceItem.itemName}}</span>
+                    <span>{{ invoiceItem.itemName }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoiceItem.description">Description</span></dt>
                 <dd>
-                    <span>{{invoiceItem.description}}</span>
+                    <span>{{ invoiceItem.description }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoiceItem.qty">Qty</span></dt>
                 <dd>
-                    <span>{{invoiceItem.qty}}</span>
+                    <span>{{ invoiceItem.qty }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoiceItem.price">Price</span></dt>
                 <dd>
-                    <span>{{invoiceItem.price}}</span>
+                    <span>{{ invoiceItem.price }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoiceItem.discount">Discount</span></dt>
                 <dd>
-                    <span>{{invoiceItem.discount}}</span>
+                    <span>{{ invoiceItem.discount }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoiceItem.total">Total</span></dt>
                 <dd>
-                    <span>{{invoiceItem.total}}</span>
+                    <span>{{ invoiceItem.total }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.invoiceItem.invoice">Invoice</span></dt>
                 <dd>
                     <div *ngIf="invoiceItem.invoiceId">
-                        <a [routerLink]="['/invoice', invoiceItem.invoiceId, 'view']">{{invoiceItem.invoiceId}}</a>
+                        <a [routerLink]="['/invoice', invoiceItem.invoiceId, 'view']">{{ invoiceItem.invoiceId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -40,13 +43,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/invoice-item', invoiceItem.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

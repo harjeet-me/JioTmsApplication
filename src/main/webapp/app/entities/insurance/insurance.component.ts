@@ -37,13 +37,11 @@ export class InsuranceComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<IInsurance[]>) => (this.insurances = res.body ? res.body : []));
+        .subscribe((res: HttpResponse<IInsurance[]>) => (this.insurances = res.body || []));
       return;
     }
-    this.insuranceService.query().subscribe((res: HttpResponse<IInsurance[]>) => {
-      this.insurances = res.body ? res.body : [];
-      this.currentSearch = '';
-    });
+
+    this.insuranceService.query().subscribe((res: HttpResponse<IInsurance[]>) => (this.insurances = res.body || []));
   }
 
   search(query: string): void {

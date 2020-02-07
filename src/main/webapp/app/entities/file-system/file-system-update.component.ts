@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
 import { IFileSystem, FileSystem } from 'app/shared/model/file-system.model';
@@ -19,7 +18,6 @@ import { EmailService } from 'app/entities/email/email.service';
 })
 export class FileSystemUpdateComponent implements OnInit {
   isSaving = false;
-
   emails: IEmail[] = [];
 
   editForm = this.fb.group({
@@ -42,14 +40,7 @@ export class FileSystemUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ fileSystem }) => {
       this.updateForm(fileSystem);
 
-      this.emailService
-        .query()
-        .pipe(
-          map((res: HttpResponse<IEmail[]>) => {
-            return res.body ? res.body : [];
-          })
-        )
-        .subscribe((resBody: IEmail[]) => (this.emails = resBody));
+      this.emailService.query().subscribe((res: HttpResponse<IEmail[]>) => (this.emails = res.body || []));
     });
   }
 

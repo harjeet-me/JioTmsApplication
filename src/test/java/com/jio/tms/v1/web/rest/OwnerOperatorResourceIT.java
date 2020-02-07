@@ -216,7 +216,7 @@ public class OwnerOperatorResourceIT {
         // Create the OwnerOperator
         OwnerOperatorDTO ownerOperatorDTO = ownerOperatorMapper.toDto(ownerOperator);
         restOwnerOperatorMockMvc.perform(post("/api/owner-operators")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(ownerOperatorDTO)))
             .andExpect(status().isCreated());
 
@@ -258,7 +258,7 @@ public class OwnerOperatorResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOwnerOperatorMockMvc.perform(post("/api/owner-operators")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(ownerOperatorDTO)))
             .andExpect(status().isBadRequest());
 
@@ -280,7 +280,7 @@ public class OwnerOperatorResourceIT {
         // Get all the ownerOperatorList
         restOwnerOperatorMockMvc.perform(get("/api/owner-operators?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(ownerOperator.getId().intValue())))
             .andExpect(jsonPath("$.[*].company").value(hasItem(DEFAULT_COMPANY)))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
@@ -311,7 +311,7 @@ public class OwnerOperatorResourceIT {
         // Get the ownerOperator
         restOwnerOperatorMockMvc.perform(get("/api/owner-operators/{id}", ownerOperator.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(ownerOperator.getId().intValue()))
             .andExpect(jsonPath("$.company").value(DEFAULT_COMPANY))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
@@ -375,7 +375,7 @@ public class OwnerOperatorResourceIT {
         OwnerOperatorDTO ownerOperatorDTO = ownerOperatorMapper.toDto(updatedOwnerOperator);
 
         restOwnerOperatorMockMvc.perform(put("/api/owner-operators")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(ownerOperatorDTO)))
             .andExpect(status().isOk());
 
@@ -416,7 +416,7 @@ public class OwnerOperatorResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restOwnerOperatorMockMvc.perform(put("/api/owner-operators")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(ownerOperatorDTO)))
             .andExpect(status().isBadRequest());
 
@@ -438,7 +438,7 @@ public class OwnerOperatorResourceIT {
 
         // Delete the ownerOperator
         restOwnerOperatorMockMvc.perform(delete("/api/owner-operators/{id}", ownerOperator.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -459,7 +459,7 @@ public class OwnerOperatorResourceIT {
         // Search the ownerOperator
         restOwnerOperatorMockMvc.perform(get("/api/_search/owner-operators?query=id:" + ownerOperator.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(ownerOperator.getId().intValue())))
             .andExpect(jsonPath("$.[*].company").value(hasItem(DEFAULT_COMPANY)))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))

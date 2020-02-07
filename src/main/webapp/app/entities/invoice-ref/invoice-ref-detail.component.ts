@@ -13,9 +13,7 @@ export class InvoiceRefDetailComponent implements OnInit {
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ invoiceRef }) => {
-      this.invoiceRef = invoiceRef;
-    });
+    this.activatedRoute.data.subscribe(({ invoiceRef }) => (this.invoiceRef = invoiceRef));
   }
 
   previousState(): void {

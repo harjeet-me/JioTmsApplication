@@ -147,7 +147,7 @@ public class ProductItemResourceIT {
         // Create the ProductItem
         ProductItemDTO productItemDTO = productItemMapper.toDto(productItem);
         restProductItemMockMvc.perform(post("/api/product-items")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productItemDTO)))
             .andExpect(status().isCreated());
 
@@ -176,7 +176,7 @@ public class ProductItemResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProductItemMockMvc.perform(post("/api/product-items")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productItemDTO)))
             .andExpect(status().isBadRequest());
 
@@ -198,7 +198,7 @@ public class ProductItemResourceIT {
         // Get all the productItemList
         restProductItemMockMvc.perform(get("/api/product-items?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productItem.getId().intValue())))
             .andExpect(jsonPath("$.[*].itemName").value(hasItem(DEFAULT_ITEM_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
@@ -216,7 +216,7 @@ public class ProductItemResourceIT {
         // Get the productItem
         restProductItemMockMvc.perform(get("/api/product-items/{id}", productItem.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(productItem.getId().intValue()))
             .andExpect(jsonPath("$.itemName").value(DEFAULT_ITEM_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
@@ -254,7 +254,7 @@ public class ProductItemResourceIT {
         ProductItemDTO productItemDTO = productItemMapper.toDto(updatedProductItem);
 
         restProductItemMockMvc.perform(put("/api/product-items")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productItemDTO)))
             .andExpect(status().isOk());
 
@@ -282,7 +282,7 @@ public class ProductItemResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProductItemMockMvc.perform(put("/api/product-items")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(productItemDTO)))
             .andExpect(status().isBadRequest());
 
@@ -304,7 +304,7 @@ public class ProductItemResourceIT {
 
         // Delete the productItem
         restProductItemMockMvc.perform(delete("/api/product-items/{id}", productItem.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -325,7 +325,7 @@ public class ProductItemResourceIT {
         // Search the productItem
         restProductItemMockMvc.perform(get("/api/_search/product-items?query=id:" + productItem.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productItem.getId().intValue())))
             .andExpect(jsonPath("$.[*].itemName").value(hasItem(DEFAULT_ITEM_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))

@@ -41,7 +41,8 @@ export class TripComponent implements OnInit, OnDestroy {
   }
 
   loadPage(page?: number): void {
-    const pageToLoad: number = page ? page : this.page;
+    const pageToLoad: number = page || this.page;
+
     if (this.currentSearch) {
       this.tripService
         .search({
@@ -56,6 +57,7 @@ export class TripComponent implements OnInit, OnDestroy {
         );
       return;
     }
+
     this.tripService
       .query({
         page: pageToLoad - 1,
@@ -132,7 +134,7 @@ export class TripComponent implements OnInit, OnDestroy {
         sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
       }
     });
-    this.trips = data ? data : [];
+    this.trips = data || [];
   }
 
   protected onError(): void {

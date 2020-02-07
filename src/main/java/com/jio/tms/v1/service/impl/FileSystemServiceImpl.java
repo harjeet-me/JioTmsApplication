@@ -69,7 +69,6 @@ public class FileSystemServiceImpl implements FileSystemService {
             .map(fileSystemMapper::toDto);
     }
 
-
     /**
      * Get one fileSystem by id.
      *

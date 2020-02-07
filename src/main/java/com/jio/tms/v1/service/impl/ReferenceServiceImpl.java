@@ -71,7 +71,6 @@ public class ReferenceServiceImpl implements ReferenceService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one reference by id.
      *

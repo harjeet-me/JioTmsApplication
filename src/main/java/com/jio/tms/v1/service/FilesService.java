@@ -25,7 +25,6 @@ public interface FilesService {
      */
     List<FilesDTO> findAll();
 
-
     /**
      * Get the "id" files.
      *

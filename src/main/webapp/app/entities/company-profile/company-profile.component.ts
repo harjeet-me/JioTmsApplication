@@ -37,13 +37,11 @@ export class CompanyProfileComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<ICompanyProfile[]>) => (this.companyProfiles = res.body ? res.body : []));
+        .subscribe((res: HttpResponse<ICompanyProfile[]>) => (this.companyProfiles = res.body || []));
       return;
     }
-    this.companyProfileService.query().subscribe((res: HttpResponse<ICompanyProfile[]>) => {
-      this.companyProfiles = res.body ? res.body : [];
-      this.currentSearch = '';
-    });
+
+    this.companyProfileService.query().subscribe((res: HttpResponse<ICompanyProfile[]>) => (this.companyProfiles = res.body || []));
   }
 
   search(query: string): void {

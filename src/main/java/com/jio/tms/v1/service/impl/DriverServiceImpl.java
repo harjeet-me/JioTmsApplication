@@ -71,7 +71,6 @@ public class DriverServiceImpl implements DriverService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one driver by id.
      *

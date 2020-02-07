@@ -134,7 +134,7 @@ public class FileSystemResourceIT {
         // Create the FileSystem
         FileSystemDTO fileSystemDTO = fileSystemMapper.toDto(fileSystem);
         restFileSystemMockMvc.perform(post("/api/file-systems")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(fileSystemDTO)))
             .andExpect(status().isCreated());
 
@@ -160,7 +160,7 @@ public class FileSystemResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restFileSystemMockMvc.perform(post("/api/file-systems")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(fileSystemDTO)))
             .andExpect(status().isBadRequest());
 
@@ -182,7 +182,7 @@ public class FileSystemResourceIT {
         // Get all the fileSystemList
         restFileSystemMockMvc.perform(get("/api/file-systems?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(fileSystem.getId().intValue())))
             .andExpect(jsonPath("$.[*].dataContentType").value(hasItem(DEFAULT_DATA_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].data").value(hasItem(Base64Utils.encodeToString(DEFAULT_DATA))));
@@ -197,7 +197,7 @@ public class FileSystemResourceIT {
         // Get the fileSystem
         restFileSystemMockMvc.perform(get("/api/file-systems/{id}", fileSystem.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(fileSystem.getId().intValue()))
             .andExpect(jsonPath("$.dataContentType").value(DEFAULT_DATA_CONTENT_TYPE))
             .andExpect(jsonPath("$.data").value(Base64Utils.encodeToString(DEFAULT_DATA)));
@@ -229,7 +229,7 @@ public class FileSystemResourceIT {
         FileSystemDTO fileSystemDTO = fileSystemMapper.toDto(updatedFileSystem);
 
         restFileSystemMockMvc.perform(put("/api/file-systems")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(fileSystemDTO)))
             .andExpect(status().isOk());
 
@@ -254,7 +254,7 @@ public class FileSystemResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restFileSystemMockMvc.perform(put("/api/file-systems")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(fileSystemDTO)))
             .andExpect(status().isBadRequest());
 
@@ -276,7 +276,7 @@ public class FileSystemResourceIT {
 
         // Delete the fileSystem
         restFileSystemMockMvc.perform(delete("/api/file-systems/{id}", fileSystem.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -297,7 +297,7 @@ public class FileSystemResourceIT {
         // Search the fileSystem
         restFileSystemMockMvc.perform(get("/api/_search/file-systems?query=id:" + fileSystem.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(fileSystem.getId().intValue())))
             .andExpect(jsonPath("$.[*].dataContentType").value(hasItem(DEFAULT_DATA_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].data").value(hasItem(Base64Utils.encodeToString(DEFAULT_DATA))));

@@ -41,7 +41,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   loadPage(page?: number): void {
-    const pageToLoad: number = page ? page : this.page;
+    const pageToLoad: number = page || this.page;
+
     if (this.currentSearch) {
       this.invoiceService
         .search({
@@ -56,6 +57,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         );
       return;
     }
+
     this.invoiceService
       .query({
         page: pageToLoad - 1,
@@ -132,7 +134,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
       }
     });
-    this.invoices = data ? data : [];
+    this.invoices = data || [];
   }
 
   protected onError(): void {

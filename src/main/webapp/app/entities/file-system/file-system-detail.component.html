@@ -1,21 +1,24 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="fileSystem">
-            <h2><span jhiTranslate="jioTmsApplicationApp.fileSystem.detail.title">File System</span> {{fileSystem.id}}</h2>
+            <h2><span jhiTranslate="jioTmsApplicationApp.fileSystem.detail.title">File System</span> {{ fileSystem.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="jioTmsApplicationApp.fileSystem.data">Data</span></dt>
                 <dd>
                     <div *ngIf="fileSystem.data">
                         <a (click)="openFile(fileSystem.dataContentType!, fileSystem.data)" jhiTranslate="entity.action.open">open</a>
-                        {{fileSystem.dataContentType}}, {{byteSize(fileSystem.data)}}
+                        {{ fileSystem.dataContentType }}, {{ byteSize(fileSystem.data) }}
                     </div>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.fileSystem.email">Email</span></dt>
                 <dd>
                     <div *ngIf="fileSystem.emailId">
-                        <a [routerLink]="['/email', fileSystem.emailId, 'view']">{{fileSystem.emailId}}</a>
+                        <a [routerLink]="['/email', fileSystem.emailId, 'view']">{{ fileSystem.emailId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -23,13 +26,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/file-system', fileSystem.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

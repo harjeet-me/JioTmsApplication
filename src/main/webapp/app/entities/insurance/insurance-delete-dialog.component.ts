@@ -13,7 +13,7 @@ export class InsuranceDeleteDialogComponent {
 
   constructor(protected insuranceService: InsuranceService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
-  clear(): void {
+  cancel(): void {
     this.activeModal.dismiss();
   }
 

@@ -1,42 +1,45 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="productItem">
-            <h2><span jhiTranslate="jioTmsApplicationApp.productItem.detail.title">Product Item</span> {{productItem.id}}</h2>
+            <h2><span jhiTranslate="jioTmsApplicationApp.productItem.detail.title">Product Item</span> {{ productItem.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="jioTmsApplicationApp.productItem.itemName">Item Name</span></dt>
                 <dd>
-                    <span>{{productItem.itemName}}</span>
+                    <span>{{ productItem.itemName }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.productItem.description">Description</span></dt>
                 <dd>
-                    <span>{{productItem.description}}</span>
+                    <span>{{ productItem.description }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.productItem.qty">Qty</span></dt>
                 <dd>
-                    <span>{{productItem.qty}}</span>
+                    <span>{{ productItem.qty }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.productItem.price">Price</span></dt>
                 <dd>
-                    <span>{{productItem.price}}</span>
+                    <span>{{ productItem.price }}</span>
                 </dd>
                 <dt><span jhiTranslate="jioTmsApplicationApp.productItem.discount">Discount</span></dt>
                 <dd>
-                    <span>{{productItem.discount}}</span>
+                    <span>{{ productItem.discount }}</span>
                 </dd>
             </dl>
 
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/product-item', productItem.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

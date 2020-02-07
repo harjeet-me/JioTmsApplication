@@ -14,9 +14,7 @@ export class InvoiceDetailComponent implements OnInit {
   constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ invoice }) => {
-      this.invoice = invoice;
-    });
+    this.activatedRoute.data.subscribe(({ invoice }) => (this.invoice = invoice));
   }
 
   byteSize(base64String: string): string {

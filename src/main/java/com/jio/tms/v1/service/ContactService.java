@@ -25,7 +25,6 @@ public interface ContactService {
      */
     List<ContactDTO> findAll();
 
-
     /**
      * Get the "id" contact.
      *

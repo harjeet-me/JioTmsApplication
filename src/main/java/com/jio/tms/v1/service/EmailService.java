@@ -28,7 +28,6 @@ public interface EmailService {
      */
     Page<EmailDTO> findAll(Pageable pageable);
 
-
     /**
      * Get the "id" email.
      *

@@ -14,9 +14,7 @@ export class FileSystemDetailComponent implements OnInit {
   constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ fileSystem }) => {
-      this.fileSystem = fileSystem;
-    });
+    this.activatedRoute.data.subscribe(({ fileSystem }) => (this.fileSystem = fileSystem));
   }
 
   byteSize(base64String: string): string {

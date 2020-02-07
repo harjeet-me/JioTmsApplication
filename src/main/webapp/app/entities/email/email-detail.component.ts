@@ -14,9 +14,7 @@ export class EmailDetailComponent implements OnInit {
   constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ email }) => {
-      this.email = email;
-    });
+    this.activatedRoute.data.subscribe(({ email }) => (this.email = email));
   }
 
   byteSize(base64String: string): string {

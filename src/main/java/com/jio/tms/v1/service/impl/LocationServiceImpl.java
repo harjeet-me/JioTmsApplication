@@ -71,7 +71,6 @@ public class LocationServiceImpl implements LocationService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one location by id.
      *

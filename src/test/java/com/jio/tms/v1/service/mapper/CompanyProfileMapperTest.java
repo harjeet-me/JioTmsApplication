@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class CompanyProfileMapperTest {
 
     private CompanyProfileMapper companyProfileMapper;
@@ -16,7 +15,7 @@ public class CompanyProfileMapperTest {
 
     @Test
     public void testEntityFromId() {
-        Long id = 2L;
+        Long id = 1L;
         assertThat(companyProfileMapper.fromId(id).getId()).isEqualTo(id);
         assertThat(companyProfileMapper.fromId(null)).isNull();
     }

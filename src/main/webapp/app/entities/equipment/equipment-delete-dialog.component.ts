@@ -13,7 +13,7 @@ export class EquipmentDeleteDialogComponent {
 
   constructor(protected equipmentService: EquipmentService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
-  clear(): void {
+  cancel(): void {
     this.activeModal.dismiss();
   }
 

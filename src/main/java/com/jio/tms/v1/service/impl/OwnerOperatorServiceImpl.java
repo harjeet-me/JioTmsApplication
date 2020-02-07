@@ -71,7 +71,6 @@ public class OwnerOperatorServiceImpl implements OwnerOperatorService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one ownerOperator by id.
      *

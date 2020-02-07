@@ -228,7 +228,7 @@ public class TripResourceIT {
         // Create the Trip
         TripDTO tripDTO = tripMapper.toDto(trip);
         restTripMockMvc.perform(post("/api/trips")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(tripDTO)))
             .andExpect(status().isCreated());
 
@@ -271,7 +271,7 @@ public class TripResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restTripMockMvc.perform(post("/api/trips")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(tripDTO)))
             .andExpect(status().isBadRequest());
 
@@ -293,7 +293,7 @@ public class TripResourceIT {
         // Get all the tripList
         restTripMockMvc.perform(get("/api/trips?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(trip.getId().intValue())))
             .andExpect(jsonPath("$.[*].tripNumber").value(hasItem(DEFAULT_TRIP_NUMBER)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
@@ -325,7 +325,7 @@ public class TripResourceIT {
         // Get the trip
         restTripMockMvc.perform(get("/api/trips/{id}", trip.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(trip.getId().intValue()))
             .andExpect(jsonPath("$.tripNumber").value(DEFAULT_TRIP_NUMBER))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
@@ -391,7 +391,7 @@ public class TripResourceIT {
         TripDTO tripDTO = tripMapper.toDto(updatedTrip);
 
         restTripMockMvc.perform(put("/api/trips")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(tripDTO)))
             .andExpect(status().isOk());
 
@@ -433,7 +433,7 @@ public class TripResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restTripMockMvc.perform(put("/api/trips")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(tripDTO)))
             .andExpect(status().isBadRequest());
 
@@ -455,7 +455,7 @@ public class TripResourceIT {
 
         // Delete the trip
         restTripMockMvc.perform(delete("/api/trips/{id}", trip.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -476,7 +476,7 @@ public class TripResourceIT {
         // Search the trip
         restTripMockMvc.perform(get("/api/_search/trips?query=id:" + trip.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(trip.getId().intValue())))
             .andExpect(jsonPath("$.[*].tripNumber").value(hasItem(DEFAULT_TRIP_NUMBER)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))

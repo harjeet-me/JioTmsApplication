@@ -132,7 +132,7 @@ public class FilesResourceIT {
         // Create the Files
         FilesDTO filesDTO = filesMapper.toDto(files);
         restFilesMockMvc.perform(post("/api/files")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(filesDTO)))
             .andExpect(status().isCreated());
 
@@ -158,7 +158,7 @@ public class FilesResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restFilesMockMvc.perform(post("/api/files")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(filesDTO)))
             .andExpect(status().isBadRequest());
 
@@ -180,7 +180,7 @@ public class FilesResourceIT {
         // Get all the filesList
         restFilesMockMvc.perform(get("/api/files?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(files.getId().intValue())))
             .andExpect(jsonPath("$.[*].contentContentType").value(hasItem(DEFAULT_CONTENT_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].content").value(hasItem(Base64Utils.encodeToString(DEFAULT_CONTENT))));
@@ -195,7 +195,7 @@ public class FilesResourceIT {
         // Get the files
         restFilesMockMvc.perform(get("/api/files/{id}", files.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(files.getId().intValue()))
             .andExpect(jsonPath("$.contentContentType").value(DEFAULT_CONTENT_CONTENT_TYPE))
             .andExpect(jsonPath("$.content").value(Base64Utils.encodeToString(DEFAULT_CONTENT)));
@@ -227,7 +227,7 @@ public class FilesResourceIT {
         FilesDTO filesDTO = filesMapper.toDto(updatedFiles);
 
         restFilesMockMvc.perform(put("/api/files")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(filesDTO)))
             .andExpect(status().isOk());
 
@@ -252,7 +252,7 @@ public class FilesResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restFilesMockMvc.perform(put("/api/files")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(filesDTO)))
             .andExpect(status().isBadRequest());
 
@@ -274,7 +274,7 @@ public class FilesResourceIT {
 
         // Delete the files
         restFilesMockMvc.perform(delete("/api/files/{id}", files.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -295,7 +295,7 @@ public class FilesResourceIT {
         // Search the files
         restFilesMockMvc.perform(get("/api/_search/files?query=id:" + files.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(files.getId().intValue())))
             .andExpect(jsonPath("$.[*].contentContentType").value(hasItem(DEFAULT_CONTENT_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].content").value(hasItem(Base64Utils.encodeToString(DEFAULT_CONTENT))));

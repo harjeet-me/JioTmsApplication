@@ -69,7 +69,6 @@ public class TripServiceImpl implements TripService {
             .map(tripMapper::toDto);
     }
 
-
     /**
      * Get one trip by id.
      *

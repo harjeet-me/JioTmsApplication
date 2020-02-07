@@ -194,7 +194,7 @@ public class TransactionsRecordResourceIT {
         // Create the TransactionsRecord
         TransactionsRecordDTO transactionsRecordDTO = transactionsRecordMapper.toDto(transactionsRecord);
         restTransactionsRecordMockMvc.perform(post("/api/transactions-records")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transactionsRecordDTO)))
             .andExpect(status().isCreated());
 
@@ -231,7 +231,7 @@ public class TransactionsRecordResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restTransactionsRecordMockMvc.perform(post("/api/transactions-records")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transactionsRecordDTO)))
             .andExpect(status().isBadRequest());
 
@@ -253,7 +253,7 @@ public class TransactionsRecordResourceIT {
         // Get all the transactionsRecordList
         restTransactionsRecordMockMvc.perform(get("/api/transactions-records?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionsRecord.getId().intValue())))
             .andExpect(jsonPath("$.[*].txType").value(hasItem(DEFAULT_TX_TYPE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
@@ -279,7 +279,7 @@ public class TransactionsRecordResourceIT {
         // Get the transactionsRecord
         restTransactionsRecordMockMvc.perform(get("/api/transactions-records/{id}", transactionsRecord.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(transactionsRecord.getId().intValue()))
             .andExpect(jsonPath("$.txType").value(DEFAULT_TX_TYPE.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
@@ -333,7 +333,7 @@ public class TransactionsRecordResourceIT {
         TransactionsRecordDTO transactionsRecordDTO = transactionsRecordMapper.toDto(updatedTransactionsRecord);
 
         restTransactionsRecordMockMvc.perform(put("/api/transactions-records")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transactionsRecordDTO)))
             .andExpect(status().isOk());
 
@@ -369,7 +369,7 @@ public class TransactionsRecordResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restTransactionsRecordMockMvc.perform(put("/api/transactions-records")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(transactionsRecordDTO)))
             .andExpect(status().isBadRequest());
 
@@ -391,7 +391,7 @@ public class TransactionsRecordResourceIT {
 
         // Delete the transactionsRecord
         restTransactionsRecordMockMvc.perform(delete("/api/transactions-records/{id}", transactionsRecord.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
@@ -412,7 +412,7 @@ public class TransactionsRecordResourceIT {
         // Search the transactionsRecord
         restTransactionsRecordMockMvc.perform(get("/api/_search/transactions-records?query=id:" + transactionsRecord.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionsRecord.getId().intValue())))
             .andExpect(jsonPath("$.[*].txType").value(hasItem(DEFAULT_TX_TYPE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))

@@ -36,13 +36,11 @@ export class InvoiceItemComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<IInvoiceItem[]>) => (this.invoiceItems = res.body ? res.body : []));
+        .subscribe((res: HttpResponse<IInvoiceItem[]>) => (this.invoiceItems = res.body || []));
       return;
     }
-    this.invoiceItemService.query().subscribe((res: HttpResponse<IInvoiceItem[]>) => {
-      this.invoiceItems = res.body ? res.body : [];
-      this.currentSearch = '';
-    });
+
+    this.invoiceItemService.query().subscribe((res: HttpResponse<IInvoiceItem[]>) => (this.invoiceItems = res.body || []));
   }
 
   search(query: string): void {
